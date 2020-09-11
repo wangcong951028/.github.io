@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>平面图设计</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <link href="../../../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+	
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+	<link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+	<link href="../../css/parts/dormitorys/Etable-1.0.0.0.css" rel="stylesheet"/>
+	<link href="../../css/parts/dormitorys/skin/Etable-1.0.0.1.css" rel="stylesheet"/>
+</head>
+<body style="background-color: white">
+
+     <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="statistics-title">
+                <h2>平面图设计
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+                <br />
+                <div class="input-group well" style="width: 100%">
+					<div style="width: 100%">
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>&emsp;公寓区:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="dormRegion" class="form-control" tabindex="-1">
+							<option value="">---- 请选择 -----</option>
+						</select>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>&emsp;公寓楼:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="dormBuiding" class="form-control" tabindex="-1">
+							<option value="">---- 请选择 -----</option>
+						</select>
+					</div>
+					
+				<button id="export" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+                    <i class="glyphicon glyphicon-download-alt">导出excel</i>
+                </button>
+                <button id="print" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+                    <i class="glyphicon glyphicon glyphicon-print">打印表格</i>
+                </button>
+				<div>
+					<button id="myButton" type="button" class="btn btn-primary" style="margin-left:20px;float: left">
+							<i class="glyphicon glyphicon-search"> 搜索</i>
+						</button>
+					
+				</div>
+				</div>
+				<br><br><br>
+				
+			</div>
+            <div id="box" style="width:100%;" class="ETable_table_flow">
+            	<div class="ETable_table_Panel_Btn">
+            		
+            	</div>
+            	<table id="etable_table" class="ETable_table">
+            		<tbody>
+            			
+            		</tbody>
+            	</table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+<!-- Datatables -->
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-wysiwyg -->
+<script src="../../../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="../../../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="../../../vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="../../../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="../../../vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="../../../vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="../../../vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="../../../vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="../../../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="../../../vendors/starrr/dist/starrr.js"></script>
+<!-- Custom Theme Scripts -->
+<!--<script src="../../../build/js/custom.js"></script>-->
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/dormitoryms/planDesign.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../../build/js/ztree/jquery-migrate-1.2.1.js"></script>
+<script src="../../../build/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+<script src="../../../build/js/ztree/jquery.ztree.excheck-3.5.js" type="text/javascript" ></script>
+<script src="../../../build/js/ztree/jquery.ztree.exedit-3.5.js" type="text/javascript" ></script>
+
+<script src="../../../documentation/MultipleTreeSelect-master/src/js/jquery.ztree.all.js"></script>
+<script src="../../../documentation/MultipleTreeSelect-master/src/MultipleTreeSelect.js"></script>
+
+<script src="../../js/statistics/jquery.table2excel.min.js"></script>
+<script src="../../js/statistics/jQuery.print.min.js"></script>
+
+
+<!--hicharts-->
+<!--<script src="../../../vendors/highcharts/js/highcharts.js"></script>-->
+
+
+</body>
+</html>

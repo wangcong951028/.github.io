@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>报修列表</title>
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Pagenation -->
+
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables.js"></script>
+    <script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+    <!-- Custom Theme Scripts -->
+    <!--<script src="../../../build/js/custom.min.js"></script>-->
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../../vendors/moment/locale/zh-cn.js"></script>
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--zTree-->
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+
+    <!--图片翻页-->
+    <script src="../../js/photo/prefixfree.min.js"></script>
+    <link href="../../css/parts/photo/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+
+    <!--单选框样式-->
+    <link href="../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+    <style>
+        .haha {
+            display: inline-block;
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 0 4px;
+        }
+        .error{
+            color:dodgerblue;
+        }
+        ul li{
+            list-style-type:none;
+        }
+        a{
+            text-decoration:none;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+
+</head>
+<body class="nav-md" style="background-color:white;">
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>报修管理</h2>
+                <div class="clearfix"></div>
+            </div>
+
+                <div class="input-group well" style="width: 100%">
+                    <div style="float: left;margin-left:10px">
+                        <span class="control-label"><h5>报修时间:</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="beginTime" placeholder="2017-08-20" value=""  class="form-control" >
+                    </div>
+                    <div style="float: left;">
+                        <span class="control-label"><h5>—</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="endTime" placeholder="2017-08-20" value=""  class="form-control" >
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" placeholder="名称,描述,老师" id="searchKey" class="form-control">
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="selSearchState" class="form-control">
+                            <option value="-1">------  请选择  ------</option>
+                            <option value="0">未受理</option>
+                            <option value="1">已受理</option>
+                            <option value="2">已处理</option>
+                        </select>
+                    </div>
+
+                    <button id="search" class="btn btn-primary" type="button">
+                        <i class="glyphicon glyphicon-search"> 搜索 </i>
+                    </button>
+
+                </div>
+
+            <table id="repair" class="table table-striped table-bordered jambo_table bulk_action"
+                   data-page-length="10" data-order="[[0,&quot;desc&quot;]]" width="100%">
+                <thead>
+                <tr style="width: 100%" class="headings">
+                    <th data-data="pk_id" data-visible="false" class="headings" width="0%">Id</th>
+                    <!--<th data-orderable="false" width="5%"><input type="checkbox" id="checkbox-all" class="flat"/></th>-->
+                    <th data-data="teachername" data-orderable="false" class="headings" width="7%">报修人名称</th>
+                    <th data-data="xgh" data-orderable="false" class="headings" width="7%">报修人工号</th>
+                    <th data-data="teacherPhone" data-orderable="false" class="headings" width="5%">报修人电话</th>
+                    <th data-data="r_title" class="headings" width="15%">报修名称</th>
+                    <th data-data="r_address" data-orderable="false" class="headings" width="10%">报修地址</th>
+                    <th data-data="r_state" data-orderable="false" class="headings" width="5%">报修状态</th>
+                    <th data-data="r_reporttime" data-orderable="true" class="headings" width="10%">报修时间</th>
+                    <th data-data="r_name" data-orderable="true" class="headings" width="10%">维修人名称</th>
+                    <th data-data="r_phone" data-orderable="false" class="headings" width="10%">维修人电话</th>
+                    <th data-data="Description" data-orderable="false" class="headings" width="25%">操作</th>
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4>编辑维修</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+
+                <input type="hidden" id="pk_id" class="form-control" required="required" placeholder="" readonly="true">
+                    <div class="x_content">
+                        <br/>
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">报修人名称<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <input type="text" id="txtName" class="form-control" required="required"
+                                           placeholder="" readonly="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">报修人电话<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <input type="text" id="txtPhone" class="form-control" required="required"
+                                           placeholder="" readonly="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">维修名称<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <input type="text" id="txtTitle" class="form-control" required="required"
+                                           placeholder="" readonly="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">维修描述<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea class="form-control" id="txtContent" required="required" rows="5"
+                                              style="resize: none" readonly="true"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">维修地址<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea id="txtAddress" class="form-control" required="required" rows="5" style="resize: none"
+                                              placeholder="" readonly="true"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">报修状态<span class="required">*</span></label>
+                                <div class="radio" id="selState">
+                                    <label style="width: 20%;margin-left:15px">
+                                        <input type="radio" id="radio1" class="flat" name="state" value="0"><i>✓</i>&nbsp;未受理
+                                    </label>
+                                    <label style="width: 20%;margin-left:15px">
+                                        <input type="radio" id="radio2" class="flat" name="state" value="1"><i>✓</i>&nbsp;已受理
+                                    </label>
+                                    <label style="width: 20%;margin-left:15px">
+                                        <input type="radio" id="radio3" class="flat" name="state" value="2"><i>✓</i>&nbsp;已处理
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">报修时间<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <input id="reporttime" class="form-control" required="required" readonly="true"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">维修人<span
+                                        class="required">*</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <ul id="treeDemo" class="ztree"
+                                        style="width: 100%;height: 200px;background-color: #f7f9fa"></ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">通知形式<span class="required">*</span></label>
+                                <div class="radio" id="infrom">
+                                    <!--<label style="width: 20%;margin-left:15px">
+                                        <input type="radio" id="radio5" class="flat" name="infrom" value="1">短信通知
+                                    </label>-->
+                                    <label style="width: 20%;margin-left:15px">
+                                        <input type="radio" id="radio6" class="flat" name="infrom" value="2" checked><i>✓</i>&nbsp;APP通知
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                    <input type="button" class="btn btn-success" onclick="javascript:SaveRepair()" value="提交"/>
+                    <!--<input type="reset" class="btn btn-success"/>-->
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看详情-->
+<div class="modal fade" id="lookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4>查看详情</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br/>
+                    <form class="form-horizontal form-label-left">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">报修人名称<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="looktxtName" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">报修人电话<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="looktxtPhone" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">维修名称<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="looktxtTitle" class="form-control"
+                                       placeholder="" readonly="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">维修描述<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea class="form-control" id="looktxtContent" rows="5"
+                                              style="resize: none" readonly="true"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">维修地址<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <textarea id="looktxtAddress" class="form-control" rows="5" style="resize: none"
+                                          placeholder="" readonly="true"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">图片<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12" id="">
+                                <div class="row" id="lookpictrure">
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">报修状态<span class="required">：</span></label>
+                            <div class="radio" id="lookselState">
+                                <label style="width: 20%;margin-left:15px">
+                                    <input type="radio" id="lookradio1" class="flat" disabled name="lookstate" value="0"><i>✓</i>&nbsp;未受理
+                                </label>
+                                <label style="width: 20%;margin-left:15px">
+                                    <input type="radio" id="lookradio2" class="flat" disabled name="lookstate" value="1"><i>✓</i>&nbsp;已受理
+                                </label>
+                                <label style="width: 20%;margin-left:15px">
+                                    <input type="radio" id="lookradio3" class="flat" disabled name="lookstate" value="2"><i>✓</i>&nbsp;已处理
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">报修时间<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="lookreporttime" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">维修人<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="looktreeDemo" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div><div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">维修人电话<span
+                                class="required">：</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                   id="looktreephone" style="width: 100%;text-align: left">
+                            </label>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--查看流程图-->
+<div class="modal fade" id="lockReapairl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title" id="proposerName"></h4>
+                <h4 class="modal-title" id="approvedName"></h4>
+                <h4 class="modal-title" id="leaveType"></h4>
+                <h4 style="color: red" class="modal-title" id="beginDate"></h4>
+                <h4 style="color: red" class="modal-title" id="endDate"></h4>
+                <h4 style="color: red" class="modal-title" id="hour"></h4>
+                <h4 class="modal-title" id="img"></h4>
+                <h4 class="modal-title" id="reason"></h4>
+                <h4 class="modal-title" id="submitTime"></h4>
+                <h4 class="modal-title" id="approvedTime"></h4>
+                <h4 class="modal-title" id="status"></h4>
+                <h4 class="modal-title" id="remark"></h4>
+                <div class="x_content">
+                    <ul class="list-unstyled timeline" id="repairFolw">
+
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3" id="buttons">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 查看图片Modal -->
+<div class="modal fade" id="myModals1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <ul class="slides" id="slides"></ul>
+    </div>
+</div>
+
+
+<script>
+    var imgArray;
+    var areaTable;
+    $(document).ready(function () {
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#endTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    });
+
+    $(function () {
+        findDeptNode();
+        //添加额外的参数传给服务器
+        areaTable = $('#repair').dataTable({
+            "ajax": {
+                "url":serverBaseUrl ,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.searchKey = $("#searchKey").val();
+
+                    data.beginTime = $("#beginTime").val();
+                    data.endTime = $("#endTime").val();
+                    data.r_state = $("#selSearchState").val();
+                    data.appName = "repair_getDataForMgmt";
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                   xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+                /*{
+                "targets": 1,
+                    "orderable": false,
+                    "className": 'select-checkbox',
+                render: function (data, type, full, meta) {
+                    return '<input type="checkbox" name="table_records" class="flat" id="checkbox-all-' + full.pk_id + '" value="' + full.pk_id + '" />';
+                }
+                },*/
+                {
+                    "targets": 6,
+                    render: function (data, type, full, meta) {
+                        if (full.r_state == 0) {
+                            return  '<span style="color: #2e6da4">未受理</span>'
+                        }
+                        else if (full.r_state == 1) {
+                            return  '<span style="color: #46b8da">已受理</span>'
+                        }
+                        else {
+                            return  '<span style="color: #169F85">已处理</span>'
+                        }
+                    }
+                },{
+                "targets": 7,
+                    render: function (data, type, full, meta) {
+						
+                        return full.r_reporttime.substring(0,10);
+                    }
+                },
+                {
+                    "targets": -1,
+                    render: function (data, type, full, meta) {
+                            return '<div>' +
+                                '<button class="btn btn-primary btn-xs" href="javascript:;"  data-key="' + full.pk_id + '"  onclick="lookRepair('+full.pk_id+')"><i class="glyphicon glyphicon-search">详情</i></button>' +
+                                '<button class="btn btn-primary btn-xs" data-key="' + full.pk_id + '"  onclick="lockRepair('+full.pk_id+')"><i class="fa fa-folder"></i> 进度</button>' +
+                                '<button class="btn btn-info btn-xs" data-key="' + full.pk_id + '"  onclick="editRepair(this)"><i class="fa fa-pencil"></i> 修改</button>' +
+                                '<button class="btn btn-danger btn-xs" data-key="' + full.pk_id + '"  onclick="deleteModal('+full.pk_id+')"><i class="fa fa-trash-o"></i> 删除</button>' +
+                                '</div>';
+                        }
+                }]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+
+
+    });
+
+    //编辑维修状态
+    function editRepair(obj) {
+
+        var data = {}
+        data.pk_id = $(obj).data("key");
+        data.appName = "repair_findByRepair";
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+               xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                var getData = data.data;
+
+               if (data.msgState != "200") {
+                   informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg);
+                }
+                else {
+                   if(getData.r_state == 2){
+                       informationAlert_OnlyConfirmButton_NOT_REFRESH("该报修已完成，不能被修改！");
+                   }else{
+                       $("#myModal").modal("show");
+                        var state = getData.r_state;
+                        $("#radio1").val(0);
+                        $("#radio2").val(1);
+                        if (state === 0) {
+                            $("input[type='radio'][id='radio1'][value='0']").prop('checked',true);
+                        }else if (state === 1) {
+                            $("input[type='radio'][id='radio2'][value='1']").prop('checked',true);
+                        } else if (state === 2) {
+                            $("input[type='radio'][id='radio3'][value='2']").prop('checked',true);
+                        }
+                        $("#txtAddress").val(getData.r_address);
+                        $("#selState").val(getData.r_state);
+                        $("#txtTitle").val(getData.r_title);
+                        $("#txtContent").val(getData.r_content);
+                        $("#pk_id").val(getData.pk_id)
+                        $("#reporttime").val(getData.r_reporttime)
+                        $("#txtName").val(getData.teachername)
+                        $("#txtPhone").val(getData.teacherPhone)
+                       /*var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+                       if(treeObj != null){
+                           console.debug(getData.r_name);
+                           var node = treeObj.getNodes();
+                           var nodes = treeObj.transformToArray(node);
+                           if(getData.r_name != null){
+                               for(var i = 0;i<nodes.length;i++){
+                                   if(getData.r_name === nodes[i].name){
+                                       var node1 = treeObj.getNodeByParam("id",nodes[i].id);
+                                       var parent = node1.getParentNode();
+                                       if(!parent.open){
+                                           treeObj.expandNode(parent,true,true);
+                                       }
+                                       treeObj.checkNode(node1, true);
+                                   }
+                               }
+                           }else{
+                               treeObj.checkNode(nodes, false);
+                           }
+                       }*/
+                   }
+                }
+            }
+        });
+    }
+
+    //保存维修状态
+    function SaveRepair() {
+        var data = {}
+        var state = $("input[type='radio'][name='state']");
+        for(var i=0;i<state.length;i++){
+            if(state[i].checked){
+                data.r_state = state[i].value;
+            }
+        };
+
+        var messageType = $("input[type='radio'][name='infrom']");
+        for(var i=0;i<messageType.length;i++){
+            if(messageType[i].checked){
+                data.msgType = messageType[i].value;
+            }
+        }
+
+        data.pk_id = $("#pk_id").val();
+        data.teachername = $("#txtName").val();
+        data.teacherPhone = $("#txtPhone").val();
+
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        for(var i = 0;i<nodes.length;i++){
+            var aa = nodes[i].id;
+            var bb = nodes[i].name;
+            data.repairID = nodes[i].id;
+        }
+
+        data.appName = "repair_updateRepair";
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                if (data.msgState != "200") {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg);
+                }
+                else {
+                    $("#myModal").modal("hide");
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("报修状态修改成功！");
+                }
+            }
+        });
+    }
+
+    /*删除提示*/
+    function deleteModal(id){
+        informationAlert_confirmAndCancelButton("deleteRepair("+id+")","是否需要删除该条报修记录?");
+    }
+
+
+    //删除
+    function deleteRepair(id) {
+        var data = {}
+        data.pk_id = id;
+        data.appName = "repair_deleteRepair";
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                if (data.msgState != "200") {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg);
+                }
+                else {
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("删除成功！");
+                }
+            }
+        });
+    }
+
+    /*获取部门列表*/
+    function findDeptNode() {
+        // 2、接口请求参数组装
+        var msg = {};
+        msg.deptTypeID = 0;
+        msg.appName="repair_findDeptNodeMgmt";
+        serverFromJSONData(msg,true).then(function (success) {
+            var node = success.data;
+            var zTreeObj;
+            var setting = {
+                check: {
+                    enable: true,
+                    chkStyle: "radio",
+                    radioType: "all"
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                }
+            };
+            $(document).ready(function(){
+                zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, node);
+            });
+
+        }),function (error) {
+            console.log("访问服务器发生错误，请稍后再试!",error);
+        };
+    }
+
+    // 查看流程图
+    /*查看流程图*/
+    function lockRepair(id) {
+        var data = {}
+        data.pk_id = id;
+        data.appName = "repair_findByRepair";
+
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                var flow1 = data.data;
+                var flow = data.data.repairsFlow;
+                var html = '';
+                for (var i = 0; i < flow.length; i++) {
+                    if (flow[i].r_state == 0) {
+                        html += '<li>' +
+                            '<div class="block">' +
+                            '<div class="tags">' +
+                            '<a href="#" class="tag"><span>发起报修</span></a>' +
+                            '</div>' +
+                            '<div class="block_content" id="repairName">' +
+                            '<h2 class="title"><a>发起人：'+flow1.teachername+'</a></h2>' +
+                            '<div class="byline">' +
+                            '<span>发起申请时间：'+flow[i].r_ReportTime+'</span>' +
+                            '</div>' +
+                            '<p class="excerpt">事故描述信息:<br/>'+flow[i].r_info+'</p>' +
+                            '</div></div></li>';
+                    }
+                    if(flow[i].r_state == 1){
+                        html += '<li>' +
+                            '<div class="block">' +
+                            '<div class="tags">' +
+                            '<a href="#" class="tag"><span>已受理</span></a href="" >' +
+                            '</div>' +
+                            '<div class="block_content" id="flowName1">' +
+                            '<h2 class="title"><a>受理人：'+flow[i].r_repairsNmae+'</a></h2>' +
+                            '<div class="byline"><p class="excerpt">受理时间：'+flow[i].r_ReportTime+'</p></div>' +
+                            '<p class="excerpt">已受理。。。 </p>' +
+                            '</div></div></li>'+
+                            '<li>' +
+                            '<div class="block">' +
+                            '<div class="tags">' +
+                            '<a href="#" class="tag"><span>处理中</span></a>' +
+                            '</div>' +
+                            '<div class="block_content" id="flowName2">' +
+                            '<h2 class="title"><a>操作人：'+flow[i].r_repairsNmae+'</a></h2>' +
+                            '<div class="byline"><p class="excerpt">处理时间：'+flow[i].r_ReportTime+'</p></div>' +
+                            '<p class="excerpt">正在处理中。。。 </p>' +
+                            '</div></div></li>';
+                    }
+                    if(flow[i].r_state == 2){
+                        html += '<li>' +
+                            '<div class="block">' +
+                            '<div class="tags"><a href="#" class="tag"><span>已处理</span></a></div>' +
+                            '<div class="block_content" id="flowName3">' +
+                            '<h2 class="title"><a>操作人：'+flow[i].r_repairsNmae+'</a></h2>' +
+                            '<div class="byline"><p class="excerpt">处理时间：'+flow[i].r_ReportTime+' </p></div>' +
+                            '<p class="excerpt">处理完成。。。 </p>' +
+                            '</div></div></li>' +
+                            '<li>' +
+                            '<div class="block">' +
+                            '<div class="tags"><a href="#" class="tag"><span>已完成</span></a></div>' +
+                            '<div class="block_content" id="flowName4">' +
+                            '<h2 class="title"></h2>' +
+                            '<div class="byline"><p class="excerpt">已完成，请查收！</p></div>' +
+                            '</div></div></li>';
+                    }
+                }
+                $("#repairFolw").html(html);
+                $("#lockReapairl").modal("show");
+            }
+        });
+    }
+
+    //查看报修信息
+    function lookRepair(id) {
+
+        var data = {}
+        data.pk_id = id;
+        data.appName = "repair_findByRepair";
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                var getData = data.data;
+                if (data.msgState != "200") {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg);
+                }
+                else {
+                    $("#lookModal").modal("show");
+                    var state = getData.r_state;
+                    $("#lookradio1").val(0);
+                    $("#lookradio2").val(1);
+                    if (state === 0) {
+                        $("input[type='radio'][id='lookradio1'][value='0']").prop('checked',true);
+                    }else if (state === 1) {
+                        $("input[type='radio'][id='lookradio2'][value='1']").prop('checked',true);
+                    } else if (state === 2) {
+                        $("input[type='radio'][id='lookradio3'][value='2']").prop('checked',true);
+                    }
+                    $("#looktxtAddress").val(getData.r_address);
+                    $("#lookselState").val(getData.r_state);
+                    $("#looktxtTitle").val(getData.r_title);
+                    $("#looktxtContent").val(getData.r_content);
+                    $("#lookreporttime").text(getData.r_reporttime)
+                    $("#looktxtName").text(getData.teachername)
+                    $("#looktxtPhone").text(getData.teacherPhone)
+                    $("#looktreeDemo").text(getData.r_name)
+                    $("#looktreephone").text(getData.r_phone)
+                    var html = '';
+                    var repairsImg = getData.repairsImg;
+                    if(repairsImg.length > 0 ){
+                        imgArray = new Array();
+                        for(var i = 0; i < repairsImg.length; i++){
+                            imgArray.push(repairsImg[i].picture);
+                            html += '<div class="col-md-55" style="height: 100px;width: 110px">' +
+                                '<div class="thumbnail" style="height: 100px;width: 110px">' +
+                                '<div class="image view view-first"  style="height: 100%;width: 100%;cursor: pointer" title="点击查看更多">' +
+                                '<img style="width: 110px;height: 100px; display: block;" src="'+repairsImg[i].picture+'" alt="暂无图片"/>' +
+                                '<div class="mask no-caption" style="height: 100%">' +
+                                '<a class="haha" href="#" data-toggle="modal" data-target="#myModals1" onclick="showImgs(&quot;'+ repairsImg[i].pk_id + '&quot;)">' +
+                                '<i class="fa fa-link"></i>' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>'
+                        }
+                    }else{
+                        html = '<label class="control-label col-md-3 col-sm-3 col-xs-12" ' +
+                            'id="looktreephone" style="width: 100%;text-align: left">' +
+                            '暂无图片' +
+                            '</label>';
+                    }
+                    $("#lookpictrure").html(html);
+
+                }
+            }
+        });
+    }
+
+    function showImgs(src) {
+        var slides='';
+        var navdots='';
+        for(var i=0;i<imgArray.length;i++){
+            //alert(imgArray[i]);
+            slides+='<input type="radio" name="radio-btn" id="img-'+(i+1)+'" checked />' +
+                '<li class="slide-container">' +
+                '<div class="slide">' +
+                '<img src="'+imgArray[i]+'" />' +
+                '</div>' +
+                '<div class="nav">' +
+                '<label for="img-'+(i==0?imgArray.length:i)+'" class="prev">&#x2039;</label>' +
+                '<label for="img-'+(i+1==imgArray.length?1:i+2)+'" class="next">&#x203a;</label>' +
+                '</div>' +
+                '</li>';
+            navdots+='<label for="img-'+(i+1)+'" class="nav-dot" id="img-dot'+(i+1)+'"></label>';
+        }
+        slides += '<li class="nav-dots" id="nav-dots">'+navdots+'</li>';
+        $("#slides").html(slides);
+
+        $("#img-dot"+($.inArray(src, imgArray)+1)+"").click();//默认点击第几个
+    }
+
+</script>
+</body>
+</html>
+

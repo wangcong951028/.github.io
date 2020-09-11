@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>收费类型列表</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <!--多选下拉框-->
+    <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+    <script src="../../../build/js/bootstrap-multiselect.js"></script>
+
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/jquery-confirm.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+
+
+</head>
+<body class="nav-md" style="background-color: white">
+<div class="container body">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>收费类型列表</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="form-group col-lg-8" style="width:100%">
+                    <div class="input-group well" style="width: 100%">
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>关键字:</h5></span>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" placeholder="收费项名称,代码" id="searchKey" class="form-control">
+                        </div>
+                        <div class="col-md-1">
+                            <button id="search" class="btn btn-success form-control" type="button"> 搜 索</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" style="margin-left:10px;float: left">新增类型</button>
+                    </div>
+                    <table id="chargeItemTable"
+                           class="table table-striped table-bordered jambo_table bulk_action"
+                           data-page-length="10"
+                           data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                        <thead>
+                        <tr class="headings">
+                            <th data-data="" data-visible="false">Id</th>
+                            <th data-data="chargeItemName" data-orderable="true">类型名</th>
+                            <th data-data="chargeItemCode" data-orderable="false">代码</th>
+                            <th data-data="createUser" data-orderable="false">创建人</th>
+                            <th data-data="createDate" data-orderable="false">创建时间</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项名称<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="chargeItemName" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项代码<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="chargeItemCode" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">是否启用<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12 radio">
+                                <label>
+                                    <input type="radio" checked name="status" value="1">是
+                                </label>
+                                <label>
+                                    <input type="radio" name="status" value="0">否
+                                </label>
+                            </div>
+                        </div>
+
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="saveData()">继续添加</button>
+                        <button class="btn btn-success" onclick="saveData(true)">添加</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="resetForm()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editModalLabel">编辑</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="editForm">
+                        <input type="hidden" id="editId">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项名称<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="chargeItemNameEdit" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项代码<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" readonly id="chargeItemCodeEdit" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">是否启用<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12 radio">
+                                <label>
+                                    <input type="radio" checked name="status" value="1">是
+                                </label>
+                                <label>
+                                    <input type="radio" name="status" value="0">否
+                                </label>
+                            </div>
+                        </div>
+
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="editData()">确定</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="resetEditForm()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom Theme Scripts-->
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    var areaTable;
+    $(function () {
+        //添加额外的参数传给服务器
+        areaTable = $('#chargeItemTable').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.search['value'] = $("#searchKey").val();
+
+                    data.appName = "chargeItemConf_getItem";
+
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs":[
+                {
+                    "targets":1,
+                    render:function (data, type, row, meta) {
+                        return "<a href='javascript:void(0)' onclick='dataEdit(this)'>"+data+"</a>";
+                    }
+                }
+            ]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+    });
+
+    function dataEdit(obj){
+        var data = $("#chargeItemTable").DataTable().row($(obj).parent().parent()).data();
+
+        var msg = {};
+        msg.id = data.id;
+
+        msg.appName="chargeItemConf_getItemByPrimaryKey";
+        serverFromJSONData(msg,true).then(function (success) {
+            if(success.msgState == 200){
+                var data = success.data;
+
+                $("#editId").val(data.id);
+                $("#chargeItemNameEdit").val(data.chargeItemName);
+                $("#chargeItemCodeEdit").val(data.chargeItemCode);
+
+                $("input:radio[name='status']").val();
+
+                $('#editModal').modal('show');
+            }else{
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }),function (error) {
+            console.log("访问服务器发生错误，请稍后再试!",error);
+        };
+
+    }
+
+    function saveData(arg){
+        var msg = {};
+        var chargeItemName = $("#chargeItemName").val(),
+            chargeItemCode = $("#chargeItemCode").val();
+
+        if(chargeItemName == "" || chargeItemName == null || chargeItemName.length>20){
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("名称不能为空，且不能超过20个字符！");
+        }else if(chargeItemCode == "" || chargeItemCode == null || chargeItemCode.length>20){
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("代码不能为空，且不能超过20个字符！");
+        }else{
+            msg.chargeItemName = chargeItemName;
+            msg.chargeItemCode = chargeItemCode;
+            msg.status = $("input:radio[name='status']:checked").val();
+            msg.appName="chargeItemConf_editItem";
+            serverFromJSONData(msg,true).then(function (success) {
+                if(success.msgState == 200){
+                    if(arg){
+                        $('#addModal').modal('hide');
+                    }
+                    resetForm();
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("添加成功！");
+                }else{
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+                }
+            }),function (error) {
+                console.log("访问服务器发生错误，请稍后再试!",error);
+            };
+        }
+    }
+
+    function resetForm(){
+        $("#chargeItemName").val("");
+        $("#chargeItemCode").val("");
+    }
+
+    function editData(){
+        var msg = {};
+        var chargeItemName = $("#chargeItemNameEdit").val();
+
+        if(chargeItemName == "" || chargeItemName == null || chargeItemName.length>20){
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("名称不能为空，且不能超过20个字符！");
+        }else{
+            msg.id = $("#editId").val();
+            msg.chargeItemName = chargeItemName;
+            msg.status = $("input:radio[name='status']:checked").val();
+            msg.appName="chargeItemConf_editItem";
+            serverFromJSONData(msg,true).then(function (success) {
+                if(success.msgState == 200){
+                    $('#editModal').modal('hide');
+                    resetEditForm();
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("修改成功！");
+                }else{
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+                }
+            }),function (error) {
+                console.log("访问服务器发生错误，请稍后再试!",error);
+            };
+        }
+    }
+
+    function resetEditForm(){
+        $("#editForm")[0].reset;
+    }
+
+</script>
+</body>
+</html>
+

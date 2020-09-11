@@ -1,0 +1,57 @@
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+    <title>$Title$</title>
+    <link type="text/css" rel="stylesheet" href=".././css/demo.css">
+    <link type="text/css" rel="stylesheet" href=".././css/metroStyle/metroStyle.css">
+    <script src=".././js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src=".././js/jquery.ztree.all.js"></script>
+    <script type="text/javascript" src=".././MultipleTreeSelect.js"></script>
+
+    <script>
+
+
+    </script>
+    <script type="text/javascript">
+
+
+        var zNodes = [
+            {id: 1, pId: 0, name: "火之国",   open: true},
+            {id: 11, pId: 1, name: "木叶忍者", open: true },
+            {id: 111, pId: 11, name: "鸣人" },
+            {id: 112, pId: 11, name: "佐助"},
+            {id: 12, pId: 1, name: "木叶暗部" },
+            {id: 121, pId: 12, name: "鼬"},
+            {id: 122, pId: 12, name: "卡卡西"},
+            {id: 2, pId: 0, name: "沙之国", open: true},
+            {id: 21, pId: 2, name: "千代婆婆"},
+            {id: 26, pId: 2, name: "我爱罗"} ,
+            {id: 22, pId: 2, name: "沙之国忍者", open: true},
+            {id: 221, pId: 22, name: "手鞠"},
+            {id: 222, pId: 22, name: "勘九郎"},
+            {id: 3, pId: 0, name: "水之国"},
+            {id: 4, pId: 0, name: "雨隐"},
+            {id: 4, pId: 0, name: "土之国"},
+            {id: 4, pId: 0, name: "暗部"},
+        ];
+        var defaults = {
+            textLabel: "jasontext",
+            zNodes: zNodes,
+            height:333,
+            chkStyle: "radio"
+        }
+
+        $(document).ready(function () {
+            $("textarea").drawMultipleTree(defaults);
+        });
+        //-->
+    </script>
+</head>
+
+<body style="padding: 100px">
+<br>
+单选选模式：
+ <textarea   style="width: 300px" checks="1"   type="text" readonly></textarea>
+</body>
+</html>

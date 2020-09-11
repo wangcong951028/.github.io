@@ -1,0 +1,133 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+html, body{
+	height:100%;
+}
+body{
+	background: url(../../../../images/login/djyzx/bg.png) no-repeat center top;
+	overflow: hidden;
+}
+.login-main{
+	margin: 100px auto 0;
+	background: url(../../../../images/login/djyzx/login-main-bg.png) no-repeat #fff;
+	width: 1100px;
+	height: 450px;
+	position: relative;
+	
+}
+.login-top-logo{
+	position: absolute;
+	top: 20px;
+	width: 310px;
+	height: 80px;
+	right: 55px;
+	background: url(../../../../images/login/djyzx/logo.png);
+	
+}
+.login-main .login-form{
+	top: 140px;
+	position: absolute;
+	right: 60px;
+	width: 300px;
+}
+.login-main .login-form .input-contro{
+	height:40px;
+	line-height: 40px;
+	margin-top: 20px;
+	position: relative;
+}
+.login-main .login-form .input-contro i{
+	display: block;
+	position: absolute;
+	width: 20px;
+	height: 25px;
+	left: 10px;
+	top: 7.5px;
+}
+.login-main .login-form .input-contro.username i{
+	background: url(../../../../images/login/djyzx/login-user-icon.png);
+}
+.login-main .login-form .input-contro.password i{
+	background: url(../../../../images/login/djyzx/login-password-icon.png);
+}
+.login-main .login-form .input-contro input
+,.login-main .login-form .input-contro span{
+	width: 100%;
+	height: 100%;
+	font-size: 15px;
+}
+.login-main .login-form .input-contro input{
+	padding: 0 10px 0 40px;
+	border:1px solid #ddd;
+	transition: border-color 0.3s;
+}
+.login-main .login-form .input-contro input:focus{
+	border-color: #00b2d4;
+}
+
+/** 登录按钮样式 **/
+.login-main .login-form .input-contro span{
+	display: block;
+	text-align: center;
+	background: #00b2d4;
+	border-radius: 5px;
+	border:none;
+	cursor: pointer;
+	color: #fff;
+	transition: background-color 0.3s;
+}
+.login-main .login-form .input-contro span:hover{
+	background: #049ebb;
+}
+
+.login-main .login-bottom-logo{
+	position: absolute;
+	background: url(../../../../images/login/djyzx/login-school-icon.png);
+	width: 250px;
+	height: 50px;
+	right: 85px;
+	bottom: 20px;
+	
+}
+.login-right{
+	width: 420px;
+	height: 450px;
+	right: 0px;
+	background-color: #FFFFFF;
+	position: absolute;
+	
+}
+.copy-right{
+	margin-top: 50px;
+}
+.copy-right p{
+	text-align: center;
+	color: #fff;
+	margin-top: 15px;
+}
+
+/**登录框后的红色提示 **/
+.login-tips{
+	color: red;
+	position: absolute;
+}
+
+/** 登录后的提示信息 **/
+.login-main .login-form .login-info-tips span{
+	background: url(../../../../images/login/icon.png) no-repeat 0 0;
+	display: inline-block;
+	height: 16px;
+	vertical-align: middle;
+	width: 16px;
+}
+
+.login-main .login-form .login-info-tips{
+	color: #808080;
+	margin-left: 5px;
+	font-size: 1px;
+	padding: 5px;
+	position: absolute;
+}

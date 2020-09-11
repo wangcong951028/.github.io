@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus®">
+    <meta name="Author" content="hjl">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>第三方模拟</title>
+   
+   
+    <!--只需要导入js  可以到官网下载对应的版本-->
+    <script type="text/javascript" src="./static/js/jquery.js"></script>
+    <link rel="stylesheet" href="./static/css/wangEditor.css" />
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="wangEditor"></div>
+<!-- 预览 -->
+<button type="button" class="btn btn-primary" onclick = "Login()">跳转（此时的跳转将当前页面的角色信息传递到指定后端然后跳转到指定页面）</button>  
+<script type="text/javascript">
+
+   function Login(){
+	var token = "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWQiOiIxMjMiLCJzaWQiOiIxNCIsInNjaG9vTmFtZSI6Iua1i-ivleS_oeaBryIsInVzZXJOYW1lIjoi5rWL6K-V5Lq65ZGYIiwicm9sZU5hbWUiOiLmtYvor5Xpg6jpl6giLCJleHAiOjE1OTg4Njc2MjYsIm5iZiI6MTU5ODg2MDQyNn0.fwWoHcmRR9BSc31qkKwCMIHoIufVto0ZhAafLXS9Org";
+	var sid = "14";
+   
+	$.ajax({
+        headers: {
+            Accept: "application/json; charset=utf-8",
+            token:"."
+        },
+        type: 'POST',
+        url: "http://192.168.2.56:8082/oauth/auth/authLogin",
+        data: {token:token,sid:sid},
+        dataType: "json",
+        success: function (response) {
+            if(typeof(response) == "object" && 
+						Object.prototype.toString.call(response).toLowerCase() == "[object object]" && !response.length){
+					}else{
+						response = eval('(' + response + ')');
+					}
+					console.log(response);
+            var resultData = response.data;
+            if (resultData == null || response.msgState != 200){
+                if(checkValueIsNull(response.msg)){
+                    alert("连接"+sessionStorage.schoolName+"服务器发生错误，请稍后再试!");
+                }else{
+                    var msgState = response.msgState;
+                    if(msgState == 404 || msgState == 405 || msgState == 403){
+                        alert(response.msg);
+                        return;
+                    }else if(msgState == 900){
+                        alert(response.msg);
+                        return;
+                    }else{
+                        if(msgState == 200){
+                            alert("登录成功!");
+                        }else {
+                            alert(response.msg);
+                            return;
+                        }
+                    }
+                }
+            }
+            sessionStorage.token = resultData.token[0] + "_" + resultData.token[1];
+            if(sessionStorage.token){
+                window.location.href = "http://192.168.2.56:8082/production/index.html";
+            }
+        }
+    });
+   
+   }
+
+
+</script>
+
+</body>
+</html>

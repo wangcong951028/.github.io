@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>通知公告发布</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="../../../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="../../../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="../../../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <link href="../../../vendors/starrr/dist/starrr.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css">
+
+    <style type="text/css">
+        .checkbox{
+            float: left;
+        }
+
+    </style>
+</head>
+<body style="background-color: white">
+
+<div class="right_col" role="main" style="min-height: 3546px;">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>发布公告</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>公告编辑<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">公告标题 <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" id="title" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">群选择 <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-9 col-xs-12">
+                        <a href="#" class="fa fa-plus" data-toggle="modal" data-target="#myModals">选择群组</a>
+                    </div>
+
+                </div>
+
+                <div class="x_content">
+                    <div id="alerts"></div>
+                    <div class="ln_solid"></div>
+                    <!--<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">-->
+                        <!--<div class="btn-group">-->
+                            <!--<a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>-->
+                            <!--<ul class="dropdown-menu">-->
+                            <!--</ul>-->
+                        <!--</div>-->
+
+                        <!--<div class="btn-group">-->
+                            <!--<a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>-->
+
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+                    <div id="editor-one" class="editor-wrapper placeholderText" contenteditable="true"></div>
+
+                    <textarea name="info" id="info" style="display:none;"></textarea>
+
+                    <br>
+
+                    <div class="ln_solid"></div>
+                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3" >
+                        <button type="reset" class="btn btn-primary" onclick="window.location.reload()" style="float: right">重置</button>
+                        <button data-toggle="modal" data-target="#myModals1" type="submit" class="btn btn-success" style="float: right" data-target="#myModal">发布公告！</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 300px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">选择群组</h4>
+                </div>
+                <div class="modal-body" align="center">
+
+                    <div class="x_content">
+                        <br>
+                        <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+
+                            <div class="form-group">
+
+                                <div class="col-md-9 col-sm-9 col-xs-12" id="tagNames">
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-10 col-sm-6 col-xs-12 col-md-offset-3">
+                        <input type="submit" data-dismiss="modal" onclick="setChk()" class="btn btn-success"/>
+                        <!--<input type="reset" class="btn btn-success"/>-->
+                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 点击发布新闻确认是否发布Modal -->
+    <div class="modal fade" id="myModals1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">是否确认发布公告？</h4>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-2" style="float: left">
+                        <input id="submitNews" onclick="publicMessage()"  type="submit" data-dismiss="modal" class="btn btn-success"/>
+                        <!--<input type="reset" class="btn btn-success"/>-->
+                        <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="../../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-wysiwyg -->
+<script src="../../../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="../../../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="../../../vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="../../../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="../../../vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="../../../vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="../../../vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="../../../vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="../../../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="../../../vendors/starrr/dist/starrr.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="../../../build/js/custom.min.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/message/messageAdd.js"></script>
+
+</body>
+</html>

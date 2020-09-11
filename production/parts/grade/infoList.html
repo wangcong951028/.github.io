@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>考试信息</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!--<link rel="stylesheet" href="../../css/parts/baseman/organizationStructure.css">-->
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/ImportAndExport.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/grade/info.js"></script>
+
+<!--多选下拉框-->
+<link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+<script src="../../../build/js/bootstrap-multiselect.js"></script>
+
+<!--上传-->
+<script src="../../../build/js/xlsx.full.min.js"></script>
+
+<!--alert弹出框css样式-->
+<link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+<!--alert弹出框样式-->
+<script src="../../js/utils/jquery-confirm.js"></script>
+
+<!--表单验证-->
+<script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+<script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+    <style>
+        .error{
+            color:dodgerblue;
+        }
+        .input-file{
+		    display: inline-block;
+		    position: relative;
+		    overflow: hidden;
+		    text-align: center;
+		    width: auto;
+		    background-color: #2c7;
+		    border: solid 1px #ddd;
+		    border-radius: 4px;
+		    padding: 5px 10px;
+		    font-size: 12px;
+		    font-weight: normal;
+		    line-height: 18px;
+		    color:#fff;
+		    text-decoration: none;
+		}
+		.input-file input[type="file"] {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    font-size: 14px;
+		    background-color: #fff;
+		    transform: translate(-300px, 0px) scale(4);
+		    height: 40px;
+		    opacity: 0;
+		    filter: alpha(opacity=0);
+		 }
+    </style>
+</head>
+
+<body class="nav-md" style="background-color: white">
+
+<div class="row">
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    考试管理
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="input-group well" style="width: 100%">
+                <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>考试名称:</h5></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="infoName" placeholder="考试名称" value="" class="form-control">
+                </div>
+
+                <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>学期名称:</h5></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="tremName" placeholder="学期名称" value=""  class="form-control">
+                </div>
+                <button id = "myButton" type="button" class="btn btn-primary" style="margin-left:10px;float: left">
+                    <i class="glyphicon glyphicon-search"> 搜索</i>
+                </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left:10px;float: left">添加考试</button>
+                <!--<button type="button" class="btn btn-primary" onclick="deleteAll()" id="huoqu2" style="margin-left:10px;float: left">删除选中项</button>-->
+                <a download="错误数据.xlsx" id="hf_grade" ></a>
+                <!--<a href="" download="成绩导入模板.xlsx" id="templet"></a>-->
+            </div>
+
+            <div class="x_content" >
+
+                <table id="datatable-checkbox"
+                       class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                    <thead >
+                    <tr class="headings">
+                        <th data-data="pk_ID" data-visible="false">Id</th>
+                       <!-- <th data-orderable="false"><input type="checkbox" id="checkbox-all" class="flat"/></th>-->
+                        <th data-data="i_ExamName" data-orderable="false" class="column-title">考试名称</th>
+                        <th data-data="i_Sdate" data-orderable="true" class="column-title">开始时间</th>
+                        <th data-data="i_Edate" data-orderable="true" class="column-title">结束时间</th>
+                        <th data-data="termName" data-orderable="false" class="column-title">学期名称</th>
+                        <th data-data="schoolName" data-orderable="false" class="column-title">学校名称</th>
+                        <th data-data="" data-orderable="false" class="column-title">编辑</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 添加 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel">添加考试信息</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">名称<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="info_Name" class="form-control" name="info_Name" placeholder="如：2017下学期其中考试" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">开始时间<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="beginTime" class="form-control" placeholder="2017-08-01" name="beginTime"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">结束时间<span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="endTime" class="form-control" placeholder="2017-08-01" name="endTime"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">学期<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="termSelect" name="termSelect" class="select2_single form-control" tabindex="-1">
+                                    <option value="-1">------------------------  请选择学期  ----------------------</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="modal-footer">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                            <span>
+                                <button class="btn btn-success">保存</button>
+                                <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                           </span>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--修改-->
+<div class="modal fade" id="updateModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel1">修改考试信息</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="updateForm">
+                        <input type="text" hidden id="updateID"/>
+                        <input type="text" hidden id="updateSchoolID"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">名称<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="updateInfo_Name" class="form-control" name="updateInfo_Name" placeholder="如：2017下学期其中考试" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">开始时间<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="updateBeginTime" class="form-control" placeholder="2017-08-01" name="updateBeginTime"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">结束时间<span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="updateEndTime" class="form-control" placeholder="2017-08-01" name="updateEndTime"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">学期<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="updateTermSelect" name="updateTermSelect" class="select2_single form-control"
+                                        tabindex="-1">
+                                    <option value="-1">------------------------  请选择学期  ----------------------</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <input type="submit" class="btn btn-success" value="确认修改"/>
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--导入-->
+<div id="uploadModel" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">导入成绩</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm3">
+												<input type="text" id="uploadid" hidden>
+												<input type="text" id="uploadname" hidden>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">添加成绩文件<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                            	<a class="input-file input-fileup" href="javascript:;">
+								 + 选择文件
+								 <!--<input size="100" type="file" name="file" id="file">-->
+								 <input id="uploadGrade" onchange="importGrade(this)" size="100" name="files" type="file"/>
+								</a>
+								<div class="fileerrorTip1" id="download_type"></div>
+								<div class="showFileName1" id="download_name"></div>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <div id="jinduGIF"></div>
+                </div>
+            </div>
+						<div class="form-group">
+								<label style="float: left;margin-left: 75px;">推送方式<span class="required">:</span></label>
+								<div style="margin-top: 9px;">
+										<label style="width: 10%;margin-left:15px">
+												<input type="checkbox" id="checkbox1"  name="state" value="1" style="margin-right: 12px;">短信
+										</label>
+										<label style="width: 10%;margin-left:50px">
+												<input type="checkbox" id="checkbox2"  name="state" value="2" style="margin-right: 12px;">微信
+										</label>
+								</div>
+						</div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="uploadButton1" onclick="javascript:uploadGrade()">确认</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clean_file()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模板下载-->
+<div id="exportModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">模板下载</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm3">
+												<input type="text" id="uploadidExport" hidden>
+												<input type="text" id="uploadnameExport" hidden>
+						<label style="margin-left: 24%;"><input name="export" type="radio" value="1" />按班级导出</label>
+						<label style="margin-left: 10px;"><input name="export" type="radio" value="2" />按年级导出 </label>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">请选择班级/年级<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                            	<select style="height: 30px;width: 60%;" id="classShow">
+                            		
+                            	</select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <div id="jinduGIF"></div>
+                </div>
+            </div>
+            <div class="form-group">
+					<label style="float: left;margin-left: 75px;">科目选择<span class="required">:</span></label>
+					<div style="margin-top: 9px;" id="projectShow">
+							
+					</div>
+			</div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+            	<a download="成绩导入模板.xlsx" id="templete" class="btn btn-success" style="display: none;">下载Excel模板</a>
+                <button class="btn btn-success" id="uploadButton1" onclick="javascript:exportModalConfirm()">确认</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clean_file()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(function(){
+        $(".input-fileup").on("change","input[type='file']",function(){
+            var filePath=$(this).val();
+            if(filePath.indexOf(".xlsx")!=-1 || filePath.indexOf(".xlsx")!=-1){
+                $(".fileerrorTip1").html("").hide();
+                var arr=filePath.split('\\');
+                var fileName=arr[arr.length-1];
+                $(".showFileName1").html(fileName);
+            }else{
+                $(".showFileName1").html("");
+                $(".fileerrorTip1").html("您未上传文件，或者您上传文件类型有误！").show();
+                return false
+            }
+        })
+    });
+	
+    $(document).ready(function () {
+           $('#beginTime').datetimepicker({
+               format: 'YYYY-MM-DD'
+    	   });
+            $('#updateEndTime').datetimepicker({
+                format: 'YYYY-MM-DD'
+    		});
+     })
+    $(document).ready(function () {
+           $('#updateBeginTime').datetimepicker({
+               format: 'YYYY-MM-DD'
+    	   });
+            $('#endTime').datetimepicker({
+                format: 'YYYY-MM-DD'
+    		});
+     })
+
+    $().ready(function() {
+        $("#myModal").validate({
+            submitHandler:function(form){
+                saveInfo();
+            }
+        });
+    });
+
+    $().ready(function() {
+        $("#updateModal").validate({
+            submitHandler:function(form){
+                newInfo();
+            }
+        });
+    });
+
+    jQuery.validator.addMethod(
+        "tremSize",
+        function(value, element, param) {
+            if(value != -1){
+                return true;
+            }
+            return Number(value) != Number(-1);
+        },
+        $.validator.format("学期不能为空！")
+    );
+
+    jQuery.validator.addMethod(
+        "timeSize",
+        function(value, element, param) {
+            var beginTime = $("#beginTime").val();
+            if(value>=beginTime){
+                return true;
+            }
+            return Number(value) >= Number(beginTime);
+        },
+        $.validator.format("开始时间不能大于结束时间！")
+    );
+
+    jQuery.validator.addMethod(
+        "updateTremSize",
+        function(value, element, param) {
+            if(value != -1){
+                return true;
+            }
+            return Number(value) != Number(-1);
+        },
+        $.validator.format("学期不能为空！")
+    );
+
+    jQuery.validator.addMethod(
+        "updateTimeSize",
+        function(value, element, param) {
+            var updateBeginTime = $("#updateBeginTime").val();
+            if(value>=updateBeginTime){
+                return true;
+            }
+            return Number(value) >= Number(updateBeginTime);
+        },
+        $.validator.format("开始时间不能大于结束时间！")
+    );
+
+    $().ready(function() {
+        $("#saveForm").validate({
+            rules: {
+                info_Name: "required",
+                beginTime: {
+                    required: true,
+                    date:true
+                },
+                endTime: {
+                    required: true,
+                    date:true,
+                    timeSize:endTime
+                },
+                termSelect:{
+                    tremSize:termSelect
+                }
+            },
+            messages: {
+                info_Name: "考试名称不能为空！",
+                beginTime:"请输入正确时间格式！",
+                endTime:"请输入正确时间格式，开始时间不能大于结束时间！"
+            }
+        });
+    })
+
+   $().ready(function() {
+        $("#updateForm").validate({
+            rules: {
+                updateInfo_Name: "required",
+                updateBeginTime: {
+                    required: true,
+                    date:true
+                },
+                updateEndTime: {
+                    required: true,
+                    date:true,
+                    updateTimeSize:updateEndTime
+                },
+                updateTermSelect:{
+                    updateTremSize:updateTermSelect
+                }
+            },
+            messages: {
+                updateInfo_Name: "考试名称不能为空！",
+                updateBeginTime:"请输入正确时间格式！",
+                updateEndTime:"请输入正确时间格式，开始时间不能大于结束时间！"
+            }
+        });
+    })
+
+</script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<!-- Custom Theme Scripts -->
+<!-- <script src="../build/js/custom.min.js"></script> -->
+
+
+</body>
+</html>

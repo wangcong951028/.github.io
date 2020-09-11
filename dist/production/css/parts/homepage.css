@@ -1,0 +1,149 @@
+.homeHead{
+    height:3.5em;
+    line-height: 2.6em;
+    padding: 0.5em;
+    background-color: #2495f3;
+    color: white;
+    font-size: 15px;
+}
+
+.homeBody{
+    position: absolute;
+    top: 3.5em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.bodyLeft{
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    width: 15em;
+    background-color: #262830;
+}
+
+.bodyLeft .user{
+    padding: 2.0em 0;
+}
+
+.bodyLeft .home{
+    height: 3em;
+    line-height: 3em;
+    color: white;
+    font-size: 1.0em;
+    border-top: 1px solid #32343e;
+    border-bottom: 1px solid #1a1c1f;
+}
+
+.bodyLeft .home i{
+    margin: 0 0.5em;
+}
+
+.bodyLeft .user .photo{
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    background-size:100% 100%;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    vertical-align: middle;
+}
+
+.bodyLeft .user .name{
+    display: inline-block;
+    color: #ffffff;
+    vertical-align: middle;
+}
+.bodyLeft .list{
+    position: absolute;
+    top: 10em;
+    bottom: 4em;
+    left:0;
+    right: 0;
+    /*border-top: 1px solid #1a1c1f;*/
+    border-bottom: 1px solid #1a1c1f;
+    overflow: hidden;
+    color: white;
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+.bodyLeft .list .shell{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left:0;
+    right: 0;
+    overflow-y: auto;
+    width: 16.3em;
+}
+
+.bodyLeft .list .first{
+    height: 3em;
+    line-height: 3em;
+    color: white;
+    font-size: 1.0em;
+    border-top: 1px solid #32343e;
+    border-bottom: 1px solid #1a1c1f;
+}
+
+.bodyLeft .list .first i{
+    margin: 0 0.5em;
+}
+
+.bodyLeft .list .last{
+    height: 3em;
+    line-height: 3em;
+    color: white;
+    font-size: 0.8em;
+    background-color: #1a1c20;
+}
+.bodyLeft .list .last i{
+    margin: 0 0.5em 0 2em;
+}
+
+.bodyLeft .select{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4em;
+    text-align: center;
+    padding-top: 1em;
+    border-top: 1px solid #32343e;
+    border-bottom: 1px solid #1a1c1f;
+}
+
+.bodyLeft .select input{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.bodyLeft .select i{
+    display: inline-block;
+    vertical-align: middle;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.bodyRight{
+    position: absolute;
+    left: 15em;
+    top:0;
+    right: 0;
+    bottom: 0;
+}
+
+.disBlock{
+    display: block;
+}
+
+.disNone{
+    display: none;
+}

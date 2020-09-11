@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>住宿违纪管理</title>
+
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/dormitoryms/disciplineManagement.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+	<!--zTree-->
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <style>
+        .error{
+            color:dodgerblue;
+        }
+        .form-group{
+            margin-bottom: 10px;
+        }
+        .dataTables_length{
+            display: none;
+        }
+        h5{
+            color: #2A3F54;
+        }
+        ul li{
+            list-style-type:none;
+        }
+        a{
+            text-decoration:none;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+
+</head>
+
+<body class="nav-md" style="background-color: white">
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+            		住宿违纪管理
+                </h2>
+
+                <div class="clearfix"></div>
+                <div class="input-group well" style="width: 100%">
+
+                    <div style="width: 100%">
+						<div style="float: left;margin-left:10px">
+							<span class="control-label"><h5>公寓区:</h5></span>
+						</div>
+						<div class="col-md-2">
+							<select id="apart_id"  class="form-control" onchange="getAMang(this.value)">
+								<option value="-1">---- 请选择 -----</option>
+							</select>
+						</div>
+						<div style="float: left;margin-left:10px">
+							<span class="control-label"><h5>公寓楼栋:</h5></span>
+						</div>
+						<div class="col-md-2">
+							<select id="amang_id"  class="form-control" onchange="getFloor(this.value)">
+								<option value="-1">---- 请选择 -----</option>
+							</select>
+						</div>
+						<div style="float: left;margin-left:10px">
+							<span class="control-label"><h5>楼层:</h5></span>
+						</div>
+						<div class="col-md-2">
+							<select id="floor_id"  class="select2_single form-control" tabindex="-1">
+								<option value="-1">---- 请选择 -----</option>
+							</select>
+						</div>
+						<div style="float: left;margin-left:10px">
+							<label><h5>寝室编号:</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="dorname" placeholder="" value="" class="form-control">
+						</div>
+						<!--<div style="float: left;margin-left:10px">
+							<span class="control-label"><h5>班级:</h5></span>
+						</div>
+						<div class="col-md-2">
+							<ul class="list"  class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+								<li class="title" style="width:100%;">
+									<input id="dept_id" type="text" readonly value="" style="width:100%;" 
+										class="form-control" onclick="showMenu('dept');" />
+								</li>
+							</ul>
+						</div>-->
+					</div>
+					<br/><br/><br/>
+					<div>
+						<div style="float: left;margin-left:10px">
+							<span class="control-label"><h5>违纪时间:</h5></span>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="beginTime" placeholder="" value="" class="form-control">
+						</div>
+						<div style="float: left;">
+							<label><h5>- -</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="endTime" placeholder="" value="" class="form-control">
+						</div>
+						<button id = "myButton" type="button" class="btn btn-primary" style="margin-left:10px;float: left">
+							<i class="glyphicon glyphicon-search"> 搜索</i>
+						</button>
+					</div>
+                </div>
+            </div>
+
+            <div class="col-md col-sm-7 col-xs-12" style="">
+                <div id="gender" class="btn-group" data-toggle="buttons" >
+					<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left;" data-toggle="modal" data-target="#myModal">
+						新增违纪
+					</button>
+					<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left" onclick="update_disManag_prompt()">
+						修改违纪
+					</button>
+					<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left" onclick="delete_disManag_prompt()">
+						删除
+					</button>
+                </div>
+             </div>
+			
+            <div class="x_content">
+                <table id="datatable"
+                       class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;asc&quot;]]"style="width: 100%;height: 100%">
+                    <thead >
+                    <tr class="headings">
+                        <th data-data="id" data-visible="false" ></th>
+                        <th data-orderable="false"><input type="checkbox" id="checkbox-all" class="flat"/></th>
+                        <th data-data="sub_name" data-orderable="false" >违纪学生</th>
+                        <th data-data="type_name" data-orderable="false" >违纪类型</th>
+                        <th data-data="content_name" data-orderable="false" >违纪内容</th>
+                        <!--<th data-data="dis_time" data-orderable="false" >违纪日期</th>-->
+                        <th data-data="apart_name" data-orderable="false" >公寓区</th>
+                        <th data-data="manag_name" data-orderable="false" >楼栋</th>
+                        <th data-data="floor_name" data-orderable="false" >楼层</th>
+                        <th data-data="dor_name" data-orderable="false" >寝室编号</th>
+                        <th data-data="bed_name" data-orderable="false" >床位号</th>
+                        <th data-data="att_name" data-orderable="false" >记录人员</th>
+                        <th data-data="att_time" data-orderable="false" >记录时间</th>
+                        <th data-data="note" data-orderable="false" >备注</th>
+                        <!--<th data-data="" data-orderable="false">编辑</th>-->
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dept_Content" class="menuContent" style="display:none; position: fixed;z-index: 2000;">
+	<ul id="deptDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增违纪</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪类型<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="type_id"  class="form-control" onchange="getContent(this.value)">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪原因<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="content_id"  class="form-control">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪寝室<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <ul class="list"  class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+									<li class="title" style="width:100%;">
+										<input id="dor_id" type="text" readonly value="" style="width:100%;" 
+											class="form-control" onclick="showMenu('dor');" />
+									</li>
+								</ul>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">床位号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="bed_id"  class="form-control">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+								<span style="color: red;">请选择有人入住的床位！</span>
+                            </div>
+                        </div>
+						
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪时间<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="att_time" name="type_name" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">备注<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                
+                                <textarea type="text" id="note" name="note" class="form-control"
+                                       placeholder="" style="resize: none"></textarea>
+                            </div>
+                        </div>
+                        
+                        <br/>
+                    </form>
+                </div>
+            </div>
+             <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="saveDisManag()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div id="dor_Content" class="menuContent" style="display:none; position: fixed;z-index: 2000;width: 360px;">
+	<ul id="dorDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<!-- 修改 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="updateModalLabel">修改违纪</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="updateForm">
+                    	<input type="text" id="update_id" hidden="hidden"/>
+                         <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪类型<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="update_type_id"  class="form-control" onchange="getContent(this.value)">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪原因<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="update_content_id"  class="form-control">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪寝室<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <ul class="list"  class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+									<li class="title" style="width:100%;">
+										<input id="update_dor_id" type="text" readonly value="" style="width:100%;" 
+											class="form-control" onclick="showMenu('update_dor');" />
+									</li>
+								</ul>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">床位号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="update_bed_id"  class="form-control">
+									<option value="-1">---- 请选择 -----</option>
+								</select>
+								<span style="color: red;">请选择有人入住的床位！</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">违纪时间<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="update_att_time" name="type_name" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">备注<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                
+                                <textarea type="text" id="update_note" name="note" class="form-control"
+                                       placeholder="" style="resize: none"></textarea>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+             <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="update_disManag()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div id="update_dor_Content" class="menuContent" style="display:none; position: fixed;z-index: 2000;width: 360px;">
+	<ul id="update_dorDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<script>
+	$(document).ready(function () {
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#endTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        
+        $('#att_time').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+        
+        $('#update_att_time').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+    })	
+</script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+</body>
+</html>

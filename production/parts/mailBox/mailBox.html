@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>校长信箱</title>
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Pagenation -->
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables.js"></script>
+    <script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+    <script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../../vendors/moment/locale/zh-cn.js"></script>
+    <script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+    <!-- bootstrap-myself -->
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <style type="text/css">
+
+        table.table-bordered.dataTable tbody tdtable.table-bordered.dataTable tbody td {
+            vertical-align: middle;
+        }
+        .error {
+            color: dodgerblue;
+        }
+
+    </style>
+</head>
+<body class="nav-md" STYLE="background-color:white">
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>我的信箱</h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="input-group well" style="width: 100%">
+                <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>留言时间:</h5></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="beginTime" placeholder="" value=""  class="form-control" >
+                </div>
+
+                <div class="col-lg-2">
+                    <select id="selSearchState" class="form-control">
+                        <option value="-1">-----  请选择  -----</option>
+                        <option value="1">未回复</option>
+                        <option value="2">已回复</option>
+                    </select>
+                </div>
+                <div class="col-lg-1">
+                    <button id="search" class="btn btn-primary" type="button">
+                        <i class="glyphicon glyphicon-search"> 搜索</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="x_content">
+                    <table id="area"
+                           class="table table-striped table-bordered jambo_table bulk_action"
+                           data-page-length="10"
+                           data-order="[[0,&quot;desc&quot;]]" width="100%">
+                        <thead >
+                            <tr style="width: 100%" class="headings">
+                                <th data-data="pk_id" data-visible="false" style="width: 0%" class="headings">Id</th>
+                                <!--<th data-orderable="false" style="width: 5%" class="headings"><input type="checkbox" id="checkbox-all" class="flat"/></th>-->
+                                <th data-data="a_headImg" data-visible="false" data-orderable="false" style="width: 5%" class="headings">发送人头像</th>
+                                <th data-data="a_senddername" data-orderable="false" class="headings" style="width: 7%">发送人姓名</th>
+                                <th data-data="s_info" data-orderable="false" style="width: 15%" class="headings">咨询内容</th>
+                                <th data-data="a_sendTime" data-orderable="false" style="width: 10%" class="headings">发送时间</th>
+                                <th data-data="state" data-orderable="false" style="width: 5%" class="headings">状态</th>
+                                <th data-data="r_replyName" data-orderable="false" style="width: 8%" class="headings">回复人姓名</th>
+                                <th data-data="r_info" data-orderable="false" style="width: 15%" class="headings">回复内容</th>
+                                <th data-data="r_replyTime" data-orderable="false" style="width: 10%" class="headings">回复时间</th>
+                                <th data-orderable="false" style="width: 20%" class="headings">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4>信箱内容</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <input type="text" hidden id="replyID" value="">
+
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left" id="boxForm">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">发送人姓名<span
+                                        class="required">:</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                           id="textName" style="width: 100%;text-align: left">
+
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">发送时间<span
+                                        class="required">:</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                           id="textTime" style="width: 100%;text-align: left">
+
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">咨询内容<span
+                                        class="required">:</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea type="text" id="txtInfo" class="form-control"
+                                              style="resize: none" rows="5" readonly="ture" ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">回复并推送<span
+                                        class="required">:</span></label>
+                                <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea class="form-control" name="txtContent" id="txtContent" style="resize: none" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="modal-footer">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                    <input type="submit" class="btn btn-success" value="回复"/>
+                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="lookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4>信箱内容</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <form class="form-horizontal form-label-left" id="blookForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">发送人姓名<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="blooktextName" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">发送时间<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="blooktextTime" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">咨询内容<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                    <textarea type="text" id="blooktxtInfo" class="form-control"
+                                              style="resize: none" rows="5" readonly="ture" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">回复时间<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="blookTime" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">回复内容<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <textarea class="form-control" name="blootxtContent" id="blooktxtContent"
+                                          style="resize: none" rows="5" readonly="true"></textarea>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    });
+
+    var areaTable;
+    $(function () {
+        //添加额外的参数传给服务器
+        areaTable = $('#area').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.state = $("#selSearchState").val();
+                    data.a_sendTime = $('#beginTime').val();
+                    data.appName = "principalmailbox_listMgmtByQuery";
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                     xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": 5,
+                    render: function (data, type, full, meta) {
+                        if(full.state == 1){
+                            return "<span style='color: #3a7fe7'>未回复</span>";
+                        }else if(full.state == 2){
+                            return "<span style='color: darkturquoise'>已回复</span>";
+                        }
+                    }
+                },
+                {
+                    "targets": -1,
+                    render: function (data, type, full, meta) {
+                        return '<button class="btn btn-info btn-xs" href="javascript:;"  data-key="' + full.pk_id + '"  onclick="findMailInfo('+full.pk_id+')"><i class="fa fa-pencil">回复留言</i></button>'+
+                            '  <button class="btn btn-primary btn-xs" href="javascript:;"  data-key="' + full.pk_id + '"  onclick="lookMailInfo('+full.pk_id+')"><i class="glyphicon glyphicon-search">查看留言</i></button>'+
+                            '  <button class="btn btn-danger btn-xs" href="javascript:;"  data-key="' + full.pk_id + '"  onclick="deleteModal('+full.pk_id+')"><i class="fa fa-trash-o">删除留言</i></button>';
+                    }
+                }
+                ]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+    });
+
+    /*回复留言:获取留言*/
+    function findMailInfo(id) {
+        // 2、接口请求参数组装
+        var data = {}
+        data.pk_id = id;
+        data.appName="principalmailbox_infoById";
+
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+               box = data.data;
+               $("#textName").text(box.a_senddername);
+               $("#textTime").text(box.a_sendTime);
+               $("#txtInfo").text(box.s_info);
+                $("#replyID").val(box.pk_id);
+               if(box.state == 2){
+                   informationAlert_OnlyConfirmButton_NOT_REFRESH("该信息已回复，不能重复回复此信息！");
+               }else{
+                   $("#myModal").modal("show");
+               }
+            }
+        });
+    }
+    /*回复留言:回复*/
+    function SaveRepair() {
+        // 2、接口请求参数组装
+        var data = {}
+        data.pk_id = $("#replyID").val();
+        data.r_info = $("#txtContent").val();
+
+        data.appName="principalmailbox_updateMailbox";
+
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                if(data.msgState == 200){
+                    $('#myModal').modal('hide');
+                    $("#txtContent").val("");
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("回复成功！");
+                }else{
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg);
+                }
+
+            }
+        });
+    }
+
+    /*删除提示*/
+    function deleteModal(id){
+        informationAlert_confirmAndCancelButton("deleteMailBox("+id+")","是否需要删除该留言？")
+    }
+
+    /*删除留言*/
+    function deleteMailBox(id) {
+        var data = {}
+        data.pk_id = id;
+        data.appName = "principalmailbox_delete";
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                if (data.msgState != "200") {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(data.msg)
+                }
+                else {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("删除成功！");
+                    areaTable.api().ajax.reload();
+                }
+            }
+        });
+    }
+
+    /*查看留言*/
+    function lookMailInfo(id) {
+        // 2、接口请求参数组装
+        var data = {}
+        data.pk_id = id;
+        data.appName="principalmailbox_infoById";
+
+        var paramJsonMsg = JSON.stringify(data);
+        data.param = paramJsonMsg;
+        data.appKey = "aGFuZHlDYW1wdXM=";
+        data.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        data.time = time;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        data.sign = hex_md5(temp);
+        $.ajax({
+            url: serverBaseUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            },
+            success: function (data) {
+                box = data.data;
+                $("#blooktextName").text(box.a_senddername);
+                $("#blooktextTime").text(box.a_sendTime);
+                $("#blooktxtInfo").text(box.s_info);
+                $("#blookTime").text(box.r_replyTime);
+                $("#blooktxtContent").text(box.r_info);
+                $("#lookModal").modal("show");
+            }
+        });
+    }
+
+    $().ready(function() {
+        $("#myModal").validate({
+            submitHandler:function(form){
+                SaveRepair();
+            }
+        });
+    });
+
+    $().ready(function () {
+        $("#boxForm").validate({
+            rules: {
+                txtContent: {
+                    maxlength:200,
+                    required: true
+                }
+            },
+            messages: {
+                txtContent: "回复内容不能为空，且不能超过200个字符！"
+            }
+        });
+    })
+
+</script>
+</body>
+</html>
+

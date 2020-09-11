@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>缴费记录</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <!--多选下拉框-->
+    <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+    <script src="../../../build/js/bootstrap-multiselect.js"></script>
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+
+
+</head>
+<body class="nav-md" style="background-color: white">
+<div class="container body">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>缴费记录</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="form-group col-lg-8" style="width:100%">
+                    <div class="input-group well" style="width: 100%">
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>关键字:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" placeholder="学生姓名" id="searchKey" class="form-control">
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>班级:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="selectClass" class="form-control">
+
+                            </select>
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>费用类型:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="chargeTypeSelect" class="form-control" onchange="getChargeItem()">
+
+                            </select>
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>费用项目:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="chargeItemSelect" class="form-control">
+
+                            </select>
+                        </div>
+                        
+						<br/><br/><br/>
+						<div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>是否已缴费:</h5></span>
+                        </div>
+                        <!--1缴费2未缴费-->
+                        <div class="col-md-2">
+                            <select id="isPay" class="form-control">
+                            	<option value="-1">不限</option>
+								<option value="1">支付宝缴费</option>
+								<option value="4">其他方式缴费</option>
+								<option value="2">未缴费</option>
+								<option value="3">已关闭</option>
+								<option value="5">未选择缴费</option>
+                            </select>
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>开始时间:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" placeholder="开始时间" id="beginTimeSelect" class="form-control">
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>结束时间:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" placeholder="结束时间" id="endTimeSelect" class="form-control">
+                        </div>
+                        <div class="col-md-1">
+                            <button id="search" class="btn btn-success form-control" type="button"> 搜 索</button>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeDataExportModal" style="margin-left:10px;float: left">数据导出</button>
+                    </div>
+                    <!--<div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button onclick="reportsViewButton()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeTableFindModal" style="margin-left:10px;float: left">缴费报表查询</button>
+                    </div>-->
+                    
+                    <div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button onclick="confirmAllPageColse()" type="button" class="btn btn-primary"  style="margin-left:10px;float: left">一键关闭账单</button>
+                    </div>
+                    <!--<div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button onclick="confirmAllPageColse()" type="button" class="btn btn-primary"  style="margin-left:10px;float: left">一键关闭账单</button>
+                    </div>-->
+                    <table id="payLogTable"
+                           class="table table-striped table-bordered jambo_table bulk_action"
+                           data-page-length="10"
+                           data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                        <thead>
+                        <tr class="headings">
+                        	<th data-orderable="false"><input type="checkbox" name="checkall" onclick="changeSelected()" id="isCloseAll"></th>
+                            <th data-data="studentName" data-orderable="false">学生名称</th>
+                            <th data-data="className" data-orderable="false">所属班级</th>
+                            <th data-data="chargeTypeName" data-orderable="false">费用类型</th>
+                            <th data-data="chargeItemName" data-orderable="false">费用项目</th>
+                            <th data-data="amountSnapshot" data-orderable="false">应收金额</th>
+                            <th data-data="actualPayment" data-orderable="false">收费金额</th>
+                            <th data-data="payTime" data-orderable="false">收费时间</th>
+                            <th data-data="statue" data-orderable="false">是否已经缴费</th>
+                            <th data-data="gmobile" data-orderable="false">家长联系电话</th>
+                            <th data-data="" data-orderable="false">操作</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="chargeDataExportModal" tabindex="-1" role="dialog" aria-labelledby="exportUserByDepart">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">数据导出</h4>
+                <div class="x_content">
+                    是否确认导出当前条件下的全部缴费信息?
+                </div>
+            </div>
+            <a href="" download="缴费信息.xlsx" id="hf"></a>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type='button' class='btn btn-primary' style='float: right' data-toggle='modal' data-target='#chargeDataExportModal'>关闭</button>
+                    <button type='button' onclick="exportChargeData()" class='btn btn-success' style='float: right'>下载</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="chargeTableFindModal" tabindex="-1" role="dialog" aria-labelledby="exportUserByDepart">
+    <div class="modal-dialog" role="document" style="width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+            	<div style="float: left;margin-left:10px;">
+	                <span class="control-label"><h5>开始时间:</h5></span>
+	            </div>
+	            <div class="col-md-3">
+	                <input type="text" placeholder="开始时间" id="beginTimeSelectModel" class="form-control">
+	            </div>
+	            <div style="float: left;margin-left:10px">
+	                <span class="control-label"><h5>结束时间:</h5></span>
+	            </div>
+	            <div class="col-md-3">
+	                <input type="text" placeholder="结束时间" id="endTimeSelectModel" class="form-control">
+	            </div>
+	            
+	            <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>班级:</h5></span>
+                </div>
+                <div class="col-md-3">
+                    <select id="selectClassModel" class="form-control">
+
+                    </select>
+                </div>
+	            
+	            <div class="col-md-1">
+	                <button onclick="reportsViewButton()" class="btn btn-success form-control" type="button">搜 索</button>
+	            </div>
+	            
+                <table id="reportsView"  border="1" style="width:100%;margin-top: 50px;text-align: center;">
+                	
+                </table>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type='button' class='btn btn-primary' style='float: right' data-toggle='modal' data-target='#chargeTableFindModal'>关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Custom Theme Scripts-->
+<script>
+    var areaTable;
+    var isShow=true;
+    var dataCompare;
+    $(function () {
+        //添加额外的参数传给服务器
+        areaTable = $('#payLogTable').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.studentName = $("#searchKey").val();
+                    data.className = $("#selectClass").val();
+                    data.chargeType = $("#chargeTypeSelect").val();
+                    data.chargeItem = $("#chargeItemSelect").val();
+					data.statue=$("#isPay").val();
+					data.beginTime=$("#beginTimeSelect").val();
+					data.endTime=$("#endTimeSelect").val();
+                    data.appName = "chargePay_getRecord";
+					
+					if(data.beginTime!=""&&data.endTime!=""&&data.beginTime>data.endTime){
+						informationAlert_OnlyConfirmButton_NOT_REFRESH('开始时间请不要大于结束时间!');
+						return;
+					}
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    dataCompare=json.data.data;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+	            {
+	                  "targets": 0,
+	                  render: function (data, type, full, meta) {
+	                  	 return '<input type="checkbox" name="checkbox" value="'+full.id+'">'
+	                  }
+                },
+                {
+                  "targets": -3,
+                  render: function (data, type, full, meta) {
+                  	 if(full.statue==1){
+                  	 	return "已缴费(支付宝)";
+                  	 }else if(full.statue==2){
+                  	 	return "未缴费";
+                  	 }else if(full.statue==3){
+                  	 	return "已关闭";
+                  	 }else if(full.statue==4){
+                  	 	return "已缴费(其它方式)";
+                  	 }else{
+                  	 	return "未选择缴费";
+                  	 }
+
+                  }
+                },
+                {
+                    "targets": -1,
+                    render: function (data, type, full, meta) {
+                    	if(full.statue==2){
+                    		return '<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"  onclick="confirmClose(' + full.id + ',3)">关闭账单<i class="fa fa-cogs"></i></a>'
+                    		+'<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"  onclick="schedule(' + full.id + ')">缴费进度查询<i class="fa fa-cogs"></i></a>'
+                    		+'<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"  onclick="confirmClose(' + full.id + ',4)">已缴费<i class="fa fa-cogs"></i></a>';
+                    	}else{
+                    		return '<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"   disabled="disabled">关闭账单<i class="fa fa-cogs"></i></a>'
+                    		+'<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"  onclick="schedule(' + full.id + ')">缴费进度查询<i class="fa fa-cogs"></i></a>'
+                    		+'<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.id + '"   disabled="disabled">已缴费<i class="fa fa-cogs"></i></a>';
+                    	}
+                        
+                    }
+                }
+                ]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+        
+        $("#beginTimeSelect").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#endTimeSelect").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#beginTimeSelectModel").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#endTimeSelectModel").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+    });
+    $(function(){
+        findOriganiza();
+        getChargeType();
+        getChargeItem()
+    })
+
+    function getChargeType(){
+        var param = {};
+        param.appKey = "aGFuZHlDYW1wdXM=";
+        param.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        param.time = time;
+        var msg = {};
+
+        msg.appName = "chargeItemConf_getAllItem";
+
+        var paramJsonMsg = JSON.stringify(msg);
+        param.param = paramJsonMsg;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        param.sign = hex_md5(temp);
+        var jsonStr = JSON.stringify(param);
+        $.ajax({
+            type: 'POST',
+            url: serverBaseUrl,
+            data: jsonStr,
+            dataType: "json",
+            success: function (success) {
+                var chargeTypeData = success.data;
+                var html = '';
+                $(chargeTypeData).each(function (i) {
+                    html += '<option value="'+chargeTypeData[i]['id']+'">'+chargeTypeData[i]['chargeItemName']+'</option>';
+                })
+                $("#chargeTypeSelect").html('<option value="">不限</option>'+html);
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            }
+        });
+    }
+
+    function getChargeItem(){
+        var typeVal = $("#chargeTypeSelect").val();
+        if(typeVal == ""){
+            $("#chargeItemSelect").html('<option value="">不限</option>');
+            return;
+        }
+
+        // 1、公共参数组装
+        var param = {};
+        param.appKey = "aGFuZHlDYW1wdXM=";
+        param.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        param.time = time;
+        // 2、接口请求参数组装
+        var msg = {};
+
+        msg.appName = "chargePay_getChargeItem";
+        msg.type = $("#chargeTypeSelect").val();
+
+        /*msg.index = 1;*/
+        var paramJsonMsg = JSON.stringify(msg);
+        param.param = paramJsonMsg;
+        // 3、生成签名
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        param.sign = hex_md5(temp);
+        // 4、对整个参数进行加密
+        var jsonStr = JSON.stringify(param);
+        $.ajax({
+            type: 'POST',
+            url: serverBaseUrl,
+            data: jsonStr,
+            dataType: "json",
+            success: function (success) {
+                var chargeItemData = success.data;
+                var html = '';
+                $(chargeItemData).each(function (i) {
+                    html += '<option value="'+chargeItemData[i]['id']+'">'+chargeItemData[i]['name']+'</option>';
+                })
+                $("#chargeItemSelect").html('<option value="">不限</option>'+html);
+
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            }
+        });
+    }
+
+    /*查找班级*/
+    function findOriganiza(){
+
+        // 1、公共参数组装
+        var param = {};
+        param.appKey = "aGFuZHlDYW1wdXM=";
+        param.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        param.time = time;
+        // 2、接口请求参数组装
+        var msg = {};
+
+        msg.appName = "homeWork_findClassName";
+
+        /*msg.index = 1;*/
+        var paramJsonMsg = JSON.stringify(msg);
+        param.param = paramJsonMsg;
+        // 3、生成签名
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        param.sign = hex_md5(temp);
+        // 4、对整个参数进行加密
+        var jsonStr = JSON.stringify(param);
+        $.ajax({
+            type: 'POST',
+            url: serverBaseUrl,
+            data: jsonStr,
+            dataType: "json",
+            success: function (success) {
+
+                var qriganiza = success.data;
+                var html = '';
+                if(qriganiza != null && qriganiza.length>0){
+                    for(var i=0;i<qriganiza.length;i++){
+                        html += '<option value="'+qriganiza[i].pk_DepID+'">'+qriganiza[i].className+'</option>';
+                    }
+                }
+                $("#selectClass").html('<option value="">----- 请选择班级 -----</option>'+html);
+				$("#selectClassModel").html('<option value="">----- 请选择班级 -----</option>'+html)
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            }
+        });
+    }
+
+    function exportChargeData(){
+        var param = {};
+
+		param.studentName = $("#searchKey").val();
+        param.className = $("#selectClass").val();
+        param.chargeType = $("#chargeTypeSelect").val();
+        param.chargeItem = $("#chargeItemSelect").val();
+		param.statue=$("#isPay").val();
+		param.beginTime=$("#beginTimeSelect").val();
+		param.endTime=$("#endTimeSelect").val();
+
+        param.appName = "chargePay_exportData";
+        serverFromJSONData(param,true).then(function (response) {
+            if(response.msgState == 200){
+                var result = response.data;
+                if (checkValueIsNull(result)){
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH('没有符合条件的数据下载，请变更条件再试!');
+                }else {
+                    var chargeJson = new Array();
+                    if (window.location.hostname=='ljbszx.czxypt.com') {
+                    	for (var i = 0; i < result.length; i++) {
+                    	var mi="";
+                    	if(result[i].statue==1){
+                    		mi="已缴费";
+                    	}else if(result[i].statue==2){
+                    		mi="未缴费";
+                    	}else{
+                    		mi="已关闭";
+                    	}
+                    	var fruit = "";
+                    	if (result[i].chargeItemName.includes("(")) {
+                    		fruit = result[i].chargeItemName.indexOf("(");
+                    		var fruitShow = result[i].chargeItemName.substr(fruit+1);
+                    		fruitShow = fruitShow.replace("）","");
+                    		fruitShow = fruitShow.replace(")","");
+                    		fruit = fruitShow;
+                    	}else {
+                    		fruit = result[i].chargeItemName.indexOf('（');
+                    		var fruitShow = result[i].chargeItemName.substr(fruit+1);
+                    		fruitShow = fruitShow.replace("）","");
+                    		fruitShow = fruitShow.replace(")","");
+                    		fruit = fruitShow;
+                    	}
+                    	
+                    	
+                        chargeJson[i] = {"学生名": result[i].studentName,
+                        	"身份证": result[i].idCard,
+                        	"餐次":fruit,
+                            "所属班级": result[i].className,
+                            "费用类型": result[i].chargeTypeName,
+                            "学期" :result[i].chargeItemName.substr(0,result[i].chargeItemName.indexOf("季")+1),
+                            "应收金额(元)": result[i].amountSnapshot == null ? 0:result[i].amountSnapshot,
+                            "实收金额": result[i].actualPayment == null ? 0 :result[i].actualPayment,
+                            "收费时间": result[i].payTime==null?"":result[i].payTime,
+                            "是否已缴费": mi,
+                            "联系电话": result[i].gmobile
+                        };
+                    }
+                    } else {
+                    	for (var i = 0; i < result.length; i++) {
+                    	var mi="";
+                    	if(result[i].statue==1){
+                    		mi="已缴费";
+                    	}else if(result[i].statue==2){
+                    		mi="未缴费";
+                    	}else{
+                    		mi="已关闭";
+                    	}
+                        chargeJson[i] = {"学生名": result[i].studentName,
+                            "所属班级": result[i].className,
+                            "费用类型": result[i].chargeTypeName,
+                            "费用项目" :result[i].chargeItemName,
+                            "应收金额(元)": result[i].amountSnapshot,
+                            "实收金额": result[i].actualPayment,
+                            "收费时间": result[i].payTime==null?"":result[i].payTime,
+                            "是否已缴费": mi,
+                            "联系电话": result[i].gmobile
+                        	};
+                    	}
+                    }
+                    
+                    downloadExl_onlyJson(chargeJson);
+                }
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH('导出失败！原因：' + response.msg);
+            }
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH('访问服务器发生错误！' + error);
+        };
+    }
+
+/*提示是否进行关闭账单*/
+	function confirmClose(object,flag){
+
+		informationAlert_confirmAndCancelButton("closeBill("+object+","+flag+")","是否确认关闭缴费？！");
+	}
+
+	function closeBill(object,flag){
+		
+		var param = {};
+        
+        param.pk_id = object;
+		param.statue=flag;
+        param.appName = "chargePay_closeBill";
+        serverFromJSONData(param,true).then(function (response) {
+            if(response.msgState == 200){
+            	areaTable.api().ajax.reload();
+            	informationAlert_OnlyConfirmButton_NOT_REFRESH('修改账单信息成功！');
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH('导出失败！原因：' + response.msg);
+            }
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH('访问服务器发生错误！' + error);
+        };
+	}
+
+	function schedule(obj){
+		var param = {};
+        
+        param.pk_id = obj;
+
+        param.appName = "chargePay_payStatue";
+        serverFromJSONData(param,true).then(function (response) {
+            if(response.msgState == 200){
+            	informationAlert_OnlyConfirmButton_NOT_REFRESH("缴费详细状态："+response.data);
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH('导出失败！原因：' + response.msg);
+            }
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH('访问服务器发生错误！' + error);
+        };
+	}
+	
+	function reportsViewButton(){
+		var param={};
+		param.deptId = $("#selectClassModel").val();
+        param.beginTime = $("#beginTimeSelectModel").val();
+        param.endTime = $("#endTimeSelectModel").val();
+		
+		if(param.beginTime!=""&&param.endTime!=""&&param.beginTime>param.endTime){
+			informationAlert_OnlyConfirmButton_NOT_REFRESH('开始时间请不要大于结束时间!');
+			return;
+		}
+		
+		param.appName = "chargePay_getReports";
+		
+//		var title="<tr><td>实际应收总金额</td><td>实际已收总金额</td><td>已缴费人数</td><td>未缴费人数</td><td>已缴费笔数</td><td>未缴费笔数</td></tr>"
+//  	var html="";
+//  	$("#reportsView").html(title);
+    	  
+        serverFromJSONData(param,true).then(function (response) {
+            if(response.msgState == 200){
+            	var mi=response.data.toToalMoney==null?0.00:response.data.toToalMoney;
+            	var md=response.data.havePaidMoney==null?0.00:response.data.havePaidMoney;
+            	var title="<tr><td>实际应收总金额(元)</td><td>实际已收总金额(元)</td><td>已缴费笔数</td><td>未缴费笔数</td><td>已关闭笔数</td></tr>"
+			  	var html="<tr><td>"+mi+"</td><td>"+md+"</td><td>"+response.data.hasPaid+"</td><td>"+response.data.notPay+"</td><td>"+response.data.closePay+"</td></tr>";
+			  	$("#reportsView").html(title+html);
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH('导出失败！原因：' + response.msg);
+            }
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH('访问服务器发生错误！' + error);
+        };
+	}
+	
+	function changeSelected(){
+
+		if(isShow){
+			$('input[name="checkbox"]').each(function(){
+				$(this).prop("checked",true);
+			});
+			isShow=false;
+		}else{
+			$('input[name="checkbox"]').each(function(){
+				$(this).prop("checked",false);
+			});
+			isShow=true;
+		}
+
+	}
+	
+	function confirmAllPageColse(){
+		informationAlert_confirmAndCancelButton("allPageColse()","是否确认关闭缴费？！");
+	}
+	
+	function allPageColse(){
+		var param = {};
+
+		var arr=new Array();
+        $('input[name="checkbox"]:checked').each(function(){//遍历每一个名字为interest的复选框，其中选中的执行函数    
+            arr.push($(this).val());//将选中的值添加到数组chk_value中    
+        });
+        
+        if(arr.length==0){
+        	informationAlert_OnlyConfirmButton_NOT_REFRESH('请选择需要关闭的账单！');
+        	return;
+        }
+        
+        for(var j=0;j<arr.length;j++){
+        	for(var i=0;i<dataCompare.length;i++){
+        		if(arr[j]==dataCompare[i].id){
+        			if(dataCompare[i].statue==3){
+        				informationAlert_OnlyConfirmButton_NOT_REFRESH('已关闭数据不可重复关闭！');
+        				return;
+        			}
+        		}
+	        }
+        }
+        
+        param.chargePayId = arr;
+        
+		param.statue=3;
+        param.appName = "chargePay_closeBill";
+        serverFromJSONData(param,true).then(function (response) {
+            if(response.msgState == 200){
+            	areaTable.api().ajax.reload();
+            	informationAlert_OnlyConfirmButton_NOT_REFRESH('修改账单信息成功！');
+            	$('input[name="checkall"]').prop("checked",false);
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH('导出失败！原因：' + response.msg);
+            }
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH('访问服务器发生错误！' + error);
+        };
+	}
+</script>
+
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../../build/js/xlsx.full.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>违纪管理统计</title>
+
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/utils/ImportAndExport.js"></script>
+    <script src="../../js/dormitoryms/dissta.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+    <!--单选框样式-->
+    <link href="../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <!--上传-->
+    <script src="../../../build/js/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+
+    <style>
+        .error {
+            color: dodgerblue;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .dataTables_length {
+            display: none;
+        }
+
+        h5 {
+            color: #2A3F54;
+        }
+
+        ul li {
+            list-style-type: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ztree li a {
+            color: #333
+        }
+    </style>
+
+</head>
+
+<body class="nav-md" style="background-color: white">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                        违纪管理统计
+                    </h2>
+
+                    <div class="clearfix"></div>
+                    <div class="input-group well" style="width: 100%">
+
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label">
+                                <h5>班级:</h5>
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <ul class="list" class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+                                <li class="title" style="width:100%;">
+                                    <input id="classTree" type="text" readonly value="" style="width:100%;" class="form-control" onclick="showMenu();" />
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label">
+                                <h5>考核时间:</h5>
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" id="beginTime" name="beginTime" class="form-control" placeholder="" />
+                        </div>
+                        <div style="float: left;">
+                            <span class="control-label">
+                                <h5>——</h5>
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" id="endTime" name="endTime" class="form-control" placeholder="" />
+                        </div>
+                        <button type="button" id="myButton" class="btn btn-primary" style="margin-left:10px;float: left">
+                            <i class="glyphicon glyphicon-search"> 搜索 </i>
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="uploaddishs()" style="margin-left:10px;float: left">
+                            <i class="glyphicon glyphicon-download-alt">导出excel</i>
+                        </button>
+                        <a id="dishs" download="违纪管理统计结果.xlsx"></a>
+                    </div>
+                </div>
+
+                <div class="col-md col-sm-7 col-xs-12" style="">
+                    <div id="gender" class="btn-group" data-toggle="buttons">
+
+                    </div>
+                </div>
+
+                <div class="x_content">
+                    <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action" data-page-length="10" data-order="[[0,&quot;asc&quot;]]"
+                        style="width: 100%;height: 100%">
+                        <thead>
+                            <tr class="headings">
+                                <th data-data="" data-visible="false" class="column-title"></th>
+                                <th data-data="deptname" data-orderable="false" class="column-title">班级</th>
+                                <th data-data="type_name" data-orderable="false" class="column-title">考核类型</th>
+                                <th data-data="perNum" data-orderable="false" class="column-title">人数</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="menuContent" class="menuContent" style="display:none; position: fixed;z-index: 2000;">
+        <ul id="treeDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+    </div>
+    <!-- Bootstrap -->
+    <script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Pagenation -->
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+    <script src="../../../vendors/Pagenation/DataTables.js"></script>
+    <script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+    <script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../../vendors/moment/locale/zh-cn.js"></script>
+    <script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#endTime').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+            $('#beginTime').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+        })
+    </script>
+</body>
+
+</html>

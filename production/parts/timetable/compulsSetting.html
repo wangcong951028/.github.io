@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>查询通知公告</title>
+
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-daterangepicker/daterangepicker.css">
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <link rel="stylesheet" href="../../../build/js/layui/css/layui.css"  media="all">
+</head>
+<body style="background-color: white">
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>增加场地</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>必修课设置<small></small></h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >节次选择<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="periods">
+                        <span><input type="checkbox" name="period" value="1|1"/>周一|1</span>
+                        <span><input type="checkbox" name="period" value="2|1"/>周二|1</span>
+                        <span><input type="checkbox" name="period" value="3|1"/>周三|1</span>
+                        <span><input type="checkbox" name="period" value="4|1"/>周四|1</span>
+                        <span><input type="checkbox" name="period" value="5|1"/>周五|1</span>
+                        <br/>
+                        <span><input type="checkbox" name="period" value="1|2"/>周一|2</span>
+                        <span><input type="checkbox" name="period" value="2|2"/>周二|2</span>
+                        <span><input type="checkbox" name="period" value="3|2"/>周三|2</span>
+                        <span><input type="checkbox" name="period" value="4|2"/>周四|2</span>
+                        <span><input type="checkbox" name="period" value="5|2"/>周五|2</span>
+                        <br/>
+                        <span><input type="checkbox" name="period" value="1|3"/>周一|3</span>
+                        <span><input type="checkbox" name="period" value="2|3"/>周二|3</span>
+                        <span><input type="checkbox" name="period" value="3|3"/>周三|3</span>
+                        <span><input type="checkbox" name="period" value="4|3"/>周四|3</span>
+                        <span><input type="checkbox" name="period" value="5|3"/>周五|3</span>
+                        <br/>
+                        <span><input type="checkbox" name="period" value="1|4"/>周一|4</span>
+                        <span><input type="checkbox" name="period" value="2|4"/>周二|4</span>
+                        <span><input type="checkbox" name="period" value="3|4"/>周三|4</span>
+                        <span><input type="checkbox" name="period" value="4|4"/>周四|4</span>
+                        <span><input type="checkbox" name="period" value="5|4"/>周五|4</span>
+                        <br/>
+                        <span><input type="checkbox" name="period" value="1|5"/>周一|5</span>
+                        <span><input type="checkbox" name="period" value="2|5"/>周二|5</span>
+                        <span><input type="checkbox" name="period" value="3|5"/>周三|5</span>
+                        <span><input type="checkbox" name="period" value="4|5"/>周四|5</span>
+                        <span><input type="checkbox" name="period" value="5|5"/>周五|5</span>
+                        <br/>
+                        <span><input type="checkbox" name="period" value="1|6"/>周一|6</span>
+                        <span><input type="checkbox" name="period" value="2|6"/>周二|6</span>
+                        <span><input type="checkbox" name="period" value="3|6"/>周三|6</span>
+                        <span><input type="checkbox" name="period" value="4|6"/>周四|6</span>
+                        <span><input type="checkbox" name="period" value="5|6"/>周五|6</span>
+                        <br/>
+
+                        <span><input type="checkbox" name="period" value="1|7"/>周一|7</span>
+                        <span><input type="checkbox" name="period" value="2|7"/>周二|7</span>
+                        <span><input type="checkbox" name="period" value="3|7"/>周三|7</span>
+                        <span><input type="checkbox" name="period" value="4|7"/>周四|7</span>
+                        <span><input type="checkbox" name="period" value="5|7"/>周五|7</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >条件<span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="conditions">
+                        <span><input type="checkbox" name="condition" value="1" >周一第二节必排陈桃兵1课程</span>
+                        <br/>
+                        <span><input type="checkbox" name="condition" value="2" >周三2018级1班不排体育</span>
+                        <br/>
+                        <span><input type="checkbox" name="condition" value="3" >周五不排陈桃兵1课程</span>
+                        <br/>
+                        <span><input type="checkbox" name="condition" value="4" >陈桃兵2和陈桃兵3不排在同一天</span>
+                    </div>
+                </div>
+
+                <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">
+                    <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+                </div>
+
+                <div class="site-demo-button" style="margin-top: 20px; margin-bottom: 0;">
+                    <button class="layui-btn site-demo-active" data-type="setPercent">设置50%</button>
+                    <button class="layui-btn site-demo-active" data-type="loading">模拟loading</button>
+                </div>
+                <div class="form-group">
+                    <div class="ln_solid"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12" >
+                        <button type="reset" class="btn btn-primary" onclick="reSet()" style="float: right">重置</button>
+                        <button type="submit" class="btn btn-success" style="float: right" onclick="informationAlert_confirmAndCancelButton('addCompulsSetting()','是否确认？')">确认！</button>
+                        <button type="submit" class="btn btn-success" style="float: right" onclick="informationAlert_confirmAndCancelButton('doCompuls()','是否开始排课？')">点击排课！</button>
+                    </div>
+                </div>
+
+                <div id="timetableDiv" class="form-group">
+                    <div >
+                        <select id="timetableClass" class="prov" style="width: 200px;">
+                            <option value="2018级1班">2018级1班</option>
+                            <option value="2018级2班">2018级2班</option>
+                            <option value="2018级3班">2018级3班</option>
+                            <option value="2018级4班">2018级4班</option>
+                            <option value="2018级5班">2018级5班</option>
+                            <option value="2018级6班">2018级6班</option>
+                            <option value="2018级7班">2018级7班</option>
+                            <option value="2018级8班">2018级8班</option>
+                            <option value="2018级9班">2018级9班</option>
+                            <option value="2018级10班">2018级10班</option>
+                            <option value="2018级11班">2018级11班</option>
+                            <option value="2018级12班">2018级12班</option>
+                            <option value="2018级13班">2018级13班</option>
+                            <option value="2018级14班">2018级14班</option>
+                        </select>
+                    </div>
+                    <table id="timetable" border="1">
+                        <tr >
+                            <td width="100px;"></td>
+                            <td width="100px;">星期一</td>
+                            <td width="100px;">星期二</td>
+                            <td width="100px;">星期三</td>
+                            <td width="100px;">星期四</td>
+                            <td width="100px;">星期五</td>
+                        </tr>
+                        <tr >
+                            <td ></td>
+                            <td id="1_1"></td>
+                            <td id="2_1"></td>
+                            <td id="3_1"></td>
+                            <td id="4_1"></td>
+                            <td id="5_1"></td>
+
+                        </tr>
+                        <tr >
+                            <td ></td>
+                            <td id="1_2"></td>
+                            <td id="2_2"></td>
+                            <td id="3_2"></td>
+                            <td id="4_2"></td>
+                            <td id="5_2"></td>
+
+                        </tr>
+                        <tr >
+                            <td ></td>
+                            <td id="1_3"></td>
+                            <td id="2_3"></td>
+                            <td id="3_3"></td>
+                            <td id="4_3"></td>
+                            <td id="5_3"></td>
+
+                        </tr>
+                        <tr >
+                            <td ></td>
+                            <td id="1_4"></td>
+                            <td id="2_4"></td>
+                            <td id="3_4"></td>
+                            <td id="4_4"></td>
+                            <td id="5_4"></td>
+
+                        </tr>
+                        <tr >
+                            <td></td>
+                            <td id="1_5"></td>
+                            <td id="2_5"></td>
+                            <td id="3_5"></td>
+                            <td id="4_5"></td>
+                            <td id="5_5"></td>
+
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="../../../build/js/websocket/reconnecting-websocket.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/timetable/compulsSetting.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../../build/js/layui/layui.js" charset="utf-8"></script>
+
+</body>
+</html>

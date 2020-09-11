@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>考核日统计</title>
+    <link rel="stylesheet" href="../../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../../css/utils/jquery-confirm.css">
+
+    <!-- jQuery -->
+    <script src="../../../../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Pagenation -->
+    <script src="../../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+    <script src="../../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+    <script src="../../../../vendors/Pagenation/DataTables.js"></script>
+    <script src="../../../../vendors/Pagenation/moment-with-locales.js"></script>
+    <script src="../../../../vendors/iCheck/icheck.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../../../vendors/moment/locale/zh-cn.js"></script>
+    <script src="../../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--alert弹出框样式-->
+    <script src="../../../js/utils/jquery-confirm.js"></script>
+
+    <!--表单验证-->
+    <script src="../../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <!--图片翻页-->
+    <script src="../../../js/photo/prefixfree.min.js"></script>
+    <link href="../../../css/parts/photo/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/utils/jquery-confirm.css">
+
+    <!--单选框样式-->
+    <link href="../../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <script src="../../../js/encrypt/md52.js"></script>
+    <script src="../../../js/utils/verifyToken.js"></script>
+    <script src="../../../js/utils/utils.js"></script>
+    <script src="../../../js/utils/informationPromptBox.js"></script>
+    <script src="../../../js/statistics/jquery.table2excel.min.js"></script>
+    <script src="../../../js/statistics/jQuery.print.min.js"></script>
+    <style>
+        .haha {
+            display: inline-block;
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 0 4px;
+        }
+        .error{
+            color:dodgerblue;
+        }
+    </style>
+
+</head>
+<body class="nav-md" style="background-color:white;">
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+
+                <h2>德育考核学期统计</h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="input-group well" style="width: 100%">
+                <div class="col-md-2" id="termList">
+
+                </div>
+                <button id="search" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+                    <i class="glyphicon glyphicon-search">搜索</i>
+                </button>
+                <button id="export" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+                    <i class="glyphicon glyphicon-download-alt">导出excel</i>
+                </button>
+                <button id="print" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+                    <i class="glyphicon glyphicon glyphicon-print">打印表格</i>
+                </button>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <h2 class="text-center">
+                            <span id="queryDate"></span>&nbsp;班级常规考核
+                        </h2>
+                    </div>
+                </div>
+                <div class="row-fluid ">
+                    <div class="text-center" >
+                        <table id="table" border="1" style="width:100%">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom Theme Scripts-->
+<script>
+    var proArray = new Array();//把项目id顺序存入数组
+    $(function () {
+        initTermList();
+
+        $("#export").click(function () {
+            $("#table").table2excel({
+                // 不被导出的表格行的CSS class类
+                exclude: ".noExl",
+                // 导出的Excel文档的名称，（没看到作用）
+                name: "Excel Document Name",
+                // Excel文件的名称
+                filename: $("#searchTime").val()+"考核日统计"
+            });
+        });
+
+        //打印按钮
+        $("#print").click(function () {
+            $("#table").print();
+        });
+
+        $("#search").click(function () {
+            var msg = {};
+            msg.appName="statisticsByTerm_query";
+            msg.queryDateBeg=$("#searchTime").val().split('|')[0];
+            msg.queryDateEnd=$("#searchTime").val().split('|')[1];
+            serverFromJSONData(msg,true).then(function (success) {
+                if(success.msgState === 500){
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+                }else{
+                    var jsonDome = success.data;
+                    if(jsonDome === undefined){
+                        //informationAlert_OnlyConfirmButton_NOT_REFRESH("测试成功！");
+                        informationAlert_OnlyConfirmButton_NOT_REFRESH("有错误数据，请重新导入错误数据！请查看错误信息！");
+                    }else {
+                        var scnl = jsonDome.scnl;
+                        var tpl = jsonDome.tpl;
+                        var tpsl = jsonDome.tpsl;
+
+                        /***拼接table头**/
+                        var title = '';
+                        var data = '';
+                        var tplTitle1 = '';
+                        var tplTitle2 = '';
+                        var trHtmlBegin = '<tr>';
+                        var trHtmlEnd = '</tr>';
+                        proArray = new Array();
+                        for(var key in tpl){
+                            tplTitle1 += '<td colspan="'+tpl[key].length+'">'+key+'</td>';
+
+                            if(tpl[key].length == 0){   //如果为0需要添加一个空节点，不然会往前面挤
+                                tplTitle2 += '<td width="100"></td>';
+                                proArray.push(0);
+                            }
+
+                            $.each(tpl[key], function (index, obj) {
+                                tplTitle2 += '<td width="100">'+(obj.name === null ? '':obj.name)+'</td>';
+
+                                proArray.push(obj.id);
+                            });
+
+                        }
+                        var row1 = '<td rowspan="2">年级</td>'
+                            + '<td  rowspan="2">班级</td>'
+                            + '<td  rowspan="2">班主任</td>'
+                            + tplTitle1
+                            + '<td  rowspan="2">总分</td>'
+                            + '<td  rowspan="2">排名</td>';
+                        var row2 = tplTitle2;
+                        title += trHtmlBegin + row1 + trHtmlEnd;
+                        title += trHtmlBegin + row2 + trHtmlEnd;
+                        /***拼接table头end**/
+
+                        /***拼接table数据***/
+                        for(var key in scnl){
+                            //for(var i = 0; i < scnl[key].length; i++ ){
+                            $.each(scnl[key], function (index, tmesProject) {
+                                data += trHtmlBegin;
+                                if(index == 0){
+                                    data += '<td rowspan="'+scnl[key].length+'">'+key+'</td>';
+                                }
+                                data += '<td>'+tmesProject.className+'</td>';
+                                data += '<td>'+(tmesProject.teacher ===null?'':tmesProject.teacher)+'</td>';
+
+                                $.each(proArray, function (proIndex, obj) {
+                                    if( proArray[proIndex]==0){   //配合表头，如果保存的id为0，这里的内容同样要添加一个空节点
+                                        data += '<td width="100"></td>';
+                                    }
+                                });
+
+                                $.each(proArray, function (proIndex, tmesProjectScore) {
+                                    $.each(tpsl, function (i, tmesProjectScore) {
+                                        if(tmesProject.classId == tmesProjectScore.classId && proArray[proIndex]==tmesProjectScore.proChildId){
+                                            data += '<td width="100">'+(tmesProjectScore.classScore===null?'':tmesProjectScore.classScore)+'</td>';
+                                        }
+                                    });
+                                });
+                                data += '<td>'+(tmesProject.totalScore === 'null' || tmesProject.totalScore === null?'':tmesProject.totalScore)+'</td>';
+                                data += '<td>'+(tmesProject.totalScore === 'null' || tmesProject.totalScore === null ? '':tmesProject.rank)+'</td>';
+                                data += trHtmlEnd;
+                            });
+                        }
+
+                        /***拼接table数据end***/
+                        $("#table").html('');
+                        $("#table").html(title+data);
+                    }
+                }
+            }),function (error) {
+                console.log("访问服务器发生错误，请稍后再试!",error);
+            };
+        });
+
+    });
+function initTermList(){
+    var msg = {};
+    msg.appName="statisticsByTerm_termList";
+    serverFromJSONData(msg,true).then(function (success) {
+        if(success.msgState === 500){
+            informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+        }else{
+            var selectBeg = '<select class="form-control" id="searchTime">';
+            var selectEnd = '</select>'
+            var data = success.data;
+            var options='';
+            $.each(data, function (index, obj) {
+                options += '<option value="'+obj.t_SDate+'|'+obj.t_EDate+'">'+obj.t_term+'('+obj.t_SDate+'到'+obj.t_EDate+')</option>';
+            })
+            $("#termList").html();
+            $("#termList").html(selectBeg+options+selectEnd);
+        }
+    });
+}
+
+</script>
+</body>
+</html>
+

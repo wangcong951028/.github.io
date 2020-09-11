@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/utils/ImportAndExport.js"></script>
+    <script src="../../js/dormitoryms/nonbedLeavel.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+    
+    <!--上传-->
+	<script src="../../../build/js/xlsx.full.min.js"></script>
+
+</head>
+
+<body style="background-color: white;">
+
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>无假未归寝记录信息</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="input-group well" style="width: 100%">
+                    <div style="float: left;margin-left:10px">
+                        <span class="control-label"><h5>班级:</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="clz_id"  class="select2_single form-control" tabindex="-1">
+							</select>
+                    </div>
+                    <div style="float: left;margin-left:10px">
+                        <span class="control-label"><h5>未归寝时间:</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="nottolay" class="form-control" value="">
+                    </div>
+                    <button type="button" id="myButton" class="btn btn-primary" style="margin-left:10px;float: left">
+                        <i class="glyphicon glyphicon-search"> 搜索</i>
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="uploadExcel()" style="margin-left:10px;float: left">
+                    	Excel导出
+                    </button>
+                    <a href="" download="无假未归寝人员记录.xlsx" id="nonlel"></a>
+                </div>
+                
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action" data-page-length="10" data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th data-data="subname" data-orderable="false">姓名</th>
+                        <th data-data="subxgh" data-orderable="false">学号</th>
+                        <th data-data="deptname" data-orderable="false">班级</th>
+                        <th data-data="amangname" data-orderable="false">楼栋</th>
+                        <th data-data="dornum" data-orderable="false">寝室号</th>
+                        <th data-data="bednum" data-orderable="false">床位号</th>
+                        <th data-data="nottolay" data-orderable="false">未归寝时间</th>
+                        <th data-data="recordpeo" data-orderable="false">记录人</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#nottolay').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+	})
+</script>
+</body>
+</html>

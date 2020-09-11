@@ -1,0 +1,481 @@
+a {
+    cursor:pointer;
+}
+.r-AsideBar {
+    width: 230px;
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    background-color: #fff;
+    border-right: 1px solid#e5e5e5;
+}
+.r-AsideBar-hd {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.6em;
+    padding: 0 15px;
+    border-bottom: 1px solid#e5e5e5;
+    line-height: 3.6em
+ }
+.r-AsideBar-hd .-sub {
+    position: absolute;
+    top: 50% ;
+    right: 15px; -webkit-transform: translate(0, -50% );
+    -moz-transform: translate(0, -50% );
+    -ms-transform: translate(0, -50% ); -o-transform: translate(0, -50%);
+    transform: translate(0, -50% )
+}
+.r-AsideBar-hd. -sub-item {
+    position: relative;
+    cursor: pointer;
+    margin: 0 0 0.5em
+}
+
+.r-AsideBar-bd {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 15px;
+    position: absolute;
+    top: 3.6em;
+    bottom: 0;
+    left: 0;
+    right: 0
+}
+.gap {
+    padding: 15px
+}
+
+.r-page {
+    background-color: #fff;
+    margin-left: 230px;
+    height: 700px ;
+    overflow: auto;
+}
+
+.r-page .r-page-title {
+    font-weight: bold;
+    height: 100px;
+    line-height: 100px;
+    font-size: medium;
+}
+.r-page .r-page-search {
+    text-align: right;
+}
+
+div#rMenu {
+    position:absolute;
+    visibility:hidden;
+    top:0;
+    /*background-color: #555;*/
+    text-align: left;
+    width:125px;
+    padding: 2px;
+    box-shadow: -4px 5px 30px #000
+}
+
+div#rMenu ul li{
+    margin: 1px 0;
+    padding: 5px 0px;
+    cursor: pointer;
+    list-style: none outside none;
+    background-color: #DFDFDF;
+    text-align: center;
+}
+
+.report-file {
+    display: block;
+    position: relative;
+    width: 170px;
+    height: 28px;
+    overflow: hidden;
+    border: 1px solid #428bca;
+    background: none repeat scroll 0 0 #428bca;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    float: left;
+    margin-right:5px;
+}
+.report-file span {
+    cursor: pointer;
+    display: block;
+    line-height: 28px;
+}
+.file-prew {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 120px;
+    height: 30px;
+    font-size: 100px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.tagator {
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-block;
+    text-decoration: none;
+}
+.tagator_tags {
+    display: inline;
+}
+.tagator_tag {
+    display: inline-block;
+    background-color: #39f;
+    border-radius: 2px;
+    color: #fff;
+    padding: 1px 20px 2px 4px;
+    font-size: 13px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    position: relative;
+    vertical-align: top;
+}
+.tagator_tag_remove {
+    font-family: simsun;
+    display: inline-block;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 0 5px;
+    padding: 6px 2px 4px 2px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 10px;
+    vertical-align: top;
+    border-radius: 0 2px 2px 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/**** 单选按钮样式 ****/
+label {font-size:14px;cursor:pointer;}
+label i {
+     font-size:12px;
+     font-style:normal;
+     display:inline-block;
+     width:13px;
+     height:13px;
+     text-align:center;
+     line-height:13px;
+     color:#fff;
+     vertical-align:middle;
+     margin:-2px 2px 1px 0px;
+     border:#2489c5 1px solid;
+}
+input[type="checkbox"],input[type="radio"] {display:none;}
+input[type="radio"] + i {border-radius:7px;}
+input[type="checkbox"]:checked + i,input[type="radio"]:checked + i {background:#2489c5;}
+input[type="checkbox"]:disabled + i,input[type="radio"]:disabled + i {border-color:#2489c5;}
+input[type="checkbox"]:checked:disabled + i,input[type="radio"]:checked:disabled + i {background:#2489c5;}
+
+/***进度条***/
+#wrapper{
+    position: relative;
+    width:100%;
+    height:1px;
+    /*border:0px solid green;*/
+}
+#progressbar{
+    position: absolute;
+    width:100%;
+    height:1px;
+   /* border:0px solid green;*/
+
+}
+/*在进度条元素上调用动画*/
+#fill{
+    height: 1px;
+    /*animation: move 12s;*/
+    text-align: center;
+    background-color: #6caf00;
+    border: none;
+}
+/*实现元素宽度的过渡动画效果*/
+@keyframes move {
+    0%{
+        width:0;
+    }
+    100%{
+        width:100%;
+    }
+}
+
+.departListName{
+    background-color: #31b0d5;
+    border-color: #269abc;
+    border-radius: 3px;
+    color: #fff;
+    padding: 0 2px;
+    font-size: 13px;
+    margin: 1px 2px;
+}
+
+.childInput{
+    border-radius: 2px;
+    padding: 2px 1px 2px 1px;
+    margin-left: 1px;
+    color: #555;
+    border: 1px solid #ccc;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+}
+
+/**** 增加：div 实现select下拉框+滚动条 ***/
+#a_divselect ul li{
+    margin:0;
+    padding:0;
+    font-size:13px;
+    list-style:none;
+}
+
+#a_divselect{
+    margin:0px auto;
+    position:relative;
+    z-index:10000;
+    float: left;
+    width: 35%;
+}
+
+#a_divselect cite{
+    border-radius:4px;
+    height:34px;
+    line-height:24px;
+    display:block;
+    cursor:pointer;
+    font-style:normal;
+    padding-left: 12px;
+    border:1px solid #ccc;
+    color: #a9a9a9;
+    padding-top: 5px;
+    background:url(../../../images/xjt.png) no-repeat right center;
+}
+#a_divselect ul{
+    background-color:#ffffff;
+    position:absolute;
+    z-index:20000;
+    margin-top:-1px;
+    display:none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height:  100px;
+}
+
+#a_divselect ul li{
+    height:24px;
+    line-height:24px;
+}
+
+#a_divselect ul li a{
+    display:block;
+    height:24px;
+    text-decoration:none;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#a_divselect ul li a:hover{
+    background-color:#CCC;
+}
+
+/***======民族下拉开始======***/
+#a_mz_div{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+#a_mz_div select{
+    background-color: #fff;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: 12px/1.5 Tahoma,Arial,sans-serif;
+    height: 30px;
+}
+#a_mz_div span{
+    margin: 0 5px;
+}
+
+#u_mz_div{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+#u_mz_div select{
+    background-color: #fff;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: 12px/1.5 Tahoma,Arial,sans-serif;
+    height: 30px;
+}
+#u_mz_div span{
+    margin: 0 5px;
+}
+
+
+/***======民族下拉结束======***/
+
+/**** 修改;div弹出 ****/
+#u_divselect ul li{
+    margin:0;
+    padding:0;
+    font-size:13px;
+    list-style:none;
+}
+
+#u_divselect{
+    margin:0px auto;
+    position:relative;
+    z-index:10000;
+    float: left;
+    width: 35%;
+}
+
+#u_divselect cite{
+    border-radius:4px;
+    height:34px;
+    line-height:24px;
+    display:block;
+    cursor:pointer;
+    font-style:normal;
+    padding-left: 12px;
+    border:1px solid #ccc;
+    color: #a9a9a9;
+    padding-top: 5px;
+    background:url(../../../images/xjt.png) no-repeat right center;
+}
+#u_divselect ul{
+    background-color:#ffffff;
+    position:absolute;
+    z-index:20000;
+    margin-top:-1px;
+    display:none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height:  100px;
+    padding: inherit;
+}
+
+#u_divselect ul li{
+    height:24px;
+    line-height:24px;
+}
+
+#u_divselect ul li a{
+    display:block;
+    height:24px;
+    text-decoration:none;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#u_divselect ul li a:hover{
+    background-color:#CCC;
+}
+
+/*** 增加用户籍贯样式 ***/
+#city_5{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+#city_5 select{
+    background-color: #fff;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: 12px/1.5 Tahoma,Arial,sans-serif;
+    height: 30px;
+}
+#city_5 span{
+    margin: 0 5px;
+}
+
+/*** 修改用户籍贯样式 ***/
+#u_city_5{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+#u_city_5 select{
+    background-color: #fff;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: 12px/1.5 Tahoma,Arial,sans-serif;
+    height: 30px;
+}
+#u_city_5 span{
+    margin: 0 5px;
+}
+/***
+用户头像div
+***/
+.userHeadImgDiv{
+    position: relative;
+    float: right;
+    margin-top: -110px;
+    margin-right: 130px;
+    width: 110px;
+    height: 110px;
+}
+#userHeadImg{
+    background: url('../../../images/nopic.png') top left;
+}
+#a_userHeadImg{
+background: url('../../../images/nopic.png') top left;
+}
+/**
+ * 下载数据字体样式设置
+ **/
+.efs{
+    font-weight: normal;
+    font-size: small
+}
+.efsxx{
+    font-weight: normal;
+    font-size: small;
+    margin-left:5px;
+}
+/*走读生*/
+.nonresident{
+	color: orangered;
+}
+.resident{
+	color: deepskyblue;
+}
+

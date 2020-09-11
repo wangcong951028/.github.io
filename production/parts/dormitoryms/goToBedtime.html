@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>归寝明细</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    
+	
+	<!--zTree-->
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    
+	
+	<style>
+        .error{
+            color:dodgerblue;
+        }
+        .form-group{
+            margin-bottom: 10px;
+        }
+        .dataTables_length{
+            display: none;
+        }
+        h5{
+            color: #2A3F54;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+</head>
+<body style="background-color: white">
+
+<div class="row" style="width:18%;float: left">
+	<div class="col-md-12 col-sm-12 col-xs-12" style="height: 100%;">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>部门查询 <small></small></h2>
+               
+                <div class="clearfix"></div>
+            </div>
+                <div class="x_content" style="max-height: 600px;overflow-x: hidden;overflow-y: auto">
+                    <p id="dataLoadIng" class="gap">数据加载中，请稍后...</p>
+                    <div>
+                        <ul id="tree" class="ztree"style="width: 100%;height: 100%;background-color: white;margin-top: 10px;overflow-y: auto;border: aliceblue "></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>  
+     <div class="row" style="width:82%;float: left">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>学生住宿信息列表
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+                <br />
+                <div class="input-group well" style="width: 100%">
+					<div style="width: 100%">
+						<div style="float: left;margin-left:10px">
+							<label><h5>学生姓名:</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="stuName" placeholder="学生姓名" value="" class="form-control">
+						</div>
+						<div style="float: left;margin-left:10px">
+							<label><h5>学生学号:</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="keyWord" placeholder="学生学号" value="" class="form-control">
+						</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>状态:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="isStake" class="form-control"><option value="">----- 请选择 -----</option><option value="1">正常</option><option value="2">未知</option><option value="3">迟到</option><option value="4">未归</option></select>
+					</div>
+					
+				</div>
+				<br><br><br>
+				<div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>开始日期:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<input id="beginTime" class="form-control"></input>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>结束日期:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<input id="endTime" class="form-control"></input>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>楼栋:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<input id="dormId" onclick="region_showMenu()" class="form-control"></input>
+					</div>
+						
+				</div>
+				<div>
+				<button id="myButton" type="button" class="btn btn-primary" style="margin-left:20px;float: left">
+					<i class="glyphicon glyphicon-search"> 搜索</i>
+				</button>
+				<button id="myButtonSet" type="button" class="btn btn-primary" style="margin-left:20px;float: left">
+					时间设置
+				</button>
+				<button class="btn btn-success" onclick="upload_rtlow();" type="button" style="margin-left: 10px;">
+                      <i class="glyphicon glyphicon-download-alt">导出数据</i>
+                </button>
+                <a id="tolay" href="" download="归寝明细.xlsx" ></a>
+				</div>
+			</div>
+            <div class="x_content" style="padding-top: 5px;">
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]"
+                       style="width: 100%;position: relative;"">
+                    <thead>
+                    <tr>
+                        <th data-data="pk_id" data-visible="false"></th>
+                        <th data-data="name" data-orderable="false" width="">姓名</th>
+                        <th data-data="xgh" data-orderable="false" width="">学号</th>
+						<th data-data="deptName" data-orderable="false" width="">班级</th>
+                        <th data-data="buildName" data-orderable="false" width="">宿舍</th>
+						<th data-data="attendanceTime" data-orderable="false" width="">日期</th>
+                        <th data-data="goToBedStatue" data-orderable="false" width="">归寝状态</th>
+                        <th data-data="goToBedTime" data-orderable="false" width="">归寝时间</th>
+                        <th data-data="reason" data-orderable="false" width="30%">原因</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 时间设置 -->
+<div class="modal fade" id="myModal_time" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">考勤列表生成时间设置</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="del_Form">
+						<input type="text" id="change_stats_del" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">时间<span style="color: red;">(精确到分钟)</span><span class="required">:</span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <input type="text" id="timeSet" name="note_del" class="form-control"
+                                       placeholder="(精确到分钟)">
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="confirmPush()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal"  onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<!--手动修改学生状态 -->
+<div class="modal fade" id="myModal_updateStatue" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">考勤列表生成时间设置</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="del_Form">
+						<input type="text" id="change_stats_del" hidden="hidden"/>
+						<input type="text" id="attendanceTime" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">时间<span class="required">:</span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <input type="text" id="comeTime" autocomplete="off" name="note_del" class="form-control"
+                                       placeholder="该时间和考勤相关，请认真填写">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">补卡理由<span class="required">:</span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <textarea id="applyReason" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="confirmUpdate()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal"  onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="regino_menuContent" class="menuContent" style="width:229px;display:none; position: fixed;z-index: 2000;">
+	<ul id="scRegionOrDoR" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#timeSet').datetimepicker({
+            format: 'HH:mm'
+        });
+        
+        $('#comeTime').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        
+        $('#endTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+	})
+</script>
+
+<script src="../../../build/js/xlsx.full.min.js"></script>
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/dormitoryms/goToBedtime.js"></script>
+
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+
+
+</body>
+</html>

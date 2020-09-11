@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>家长通迅录</title>
+
+  <!-- Bootstrap -->
+  <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- iCheck -->
+  <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+  <!-- Pagenation -->
+  <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+  <!-- bootstrap-daterangepicker -->
+  <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+  <!-- Custom Theme Style -->
+  <link href="../../../build/css/custom.min.css" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+  <!--多选下拉框-->
+  <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+  <script src="../../../build/js/bootstrap-multiselect.js"></script>
+
+
+  <script src="../../js/encrypt/md52.js"></script>
+  <script src="../../js/utils/utils.js"></script>
+  <script src="../../js/utils/verifyToken.js"></script>
+
+
+</head>
+<body class="nav-md" style="background-color: white">
+<div class="container body">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>家长通迅录</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="form-group col-lg-8" style="width:100%">
+          <div class="input-group well" style="width: 100%">
+            <div style="float: left;margin-left:10px">
+              <span class="control-label"><h5>关键字:</h5></span>
+            </div>
+              <div class="col-md-3">
+                <input type="text" placeholder="家长姓名,学生姓名,所在班级" id="searchKey" class="form-control">
+              </div>
+            <div style="float: left;margin-left:10px">
+              <span class="control-label"><h5>班级:</h5></span>
+            </div>
+              <div class="col-md-2">
+                  <select id="selectClass" class="form-control">
+											
+                  </select>
+              </div>
+              <div class="col-md-1">
+                <button id="search" class="btn btn-success form-control" type="button"> 搜 索</button>
+              </div>
+          </div>
+          <table id="contactList"
+                 class="table table-striped table-bordered jambo_table bulk_action"
+                 data-page-length="10"
+                 data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+            <thead>
+            <tr class="headings">
+            <th data-data="pk_StudentId" data-visible="false">Id</th>
+            <!--<th data-orderable="false"><input type="checkbox" id="checkbox-all" class="flat"/></th>-->
+            <th data-data="g_Headimg" data-orderable="true">头像</th>
+            <th data-data="s_Xgh">学号</th>
+            <th data-data="s_Name" data-orderable="false">学生姓名</th>
+            <th data-data="d_Name" data-orderable="false">所在班级</th>
+            <th data-data="g_Relationship" data-orderable="false">家长关系</th>
+            <th data-data="g_Name" data-orderable="false">家长姓名</th>
+            <th data-data="g_Mobile" data-orderable="false">联系电话</th>
+            <!--<th data-data="Description" data-orderable="false">操作</th>-->
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Theme Scripts-->
+<script>
+    var areaTable;
+    $(function () {
+        //添加额外的参数传给服务器
+        areaTable = $('#contactList').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.searchKey = $("#searchKey").val();
+                    data.r_state = $("#selclassName").val();
+                    if($("#selectClass").val() == -1){
+                    	
+                    }else{
+                    	data.pk_depid = $("#selectClass").val();
+                    }
+                    
+                    data.appName = "guardian_addressListMgmt";
+
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+                /*{
+                  "targets": 1,
+                  render: function (data, type, full, meta) {
+                      return '<input type="checkbox" class="flat" id="checkbox-all-' + full.pk_id + '" value="' + full.pk_id + '" />';
+                  }
+                },*/
+                /*{
+                    "targets": -1,
+                    render: function (data, type, full, meta) {
+                        return '<a class="btn btn-sm btn-info" href="javascript:;"  data-key="' + full.pk_id + '"  onclick="editRepair(this)">修改信息<i class="fa fa-cogs"></i></a>';
+                    }
+                },*/
+                {
+                    "targets": 1,
+                    render: function (data, type, full, meta) {
+                        //console.debug(full.g_Headimg);
+                        if(full.g_Headimg == null){
+                            return '<img src="../../../production/images/userPic.jpg"  alt="暂无头像" width="30px" height="30px">';
+                        }else{
+                            return '<img src="'+full.g_Headimg+'"  alt="暂无头像" width="30px" height="30px">';
+                        }
+                    }
+                }]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+    });
+    $(function(){
+        findOriganiza();
+    })
+    /*查找班级*/
+    function findOriganiza(){
+
+        // 1、公共参数组装
+        var param = {};
+        param.appKey = "aGFuZHlDYW1wdXM=";
+        param.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        param.time = time;
+        // 2、接口请求参数组装
+        var msg = {};
+
+        msg.appName = "homeWork_findClassName";
+
+        /*msg.index = 1;*/
+        var paramJsonMsg = JSON.stringify(msg);
+        param.param = paramJsonMsg;
+        // 3、生成签名
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        param.sign = hex_md5(temp);
+        // 4、对整个参数进行加密
+        var jsonStr = JSON.stringify(param);
+        $.ajax({
+            type: 'POST',
+            url: serverBaseUrl,
+            data: jsonStr,
+            dataType: "json",
+            success: function (success) {
+
+                var qriganiza = success.data;
+								var html = '';
+								if(qriganiza != null && qriganiza.length>0){
+									for(var i=0;i<qriganiza.length;i++){
+										html += '<option value="'+qriganiza[i].pk_DepID+'">'+qriganiza[i].className+'</option>';
+									}
+								}
+                $("#selectClass").html('<option value="-1">----- 请选择班级 -----</option>'+html);
+
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            }
+        });
+    }
+</script>
+
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+</body>
+</html>
+

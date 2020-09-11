@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>请假查询列表</title>
+    <link href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+    
+    <link href="../../../documentation/jQuery-searchableSelect20160425/jquery.searchableSelect.css" rel="stylesheet"></link>
+
+</head>
+<body style="background-color: white">
+
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>请假列表 <!--<small>Users</small>--> </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <!--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>-->
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-3 col-xs-12">请选择审批状态 <span class="required">：</span></label>
+                        <div class="col-md-10 col-sm-6 col-xs-12">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label id="setStatus" class="btn btn-default active" onclick="setStatus(2)" data-toggle-class="btn-primary"data-toggle-passive-class="btn-default">
+                                    <input type="radio" name="newsType"> 待审批</label>
+                                <label class="btn btn-default" onclick="setStatus(1)" data-toggle-class="btn-primary"data-toggle-passive-class="btn-default">
+                                    <input type="radio" name="newsType" > 审批通过</label>
+                                <label class="btn btn-default" onclick="setStatus(0)" data-toggle-class="btn-primary"data-toggle-passive-class="btn-default">
+                                    <input type="radio" name="newsType" > 审批拒绝</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-3 col-xs-12">姓名
+                        	<span class="required">：</span></label>
+                        <div class="col-md-2 col-sm-9 col-xs-12">
+                            <input id="allName" class="form-control" required="required" placeholder="查询所有请假信息"/>
+                        </div>
+                        <label class="control-label col-md-2 col-sm-3 col-xs-12" >开始时间
+                        	<span class="required">：</span>
+                        </label>
+                        <div class="col-md-2 col-sm-9 col-xs-12" >
+                            <input id="beginTime" class="form-control" required="required"/>
+                        </div>
+                        <label class="control-label col-md-2 col-sm-3 col-xs-12" >结束时间 
+                        	<span class="required">：</span>
+                        </label>
+                        <div class="col-md-2 col-sm-9 col-xs-12">
+                            <input id="endTime"  class="form-control" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group" style="float:right;">
+                        <button type='button' onclick="applyLeave()" class='btn btn-primary' id="apply" style="margin-right: 20px;">申请请假</button>
+                    </div>
+                    <div class="form-group" style="float:right;margin-right: 30px;">
+                        <button type='button' class='btn btn-primary' id="submitFind">查询</button>
+                    </div>
+                </form>
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th data-data="id" data-visible="false">Id</th>
+                        <th data-data="leaveTypeName" data-orderable="false">请假类型</th>
+                        <th data-data="curChildUserName" data-orderable="false">申请人(学生)</th>
+                        <th data-data="approvedName" data-orderable="false">审批人(教工号)</th>
+                        <th data-data="beginDate" data-orderable="false">开始时间</th>
+                        <th data-data="endDate" data-orderable="false">结束时间</th>
+                        <th data-data="hour" data-orderable="false">小时数</th>
+                        <th data-data="status" data-orderable="false">审批状态</th>
+                        <th data-data="isShuttle" data-orderable="false">是否家长接送</th>
+                        <th width="15%" data-orderable="false">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <form class="form-horizontal form-label-left">
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">申请人(学生)：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="curChildUserName" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">审批人：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="approvedName" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">请假类型：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="leaveType" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">是否家长接送：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="isShuttle" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">请假开始时间：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="beginDate" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">请假结束时间：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="endDate" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">家长身份证号：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="idNumber" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">请假小时数：<span
+                                class="required"></span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input type="text" id="hour" class="form-control" required="required"
+                                   placeholder="" readonly="true">
+                        </div>
+                    </div>
+                </form>
+
+                <!--<h4 class="modal-title" id="proposerName"></h4>-->
+                <!--<h4 class="modal-title" id="curChildUserName"></h4>-->
+                <!--<h4 class="modal-title" id="approvedName"></h4>-->
+                <!--<h4 class="modal-title" id="leaveType"></h4>-->
+                <!--<h4 style="color : red" class="modal-title" id="beginDate"></h4>-->
+                <!--<h4 style="color: red" class="modal-title" id="endDate"></h4>-->
+                <!--<h4 style="color: red" class="modal-title" id="hour"></h4>-->
+                <h4 class="modal-title" id="img" style="margin-left: 72px;"></h4>
+                <h4 class="modal-title" id="reason" style="word-wrap: break-word;margin-left: 36px;"></h4>
+                <h4 class="modal-title" id="submitTime"></h4>
+                <h4 class="modal-title" id="approvedTime"></h4>
+                <h4 class="modal-title" id="leavesTime" style="color: #D9534F;margin-left: 36px;"></h4>
+                <h4 class="modal-title" id="returnsTime" style="color: #D9534F;margin-left: 36px;"></h4>
+                <h4 class="modal-title" id="status"></h4>
+                <h4 class="modal-title" id="remark"></h4>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3" id="buttons">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 请假申请Modal -->
+<div class="modal fade" id="myModals1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">请假申请</h4>
+                <div class="x_content">
+                    <form class="form-horizontal form-label-left">
+                    	<div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">请假人:<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-6 col-xs-12" style="z-index: 990;"> 
+                                <select class="select2_single form-control" style="width: 200px;" tabindex="-1" id="leavePerson1">
+                                    
+                                </select>
+                                 <select class="select2_single form-control" tabindex="-1" id="leavePerson2" required="required">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">请选择请假类型:<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                <select class="select2_single form-control" tabindex="-1" style="width: 200px;" id="leaveTypeAdd" required="required">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">家长是否接送:<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <select class="select2_single form-control" id="a_isShuttle" style="width: 200px;" name="isShuttle" required="required">
+                                	<option value="" >----------请选择-------</option>
+                                	<option value="1">是</option>
+                                	<option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">请选择开始时间:<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <input id="beginTimeAdd" value="" class="form-control" style="width: 200px;" required="required" onblur="showTimeHour()"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">请选择结束时间:<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-9 col-xs-12">
+                                <input id="endTimeAdd"   value="" class="form-control" style="width: 200px;" required="required" onblur="showTimeHour()"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">请假小时(工时):<span
+                                    class="required"></span></label>
+                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                <input type="text" value="" id="hourAdd" required="required" style="width: 200px;" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-3 col-xs-12">请假事由:<span
+                                    class="required"></span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <textarea id="reasonAdd" style="resize: none;height: 150px;width: 200px;"></textarea>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label class="control-label col-md-4 col-sm-3 col-xs-12">图片 <span
+                                    class="required">：</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="file" id="imgTest" type="file"  accept=".png">
+                                <div id="imgAddHtml" style="display: none"><img id="imgAdd" src=""/></div>
+
+                            </div>
+                        </div>-->
+                        
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal' onclick="flush()"  data-target='#myModals1'>关闭</button>
+                    <button type='button' onclick="AddLeaveSetParameter()" class='btn btn-success' style='float: right'>发送申请</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModals2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="x_content">
+                    <ul class="list-unstyled timeline" id="flowLi">
+                    </ul>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModals2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <ul class="slides" id="slides"></ul>
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/leave/leaveFind.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../../documentation/jQuery-searchableSelect20160425/jquery.searchableSelect.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $('#endTime').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $('#beginTimeAdd').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $('#endTimeAdd').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        /* //开始时间
+	    $("#beginTimeAdd").bind("input propertychange",function() {  
+		   showTimeHour();
+		});  
+	    //结束时间
+	    $("#endTimeAdd").bind("input propertychange",function() {
+	    	showTimeHour();
+	    });*/
+	})
+</script>
+</body>
+</html>

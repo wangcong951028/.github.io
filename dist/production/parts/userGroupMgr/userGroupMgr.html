@@ -1,0 +1,133 @@
+<style>
+	.s-app-view {
+		overflow: hidden !important;
+		height: 100% !important;
+		margin: 0 !important;
+	}
+
+	.r-AsideBar-bd {
+		overflow: auto !important;
+	}
+
+	.r-uiTrans-s1,.r-uiTrans-s2 {
+		background: #fff;
+	}
+
+	.p-uGroupMgr .r-mcTree {
+		margin: 0 0 160px !important;
+	}
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp" ng-controller="homepage">
+<head>
+	<meta charset="UTF-8">
+	<title ng-bind="title"></title>
+	<!-- 引用相关的css文件 -->
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="css/parts/homepage.css">
+	<link rel="stylesheet" href="./css/styles.css" >
+</head>
+<body>
+
+
+<!-- 左侧：组织架构Tree 组件 -->
+<div class="r-AsideBar p-uGroupMgr">
+
+	<div class="r-AsideBar-hd">
+		 组织架构
+		<div class="-sub">
+			<span class="-sub-item">
+				<i class="fa fa-plus" title="更多+" style="font-size: 20px;"></i>
+			</span>
+		</div>
+	</div>
+
+	<!-- 树形结构 -->
+	<div class="r-AsideBar-bd">
+
+		<p class="gap text-center">
+			数据加载中...
+		</p>
+
+		<div class="r-mcTree">
+
+		</div>
+
+	</div>
+
+</div>
+
+
+<!-- 用户管理 -->
+<div class="r-page p-uGroupMgr">
+
+	<div class="r-page-hd">
+		<h2 class="r-page-tie">用户管理</h2>
+
+		<!-- 面包屑导航 -->
+		<ol class="r-page-breadcrumb">
+			<li>
+				<a href="#/home">首页</a>
+			</li>
+			<li class="active">
+				<a href="#/app_manager">用户管理</a>
+			</li>
+		</ol>
+
+	</div>
+
+
+	<div class="r-page-bd p-uGroupMgr" >
+
+		<div class="p-uGroupMgr-list">
+
+			<div class="row">
+				<div class="col-sm-12">
+
+					<div class="r-flat clearfix">
+
+						<div class="row p-uGroupMgr-list-hd" style="margin-bottom: 20px;">
+
+							<form class="col-sm-10 form-inline text-right p-uGroupMgr-hd-dun01">
+
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="输入 用户名/学号/学工号 查询">
+								</div>
+
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="输入 姓名 查询">
+								</div>
+
+								<button class="btn btn-primary" style="width: 6em" type="submit">查询</button>
+
+							</form>
+
+						</div>
+
+						<!-- 展示 -->
+						<table class="r-table no-border table-hover">
+
+						</table>
+
+						<div class="p-appManager-list-pagination gap-2v text-right"></div>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
+
+
+
+
+

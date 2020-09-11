@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>一卡通第三方充值统计报表</title>
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" >
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+    <link href="../../css/parts/photo/style.css" rel="stylesheet">
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+    <link href="../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+</head>
+<body class="nav-md" style="background-color:white;">
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>一卡通第三方充值报表</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            	<div>
+                   <button id="export" onclick="downPayWaterDetail()" class="btn btn-success" type="button" style="" >
+                      <i class="glyphicon glyphicon-download-alt">导出报表</i>
+                   </button>
+                   <button id="print" class="btn btn-success" type="button" style="" >
+                     <i class="glyphicon glyphicon glyphicon-print">打印</i>
+                   </button>
+                </div>
+                <div>
+                	<div style="float: left;margin-top:10px;">
+                		<label style="display: inline-block;">充值笔数：</label>
+                		<label id="payTotalNumber" style="color: red;">0/笔</label>
+                		<label style="display: inline-block;">合计金额：</label>
+                		<label id="payTotalAmount" style="color: red;">0.00/元</label>
+                	</div>
+                	<div style="float: right;">
+                	  <label style="display:inline-block;">充值时间段：</label>
+                   	  <input id="stime" class="form-control" style="width:110px;display:inline-block;" placeholder="开始日期" type="text">
+                      <label style="display:inline-block;">至</label>
+                   	  <input id="etime" class="form-control" style="width:110px;display:inline-block;" placeholder="结束日期" type="text">
+                   	  <label style="display:inline-block;margin-left:10px;">姓名：</label>
+                   	  <input id="xm" class="form-control" style="width:110px;display:inline-block;" placeholder="请输入姓名" type="text">
+                   	  <label style="display:inline-block;margin-left:10px;">学工号：</label>
+                   	  <input id="xgh" class="form-control" style="width:115px;display:inline-block;" placeholder="请输入学工号" type="text">
+                	  <label style="display:inline-block;margin-left:10px;">支付状态：</label>
+                	  <select id="payStatus" class="form-control" style="color:#73879C;width:100px;display:inline-block;" tabindex="-1">
+                        <option value="-1">--全部--</option>
+                        <option value="0">充值成功</option>
+                        <option value="2">充值失败</option>
+                        <option value="1">已支付微信处理中</option>
+                        <option value="3">充值取消</option>
+                      </select>
+                	  <label style="display:inline-block;margin-left:10px;">一卡通状态：</label>
+                	  <select id="yktPayStatus" class="form-control" style="color:#73879C;width:100px;display:inline-block;" tabindex="-1">
+                        <option value="-1">--全部--</option>
+                        <option value="1">充值成功</option>
+                        <option value="2">充值失败</option>
+                        <option value="3">取消充值</option>
+                        <option value="4">等待微信处理中</option>
+                        <option value="5">一卡通处理中</option>
+                      </select>
+                	  <button id="searchBtn" type="button" class="btn btn-success">查询</button>
+                	</div>
+                </div>
+                <div id="tables">
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action" data-page-length="10" data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                   <thead>
+                    <tr>
+                    	<th data-data="outTradeNo" width="11%" data-orderable="false">充值流水号</th>
+                        <th data-data="payUserRealName" width="7%" data-orderable="false">充值人姓名</th>
+                        <th data-data="payXgh" width="8%" data-orderable="false">充值人学工号</th>
+                        <th data-data="payAmount" width="8%" data-orderable="false">充值金额（元）</th>
+                        <th data-data="receiveUserRealName" width="8%" data-orderable="false">被充值人姓名</th>
+                        <th data-data="receiveXgh" width="8%" data-orderable="false">被充值人学工号</th>
+                        <th data-data="payStatus" width="8%" data-orderable="false">充值状态</th>
+                        <th data-data="yktPayStatus" width="12%" data-orderable="false">一卡通充值状态</th>
+                        <th data-data="tradeTime" width="11%" data-orderable="false">交易时间</th>
+                    </tr>
+                   </thead>
+                   <tbody id="tbody"></tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="hf" download="payWaterList.xlsx"></a>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+<script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+<script src="../../js/photo/prefixfree.min.js"></script>
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../../build/js/xlsx.full.min.js"></script>
+<script src="../../js/statistics/jquery.table2excel.min.js"></script>
+<script src="../../js/statistics/jQuery.print.min.js"></script>
+<script src="../../js/ykt/reChargeforms.js"></script>
+</body>
+</html>
+

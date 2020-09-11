@@ -1,0 +1,60 @@
+<div class="p-login" ng-controller="loginSchool">
+
+    <div class="p-login-modal">
+
+        <!-- 1、登录页中间键的文字提示 -->
+        <div class="p-login-modal-hd text-center">
+            <img class="p-login-modal-logo"/>
+            <h3 class="p-login-modal-tie">中小学智慧校园云平台管理系统</h3>
+        </div>
+
+        <!-- 2、登录框 -->
+        <div class="p-login-modal-bd">
+            <div class="p-login-form form-horizontal">
+                <div class="p-login-form-bd">
+                    <label>用户登录</label>
+                    <!-- 登录名 -->
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                                <input type="text" placeholder="请输入登录账号" class="form-control" ng-model="userName">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 密码 -->
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                       <i class="fa fa-lock  passWordPicture"></i>
+                                </span>
+                                <input type="password" placeholder="请输入登录密码" class="form-control" ng-model="password">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="p-login-form-ft">
+
+                    <select class="form-control" ng-options="data.id as data.name for data in schoolData" ng-model="schoolID"></select>
+
+                    <button class="btn btn-primary -btn-login" ng-click="loginBtn()">登录</button>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3、底部文字信息 -->
+        <div class="p-login-modal-ft text-center">
+            <a href="http://www.yqsh.com/" target="_blank">&copy;
+                <span>2017 成都易科士信息产业有限公司 </span>
+            </a>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,275 @@
+@media (max-width: 750px) {
+ 
+}
+
+.dataTables_info{
+    width: initial;
+    text-align: left;
+    float: left;
+}
+
+.sidebar_div{
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:-370px;
+    width:370px;
+    background:#ffffff;
+    transition:.2s;
+    /*box-shadow: 0px 0px 99px 1px #c0c0c0;*/
+    z-index: 1000;
+}
+
+.sidebar_left_div{
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:370px;
+    background:#ffffff;
+    transition:2s;
+    right: 370px;
+    /*box-shadow: 0px 0px 99px 1px #c0c0c0;*/
+    z-index: 1000;
+}
+/**设置权限弹出框距离右侧框**/
+#privilegeInfo {
+    right: -740px;
+    width: 740px;
+    padding-right: 370px;
+    z-index: 999;
+}
+
+#newBuildPrivilege{
+    right: -740px;
+    width: 740px;
+    padding-right: 370px;
+    z-index: 999;
+}
+
+#newBuildTag{
+    right: -740px;
+    width: 740px;
+    padding-right: 370px;
+    z-index: 999;
+}
+
+#updateBuildTag{
+    right: -740px;
+    width: 740px;
+    padding-right: 370px;
+    z-index: 999;
+}
+
+.underline{
+    width:100%;
+    height:1px;
+    padding:0px;
+    margin-top:70px;
+    background-color:#D5D5D5;
+    overflow:hidden;
+}
+
+.other_underline{
+    width:100%;
+    height:1px;
+    padding:0px;
+    margin-top:2px;
+    background-color:#D5D5D5;
+    overflow:hidden;
+}
+
+.addPrivilegeButton{
+    line-height:40px;
+    position:absolute;
+    left:75%;
+    color: #619CFD;
+}
+
+.userPrivilege{
+    line-height:40px;
+    left:25%;
+    color:#619CFD;
+}
+
+.closeSidebar{
+    position:absolute;
+    left:10px;
+    float: right;
+}
+
+.reloadBtn{
+    position:absolute;
+    left:20px;
+    float: right;
+}
+.newRole{
+    position:absolute;
+    left:3px;
+    float: right;
+}
+.groupPrivilege-table{
+    margin-left: 20px;
+    margin-top: 5px;
+    width: 98%;
+    margin-bottom: 5px;
+}
+.table-tr-border{
+    border-bottom:1px solid #DDDDDD;
+    border-top:1px solid #DDDDDD;
+}
+
+.table-tr-border-1{
+    border-bottom:1px solid #DDDDDD;
+    border-top:1px solid #DDDDDD;
+    font-weight: bold;
+}
+
+.table-td-h{
+    height:40px;
+    padding-left:10px;
+}
+
+.table-td-td-h{
+    height:40px;
+    padding-left:25px;
+}
+
+.table-td-btn{
+    text-align:right;
+}
+
+.privilege-label-style{
+    padding-top: 10px;
+    font-weight: bold;
+    float: left;
+}
+
+#tagpic{
+    width:90px;
+    height:90px;
+    border-radius:50% ;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    cursor: pointer;
+    background: url('../../../images/nopic.png') no-repeat top left;
+}
+
+#up_tagpic{
+    width:90px;
+    height:90px;
+    border-radius:50% ;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    cursor: pointer;
+    background: url('../../../images/nopic.png') no-repeat top left;
+}
+
+.pageStyle-c{
+     font-weight: bold;
+     margin-left: 20px;
+     cursor:pointer;
+}
+
+.departListName{
+    background-color: #31b0d5;
+    border-color: #269abc;
+    border-radius: 3px;
+    color: #fff;
+    padding: 0 2px;
+    font-size: 13px;
+    margin: 1px 2px;
+}
+
+.bbn{
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14vm;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+/**** tab标签样式 ****/
+ul{
+    list-style: none;
+    margin:0px;
+    padding:0px;
+}
+a{
+    text-decoration: none;
+    color: #ff6666;
+    font-family: Arial;
+}
+.tab-container{
+    width: 398px;
+    height: 30px;
+    text-align: center;
+    /*border:1px #ffcccc solid;*/
+    position: relative;
+    overflow: hidden;
+}
+/*tab-head begin*/
+.tab-head{
+    width: 400px;
+    height:30px;
+    left:0;
+    /*background: #ffcccc;*/
+    position: absolute;
+    left:-1px;//这里设置-1是为了li的border与最外层的border重合
+}
+.tab-head li{
+    float:left;
+    height: 29px;
+    line-height: 29px;
+    width: 50%;
+    overflow: hidden;
+    padding: 0 1px;
+    border-bottom: 1px solid #ffcccc;
+    background: #ffeeee;
+    margin:0px;
+    padding:0px;
+    cursor: pointer;
+}
+
+li.select{
+    background: #fff;
+    padding: 0;
+    border-left: 1px solid  #ffcccc;
+    border-right: 1px solid  #ffcccc;
+    border-bottom: 1px solid #fff;
+}
+/*tab-head end tab-panel begin*/
+.tab-panel{
+    position: relative;
+    width: 100%;
+    height: 85%;
+    top: 15%;
+    -webkit-transition:all 0.3s linear;//切换过渡效果
+}
+.tab-panel section{
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+#panel-1{
+    left: 0;
+}
+#panel-2{
+    left: 100%;
+}
+.label-fontWeight{
+    font-weight: normal;
+}

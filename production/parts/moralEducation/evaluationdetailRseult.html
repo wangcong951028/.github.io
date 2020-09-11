@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>素质考核评定</title>
+
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/moralEducation/evaluationdetailRseult.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+    <!--单选框样式-->
+    <link href="../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    <script src="../../../documentation/MultipleTreeSelect-master/src/js/jquery.ztree.all.js"></script>
+    <script src="../../../documentation/MultipleTreeSelect-master/src/MultipleTreeSelect.js"></script>
+
+    <style>
+        ul li{
+            list-style-type:none;
+        }
+        a{
+            text-decoration:none;
+        }
+        h5{
+            color: #2A3F54;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+
+</head>
+
+<body class="nav-md" style="background-color: white">
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    素质考核评定
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="text-align: -webkit-center">
+                <form class="form-horizontal form-label-left" id="workForm" style="width: 75%">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">学生<span class="required">:</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <textarea  id="studentZtree" style="width: 100%;resize: none" checks="1" type="text" readonly>
+
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">评语<span class="required">:</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <textarea class="form-control" id="remark" name="intro" rows="3"
+                                      style="resize: none" placeholder='' maxlength="300"></textarea>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">考核时间<span class="required">:</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <input id="beginTime" name="beginTime" class="form-control" placeholder="2017-08-01" value=""/>
+                        </div>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">类别<span class="required">:</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12">
+                            <textarea  id="prodetail" style="width: 100%;resize: none" checks="1" type="text" readonly>
+
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">考核内容<span class="required">:</span></label>
+                        <div class="col-md-8 col-sm-9 col-xs-12" id="resultHtml">
+
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <span>
+                        <button class="btn btn-success" onclick="saveResult()">保存</button>
+                        <button class="btn btn-success" onclick="clearnFrom()">重置</button>
+                   </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'//设置时间格式
+        });
+    });
+</script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+</body>
+</html>

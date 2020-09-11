@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>相册图片</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+
+    <!-- Custom styling plus plugins -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!--图片翻页-->
+    <link href="../../css/parts/photo/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+</head>
+<body style="background-color: white" class="nav-md">
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3> 相册查询 <small></small> </h3>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_content">
+
+                            <form class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <a href="photoAlbum.html" target="iframe" class='btn btn-danger' style='float: left'>返回</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="x_title">
+                            <h2>图片列表 <small>  </small></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a data-toggle='modal' data-target='#myModals' href="#">新增图片</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+
+                            <div class="row" id="row">
+
+                            </div>
+                            <form class="form-horizontal form-label-left">
+                                <p>共 <span id="total"></span> 条相册信息 当前页：<span id="currentPage"></span>/<span id="totalPage"></span></p>
+                                <div class="form-group">
+                                    <button type='button' id="nextButton" onclick="next()" class='btn btn-danger' style='float: right'>下一页</button>
+                                    <button type='button' id="lastButton" onclick="last()" class='btn btn-danger' style='float: right'>上一页</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 新增图片Modal -->
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增图片</h4>
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">选择图片 <span
+                                        class="required">：</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="report-file">
+                                        <span>请选择图片</span>
+                                        <input type="file"  id="imgTest" class="file-prew" type="file"  accept="image/*">
+                                    </div>
+                                    <img id="imgAddShow" style="width: 400px" src=""/>
+                                    <div id="imgAddHtml" style="display: none"><img id="imgAdd" style="width: 400px" src=""/></div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal'  data-target='#myModals'>关闭</button>
+                        <button type='button' onclick="addPhoto()" id="add_photo" class='btn btn-success' style='float: right'>新增图片</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看图片Modal -->
+    <div class="modal fade" id="myModals1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <ul class="slides" id="slides"></ul>
+        </div>
+    </div>
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="../../../build/js/custom.min.js"></script>
+<!--图片翻页-->
+<script src="../../js/photo/prefixfree.min.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/photo/photo.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+
+</body>
+</html>

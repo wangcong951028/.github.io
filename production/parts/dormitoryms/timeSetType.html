@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>考勤类型设置</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="../../../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="../../../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="../../../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <link href="../../../vendors/starrr/dist/starrr.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <style>
+        #tags_1_tag{
+            width: 100px !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container body">
+    <div class="main_container">
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>考勤类型设置(输入考勤类型，回车键保存类型)</h2>
+                                <small></small>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br />
+                                <form class="form-horizontal form-label-left">
+
+                                    <div class="control-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">考勤类型</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input id="tags_1" type="text" class="tags form-control"/>
+
+                                            <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- jQuery Tags Input -->
+<script src="../../../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="../../../build/js/custom.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/dormitoryms/timeSetType.js"></script>
+
+
+
+</body>
+</html>

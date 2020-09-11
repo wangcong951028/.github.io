@@ -1,0 +1,145 @@
+/*通用样式开始*/
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 微软雅黑;
+}
+html{
+    overflow: auto;
+    height: 100%;
+}
+body{
+    font-size: 14px;
+    color: #323232;
+    background: #FaFaFa;
+    position: relative;
+}
+ul{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.bt-l{
+    float: left;
+}
+
+.bt-r{
+    float:right;
+}
+
+.clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.c32{
+    color: #323232;
+}
+.c95{
+    color: #959595;
+}
+.cff{
+    color: #ffffff;
+}
+.marginleft20{
+    margin-left: 20px;
+}
+/*xiaoli*/
+.text-l{
+    text-align: left;
+}
+.text-c{
+    text-align: center;
+}
+.text-r{
+    text-align: right;
+}
+.margintop15{
+    margin-top: 15px;
+}
+.margintop20{
+    margin-top:20px;
+}
+.margintop30{
+    margin-top: 30px;
+}
+.logo{
+    margin: 0 auto;
+    margin-bottom: 70px;
+}
+.bg{
+    height: 650px;
+    background: url("../images/img/login-icon05.png") no-repeat;
+    background-size: cover;
+}
+.login-list{
+    position: absolute;
+    top: 600px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.login{
+    margin: 0 auto;
+    border: 1px solid #EDEDED;
+    background: #ffffff;
+    width: 500px;
+    height: 350px;
+    border-radius: 5px;
+    padding: 30px;
+}
+.login input{
+    width: 300px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 40px;
+    margin-top: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+.login input:first-child{
+    background: url("../images/img/login-icon01.png") no-repeat 3.5% center;
+}
+.login input:last-child{
+    background: url("../images/img/login-icon02.png") no-repeat 3.5% center;
+}
+.login>button{
+    width: 300px;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: #00b2d4;
+    border-radius: 5px;
+    margin-top: 50px;
+    cursor: pointer;
+    outline: none;
+}
+@media screen and (max-width: 1366px) {
+    .login-list{
+        top: 320px;
+    }
+    .bg{
+        height: 450px;
+    }
+    .logo{
+        margin-bottom:10px;
+    }
+    .login-list>p{
+        margin-top: 30px !important;
+    }
+}
+/**登录框后的红色提示 **/
+.login-tips{
+	color: red;
+	position: absolute;
+	margin-top:30px;
+}
+.login-info-tips{
+	/*background: url(../images/login/icon.png) no-repeat 0 0;*/
+	float: left;
+	margin-left: 70px;
+	color: red;
+}

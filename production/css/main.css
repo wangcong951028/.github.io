@@ -1,0 +1,414 @@
+﻿*{
+    margin: 0;
+}
+body {
+    padding: 10px;
+    overflow-y: auto;
+    background: #f0f0f0;
+}
+
+ul {
+    list-style: none;
+}
+
+.title {
+    height: 49px;
+    line-height: 49px;
+    background: #fff;
+    border-bottom: 1px solid #dddddd;
+    color: #323232;
+    font-size: 16px;
+    padding-left: 52px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-color:#323232;
+}
+
+.title .more {
+    display: block;
+    float: right;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.row {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.student_info {
+    width: 100%;
+    background: #fff;
+    float: left;
+}
+
+.student_info .login_info {
+    padding: 5px;
+    background: url(../images/avatar_bg.png) no-repeat center 10px;
+    display: inline-block;
+}
+
+.student_info .login_info span {
+    display: block;
+    text-align: center;
+    color: #00837e;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+ .student_info .login_info img {
+    margin: 16px 0px 0px 32%;
+}
+
+.student_info .login_info .role {
+    color: #8e8e8e;
+}
+
+.student_info .login_info .realname {
+   font-size: 24px;
+}
+
+.student_info .login_info .time {
+   color: #8e8e8e;
+}
+
+.base_info {
+   display: inline-block;
+   margin-left: 110px;
+}
+
+.base_info table {
+   width: 100%;
+   color: #00837e;
+}
+
+.base_info table tr td {
+   width: 50%;
+}
+
+.teacher_info {
+   background: #fff;
+   float: left;
+   height: 280px;
+   width: 29%;
+}
+
+.teacher_info .title {
+   background: #fff url(../images/title_login.png) no-repeat 20px center;
+}
+
+.teacher_info .content {
+   padding-top: 1px;
+   height: 100%;
+   background: url(../images/avatar_bg.png) no-repeat center 10px;
+}
+
+.teacher_info .content span {
+    display: block;
+    text-align: center;
+    color: #00837e;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.teacher_info .content .avatar {
+    margin: 10px auto;
+    height: 100px;
+    width: 100%;
+    padding-top: 20px;
+    background: url(../images/avatar.png) no-repeat center 10px;
+}
+
+.teacher_info .content .role {
+    color: #8e8e8e;
+}
+
+.teacher_info .content .realname {
+    font-size: 24px;
+}
+
+.teacher_info .content .time {
+    color: #8e8e8e;
+}
+.clear:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.student_count {
+    float: left;
+    background: #fff;
+    height: 365px;
+    width: 35%;
+}
+
+.student_count .title {
+    background: #fff url(../images/title_login.png) no-repeat 20px center;
+}
+
+.student_count .content {
+     display: block;
+     padding: 8%;
+     margin: 0 auto;
+     max-width:80%;
+}
+
+.student_count .content .item {
+      width: 120px;
+      min-height: 100px;
+      overflow: hidden;
+      float: left;
+      margin-left: 10%;
+}
+
+.student_count .content .item .box {
+      text-align: center;
+      height: 100px;
+}
+
+.student_count .content .item .box .count {
+      color: #fff;
+      font-size: 30px;
+      text-align: center;
+      margin-top: 45px;
+}
+
+.student_count .content .item .remark {
+      margin-top: 20px;
+      color: #787878;
+      text-align: center;
+      font-size: 18px;
+      padding-bottom: 16px;
+}
+
+.item.yellow {
+    background: #fff url(../images/count_bg_yellow.png) no-repeat top center;
+}
+
+.item.green {
+    background: #fff url(../images/count_bg_green.png) no-repeat top center;
+    background-size: contain;
+}
+
+.item.blue {
+    background: #fff url(../images/count_bg_blue.png) no-repeat top center;
+    background-size: contain;
+}
+
+.entry {
+    width: 64.2%;
+    min-height: 348px;
+    background: #fff;
+    float: left;
+    margin-left: 10px;
+}
+
+.entry .title {
+    background: #fff url(../images/title_notice.png) no-repeat 20px center;
+}
+
+.entry .content {
+    overflow: hidden;
+    padding: 20px 20px;
+}
+
+.entry .content .box {
+     text-align: center;
+     font-size: 14px;
+     color: #787878;
+     width: 100px;
+     display: inline-block;
+     background-repeat: no-repeat;
+     background-size: 100px 100px;
+     background-position: center top;
+     padding-top: 110px;
+     cursor: pointer;
+     margin-right: 30px;
+    margin-bottom: 10px;
+     float: left;
+}
+
+/*** 1、一卡通 ***/
+.entry .content .box.yikatong {
+     background-image: url(../images/icon/index-元素_03.png);
+ }
+.entry .content .box.yikatong:hover {
+     background-image: url(../images/icon/index-元素_03-36.png);
+ }
+
+/*** 2、人员信息 ***/
+.entry .content .box.renyuanxinxi {
+     background-image: url(../images/icon/index-元素_03-05.png);
+}
+.entry .content .box.renyuanxinxi:hover {
+     background-image: url(../images/icon/index-元素_03-37.png);
+}
+
+/*** 3、校长信箱 ***/
+.entry .content .box.xinxiang {
+     background-image: url(../images/icon/index-元素_03-07.png);
+}
+.entry .content .box.xinxiang:hover {
+     background-image: url(../images/icon/index-元素_03-38.png);
+}
+
+/*** 4、我的消息 ***/
+.entry .content .box.xiaoxi {
+    background-image: url(../images/icon/index-元素_03-09.png);
+}
+ .entry .content .box.xiaoxi:hover {
+    background-image: url(../images/icon/index-元素_03-39.png);
+}
+
+/*** 5、审批 ***/
+.entry .content .box.shengpi {
+   background-image: url(../images/icon/index-元素_03-11.png);
+}
+ .entry .content .box.shengpi:hover {
+   background-image: url(../images/icon/index-元素_03-40.png);
+}
+
+/*** 6、问卷调查 ***/
+ .entry .content .box.wenjuan {
+   background-image: url(../images/icon/index-元素_03-13.png);
+}
+ .entry .content .box.wenjuan:hover {
+   background-image: url(../images/icon/index-元素_03-41.png);
+}
+
+/*** 7、德育 ***/
+.entry .content .box.deyu {
+   background-image: url(../images/icon/index-元素_03-15.png);
+}
+ .entry .content .box.deyu:hover {
+   background-image: url(../images/icon/index-元素_03-42.png);
+}
+
+/*** 8、成绩 ***/
+.entry .content .box.chegnji {
+   background-image: url(../images/icon/index-元素_03-17.png);
+}
+ .entry .content .box.chegnji:hover {
+   background-image: url(../images/icon/index-元素_03-43.png);
+}
+
+/*** 9、通讯录 ***/
+.entry .content .box.tongxunlu {
+   background-image: url(../images/icon/index-元素_03-19.png);
+}
+.entry .content .box.tongxunlu:hover {
+   background-image: url(../images/icon/index-元素_03-44.png);
+}
+
+/*** 10、报修 ***/
+.entry .content .box.baoxiu {
+    background-image: url(../images/icon/index-元素_03-21.png);
+}
+.entry .content .box.baoxiu:hover {
+    background-image: url(../images/icon/index-元素_03-45.png);
+}
+
+/*** 11、新闻 ***/
+.entry .content .box.xinwen {
+    background-image: url(../images/icon/index-元素_03-23.png);
+}
+.entry .content .box.xinwen:hover {
+    background-image: url(../images/icon/index-元素_03-46.png);
+}
+
+
+/*** 12、未知 ***/
+.entry .content .box.xsrych {
+    background-image: url(../images/xsrych.png);
+}
+.entry .content .box.xsrych:hover {
+    background-image: url(../images/xsrych-on.png);
+}
+
+/*** 13、其它 ***/
+.entry .content .box.qt {
+    background-image: url(../images/qt.png);
+}
+
+/*** 14、未知 ***/
+.entry .content .box.zuoye {
+    background-image: url(../images/icon/index-元素_03-58.png);
+}
+.entry .content .box.zuoye:hover {
+    background-image: url(../images/icon/index-元素_03-60.png);
+}
+
+.news {
+    clear: both;
+    width: 100%;
+    height: 250px;
+    background: #fff;
+    float: left;
+}
+
+
+    .news .title {
+        background: #fff url(../images/title_news.png) no-repeat 20px center;
+    }
+
+    .news .newsList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .news .newsList li {
+            border-bottom: 1px solid #E6E6E6;
+            padding-left: 60px;
+            line-height: 39px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background: #fff url(../images/li-bg.png) no-repeat 20px center;
+        }
+
+            .news .newsList li a {
+                display: block;
+                color: #787878;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 80%;
+                float: left;
+                font-size: 14px;
+                cursor: pointer;
+                margin-right: 30px;
+            }
+
+            .news .newsList li span {
+                font-size: 14px;
+                float: left;
+                display: inline-block;
+                color: #787878;
+                margin-right: 20px;
+            }
+
+            .news .newsList li:hover {
+                background: #f7f7f7 url(../images/li-bg-on.png) no-repeat 20px center;
+            }
+
+                .news .newsList li:hover a, .news .newsList li:hover span {
+                    color: #959595;
+                }
+
+.notice {
+    float: left;
+    width: 29%;
+    height: 250px;
+    background: #fff;
+}
+
+.notice .title {
+    background: #fff url(../images/title_notice.png) no-repeat 20px center;
+}
+
+.cntSystemNumber{
+    font-size:16px;margin-left:10px
+}

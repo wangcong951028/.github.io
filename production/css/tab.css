@@ -1,0 +1,117 @@
+﻿.taskbar {
+    overflow: hidden;
+}
+
+
+#taskbar {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+}
+
+.tabs-container {
+    float: left;
+    overflow: hidden;
+    height: 40px;
+    white-space: nowrap;
+}
+
+    .tabs-container div {
+        display: block;
+        float: right;
+        position: relative;
+        border-right: 1px solid #00837e;
+        border-top: 1px solid #00837e;
+    }
+
+        .tabs-container div.first {
+            border-left: 1px solid #00837e;
+        }
+        .tabs-container div.end {
+            border-left: 1px solid #00837e;
+        }
+        .tabs-container div.selected {
+            background: #00837e;
+            color: #fff;
+        }
+
+            .tabs-container div.selected a.tab {
+                color: #fff;
+            }
+
+        .tabs-container div a.tab {
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            color: #00837e;
+            font-size: 13px;
+            text-align: center;
+            position: relative;
+        }
+
+        .tabs-container div.selected a.close {
+            display: block;
+            background: url(../images/tb-close-on.png) no-repeat center center;
+        }
+
+        .tabs-container div a.close {
+            display: none;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            background: url('../images/tb-close.png') no-repeat center center;
+        }
+
+/*.tabs-container div a:hover.close {
+            background: url(../images/tb-close-on.png) no-repeat center center;
+        }*/
+
+.close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.tabs-panel {
+    display: none;
+}
+
+    .tabs-panel.selected {
+        display: block;
+    }
+
+    .tabs-panel iframe {
+        width: 99.9%;
+        overflow: hidden; 
+    }
+
+.tabs-scroll {
+    float: left;
+    width: 20px;
+    height: 40px;
+    cursor: pointer;
+    display: none;
+}
+
+.scroll-left {
+    background: url('../images/left.png') no-repeat;
+}
+
+.scroll-right {
+    background: url('../images/right.png') no-repeat;
+}
+
+.scroll-left:hover {
+    background: url('../images/left-on.png') no-repeat;
+}
+
+.scroll-right:hover {
+    background: url('../images/right-on.png') no-repeat;
+}

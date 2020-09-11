@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>调宿功能</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    
+	
+	<!--zTree-->
+    <link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    
+	
+	<style>
+        .error{
+            color:dodgerblue;
+        }
+        .form-group{
+            margin-bottom: 10px;
+        }
+        .dataTables_length{
+            display: none;
+        }
+        h5{
+            color: #2A3F54;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+</head>
+<body style="background-color: white">
+
+<div class="row" style="width:18%;float: left">
+	<div class="col-md-12 col-sm-12 col-xs-12" style="height: 100%;">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>部门查询 <small></small></h2>
+               
+                <div class="clearfix"></div>
+            </div>
+                <div class="x_content" style="max-height: 600px;overflow-x: hidden;overflow-y: auto">
+                    <p id="dataLoadIng" class="gap">数据加载中，请稍后...</p>
+                    <div>
+                        <ul id="tree" class="ztree"style="width: 100%;height: 100%;background-color: white;margin-top: 10px;overflow-y: auto;border: aliceblue "></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>  
+     <div class="row" style="width:82%;float: left">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>学生住宿信息列表
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+                <br />
+                <div class="input-group well" style="width: 100%">
+					<div style="width: 100%">
+						<div style="float: left;margin-left:10px">
+							<label><h5>学生姓名:</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="stuName" placeholder="学生姓名" value="" class="form-control">
+						</div>
+						<div style="float: left;margin-left:10px">
+							<label><h5>学生学号:</h5></label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" id="keyWord" placeholder="学生学号" value="" class="form-control">
+						</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>是否入住:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="isStake" class="form-control"><option value="">----- 请选择 -----</option><option value="1">是</option><option value="2">否</option></select>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>性别选择:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="stuSex" class="form-control"><option value="">----- 请选择 -----</option><option value="1">男</option><option value="2">女</option></select>
+					</div>
+				</div>
+				<br><br><br>
+				<div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>&emsp;公寓楼:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="dormBuiding" class="form-control" tabindex="-1">
+							<option value="">---- 请选择 -----</option>
+						</select>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>&emsp;楼层数:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="floorNum" class="form-control" tabindex="-1">
+							<option value="">---- 请选择 -----</option>
+						</select>
+					</div>
+					<div style="float: left;margin-left:10px">
+						<span class="control-label"><h5>&emsp;寝室号:</h5></span>
+					</div>
+					<div class="col-md-2">
+						<select id="dormSelect" class="form-control" tabindex="-1">
+							<option value="">---- 请选择 -----</option>
+						</select>
+					</div>
+						
+				</div>
+				<div>
+				<button id="myButton" type="button" class="btn btn-primary" style="margin-left:20px;float: left">
+					<i class="glyphicon glyphicon-search"> 搜索</i>
+				</button>
+				</div>
+			</div>
+			<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left;" onclick="stay_alone_prompt(1)">
+					单独入住
+				</button>
+				<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left" onclick="separate_bedtime_tips(2)">
+					单独调寝
+				</button>
+				<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left" onclick="distribution_prompt(3)">
+					一键分配
+				</button>
+				<!--<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left">
+					寝室对调
+				</button>-->
+				<button type="button" class="btn btn-info btn-xs" style="margin-left:20px;float: left" onclick="sub_check_out(5)">
+					学生退宿
+				</button>
+            <div class="x_content" style="padding-top: 5px;">
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]"
+                       style="width: 100%;position: relative;"">
+                    <thead>
+                    <tr>
+                        <th data-data="pk_id" data-visible="false"></th>
+                        <th data-orderable="false"  width=""><input type="checkbox" id="checkbox-all" class="flat"/></th>
+                        <th data-data="name" data-orderable="false" width="">姓名</th>
+                        <th data-data="xgh" data-orderable="false" width="">学号</th>
+                        <th data-data="sex" data-orderable="false" width="">性别</th>
+												<th data-data="roomname" data-orderable="false" width="">房间标准</th>
+                        <th data-data="dormRegion" data-orderable="false" width="">公寓区</th>
+												<th data-data="dormBuilding" data-orderable="false" width="">公寓楼</th>
+                        <th data-data="dormFloor" data-orderable="false" width="">公寓楼层</th>
+                        <th data-data="dormNum" data-orderable="false" width="">寝室编号</th>
+                        <th data-data="bedNum" data-orderable="false" width="">床号</th>
+												<th data-data="deptname" data-orderable="false" width="">班级</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 入住 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">入住</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm">
+												<input type="text" id="sub_id" hidden="hidden"/>
+												<input type="text" id="change_stats" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">姓名<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="sub_name" name="sub_name" disabled="disabled" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">学号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="sub_xgh" name="sub_xgh" disabled="disabled" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">寝室编号<span class="required">:</span></label>
+                          		<div class="col-md-8 col-sm-9 col-xs-12">
+	                                <ul class="list"  class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+																		<li class="title" style="width:100%;">
+																			<input id="dorid" type="text" readonly="readonly" value=" " style="width:100%;" 
+																				class="form-control" onclick="showMenu();" />
+																		</li>
+																	</ul>
+                            	</div>
+                        </div>
+												<div class="form-group">
+														<label class="control-label col-md-3 col-sm-3 col-xs-12">房间标准<span class="required">:</span></label>
+														<div class="col-md-8 col-sm-9 col-xs-12">
+																<input type="text" hidden="hidden" id="room_id"></input>
+																<input type="text" id="room_name" name="room_name" disabled="disabled" class="form-control"
+																			placeholder="">
+														</div>
+												</div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">床位号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                            	<select id="bed_id" class="form-control" tabindex="-1">
+																<option value="-1">---- 请选择 -----</option>
+															</select>
+															<p style="color:red">请选择有效无人入住的床位</p>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="stay_alone()">添加</button>
+                        <button class="btn btn-primary" data-dismiss="modal"  onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div id="menuContent" class="menuContent" style="display:none; position: fixed;z-index: 2000;width:360px">
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<!-- 退宿 -->
+<div class="modal fade" id="myModal_del" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">退宿</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="del_Form">
+						<input type="text" id="change_stats_del" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">退宿原因<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="note_del" name="note_del" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="chech_out_prompt()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal"  onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 单独调寝 -->
+<div class="modal fade" id="update_myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="update_myModalLabel">单独调寝</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left">
+                        <input type="text" id="update_sub_id" hidden="hidden" />
+                        <input type="text" id="update_change_stats" hidden="hidden" />
+                        <input type="text" id="old_bed_id" hidden="hidden" />
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">姓名
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="update_sub_name" name="update_sub_name" disabled="disabled" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">学号
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="update_sub_xgh" name="update_sub_xgh" disabled="disabled" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: 20px;">
+                            <span style="color: #5bc0de;">现住寝室 :</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">寝室编号
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="update_dorid" type="text" readonly="readonly" value="" style="width:100%;" class="form-control" />
+                            </div>
+                        </div>
+												<div class="form-group">
+														<label class="control-label col-md-3 col-sm-3 col-xs-12">房间标准
+																<span class="required">:</span>
+														</label>
+														<div class="col-md-8 col-sm-9 col-xs-12">
+																<input type="text" id="update_room_id" name="update_room_id" hidden="hidden">
+																<input type="text" id="update_room_name" name="update_room_name" disabled="disabled" class="form-control">
+														</div>
+												</div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">床位号
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="update_bed_id" name="update_bed_id" disabled="disabled" class="form-control">
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+
+                <div class="x_content">
+                    <div class="form-group" style="margin-left: 20px;">
+                        <span style="color: #ED1C24;">调换寝室 :</span>
+                    </div>
+                    <form class="form-horizontal form-label-left" id="update_form">
+                        <div class="form-group">
+														<input type="text" id="before_dorid" name="before_dorid" hidden="hidden">
+														<input type="text" id="before_rsrprice" name="before_rsrprice" hidden="hidden">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">寝室编号
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <ul class="list" class="form-control" style="width:100%;margin-left: 0;padding-left: 0;">
+                                    <li class="title" style="width:100%;">
+                                        <input id="new_dorid" type="text" readonly="readonly" value=" " style="width:100%;" class="form-control" onclick="update_showMenu();"
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+												<div class="form-group">
+														<label class="control-label col-md-3 col-sm-3 col-xs-12">房间标准
+																<span class="required">:</span>
+														</label>
+														<div class="col-md-8 col-sm-9 col-xs-12">
+																<input type="text" id="new_room_id" name="new_room_id" hidden="hidden">
+																<input type="text" id="new_room_name" name="new_room_name" disabled="disabled" class="form-control">
+														</div>
+												</div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">床位号
+                                <span class="required">:</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="new_bed_id" class="form-control" tabindex="-1">
+                                    <option value="-1">---- 请选择 -----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="adjustable_bed_alone()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div id="update_menuContent" class="menuContent" style="display:none; position: fixed;z-index: 2000;width:360px">
+	<ul id="update_treeDemo" class="ztree" style="margin-top:0; width:100%; height: 200px;"></ul>
+</div>
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/dormitoryms/AccommodationInfrom.js"></script>
+<script src="../../js/dormitoryms/the_lodge_function.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+
+
+</body>
+</html>

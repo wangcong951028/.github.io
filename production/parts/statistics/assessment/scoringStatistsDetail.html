@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>考核日统计</title>
+    <link rel="stylesheet" href="../../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../../css/utils/jquery-confirm.css">
+
+    <!-- jQuery -->
+    <script src="../../../../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Pagenation -->
+    <script src="../../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+    <script src="../../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+    <script src="../../../../vendors/Pagenation/DataTables.js"></script>
+    <script src="../../../../vendors/Pagenation/moment-with-locales.js"></script>
+    <script src="../../../../vendors/iCheck/icheck.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../../../vendors/moment/locale/zh-cn.js"></script>
+    <script src="../../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--alert弹出框样式-->
+    <script src="../../../js/utils/jquery-confirm.js"></script>
+
+    <!--表单验证-->
+    <script src="../../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <!--图片翻页-->
+    <script src="../../../js/photo/prefixfree.min.js"></script>
+    <link href="../../../css/parts/photo/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/utils/jquery-confirm.css">
+
+    <!--单选框样式-->
+    <link href="../../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <script src="../../../js/encrypt/md52.js"></script>
+    <script src="../../../js/utils/verifyToken.js"></script>
+    <script src="../../../js/utils/utils.js"></script>
+    <script src="../../../js/utils/informationPromptBox.js"></script>
+    <script src="../../../js/statistics/jquery.table2excel.min.js"></script>
+    <script src="../../../js/statistics/jQuery.print.min.js"></script>
+    <link rel="stylesheet" href="../../../../build/js/zTree_v3-master/css/demo.css">
+    <link href="../../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+    <script src="../../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script src="../../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+    <!--<link rel="stylesheet" href="../../../documentation/MultipleTreeSelect-master/src/css/metroStyle/metroStyle.css">-->
+    <script src="../../../../documentation/MultipleTreeSelect-master/src/js/jquery.ztree.all.js"></script>
+    <script src="../../../../documentation/MultipleTreeSelect-master/src/MultipleTreeSelect.js"></script>
+
+
+
+    <style>
+        .haha {
+            display: inline-block;
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 0 4px;
+        }
+        .error{
+            color:dodgerblue;
+        }
+        ul li{
+            list-style-type:none;
+        }
+        a{
+            text-decoration:none;
+        }
+        .ztree li a{
+        	color:#333
+        }
+    </style>
+
+</head>
+<body class="nav-md" style="background-color:white;">
+
+<div class="right_col" role="main" style="min-height: 3546px;">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>项目计分明细
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <form class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">德育项目<span
+                                class="required">：</span></label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <input id="projectTree" style="width: 240px;" class="form-control" required="required"/>
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">班级 <span
+                                class="required">：</span></label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <input id="classTree" class="form-control" style="width: 240px;" required="required"/>
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">学生 <span
+                                class="required">：</span></label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <input id="studentName"  class="form-control" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">操作人 <span
+                                class="required">：</span></label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <input id="operatorName" class="form-control" style="width: 240px;" required="required"/>
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">计分时间 <span
+                                class="required">：</span></label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <input id="createDate"  class="form-control" style="width: 240px;" required="required"/>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                        </div>
+                    <div class="form-group">
+                        <button style="float: right;margin-top: 5px;" type='button' class='btn btn-primary' id="submitSearch">查询</button>
+                    </div>
+                    </div>
+                </form>
+
+                
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th data-data="pk_id" data-visible="false">Id</th>
+                        <th data-data="projectName" data-orderable="false">项目名</th>
+                        <th data-data="gradeName" data-orderable="false">年级</th>
+                        <th data-data="className" data-orderable="false">班级</th>
+                        <th data-data="s_classscoring" data-orderable="false">班级计分</th>
+                        <th data-data="studentName" data-orderable="false">学生</th>
+                        <th data-data="s_individualscoring" data-orderable="false">学生计分</th>
+                        <th data-data="s_pointsnumber" data-orderable="false">计分次数</th>
+                        <th data-data="scorename" data-orderable="false">操作人</th>
+                        <th data-data="s_scoringtime" data-orderable="false">计分日期</th>
+                        <th data-orderable="false">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看详情-->
+<div class="modal fade" id="showDetail" style="display:none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">查看详情</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="updateForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">项目名<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="projectName_show" class="form-control" readonly="readonly" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">所属明细<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="projectDetailName_show" class="form-control" readonly="readonly" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">年级<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="gradeName_show" class="form-control" readonly="readonly" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">班级<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="className_show"  class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	班级计分<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="s_classscoring_show"  class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	学生<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="studentName_show"  class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	学生计分<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="s_individualscoring_show" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	计分次数<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="s_pointsnumber_show"  class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	计分日期<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="s_scoringtime_show" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">	备注<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <textarea type="text" id="s_remark_show"  class="form-control" readonly="readonly"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom Theme Scripts-->
+<script>
+    var areaTable;
+    var classList;
+    var projectList;
+    var classInfo;
+    var proejctInfo;
+    var studentName;
+    var operatorName;
+    var createDate;
+    $(function () {
+        $('#createDate').datetimepicker({
+            format: 'YYYY-MM-DD'//设置时间格式
+        });
+        /**填写的查询参数*/
+        $("#submitSearch").click(function () {
+            studentName = $("#studentName").val();
+            operatorName = $("#operatorName").val();
+            createDate = $("#createDate").val();
+            
+            refresh();
+        });
+
+        findProjectName();
+        initScoringStatists();
+    });
+    /**刷新表单*/
+    function  refresh() {
+        areaTable.api().ajax.reload();
+    }
+    /*获取班级*/
+    function findDeptNode() {
+        var msg = {};
+        msg.deptTypeID = 0;
+        msg.appName="respondents_findDeptNode";
+        serverFromJSONData(msg,true).then(function (success) {
+            if (success.msgState == 200) {
+                var node = success.data;
+
+                function oncheckCalbask(Nodelist) {
+                    classInfo = new Array();
+                    for (var i = 0; i < Nodelist.length; i++) {
+                        classList = Nodelist;
+                        classInfo.push(Nodelist[i].id);
+                    }
+                }
+
+                if (classList != null && classList.length > 0) {
+                    var defaults = {
+                        textLabel: "jasontext",
+                        zNodes: classList,
+                        height: 200,
+                        callback: {
+                            onCheck: oncheckDeptCalbask
+                        }
+                    }
+                } else {
+                    var defaults = {
+                        textLabel: "jasontext",
+                        zNodes: node,
+                        height: 200,
+                        callback: {
+                            onCheck: oncheckDeptCalbask
+                        }
+                    }
+                }
+
+                $(document).ready(function () {
+                    $("#classTree").drawMultipleTree(defaults);
+                });
+            }
+        }),function (error) {
+            console.log("访问服务器发生错误，请稍后再试!",error);
+        };
+    }
+
+    /*获取模块名称和id*/
+    function findProjectName(){
+        var msg = {};
+        msg.projectID = "91_modelID";
+        msg.appName = "rules_getZtree";
+        serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+                var node = success.data;
+
+                if(projectList != null && projectList.length>0){
+                    var defaults = {
+                        textLabel: "jasontext",
+                        zNodes: projectList,
+                        height:200,
+                        callback:{
+                            onCheck: oncheckProjectCalbask
+                        }
+                    }
+                }else{
+                    var defaults = {
+                        textLabel: "jasontext",
+                        zNodes: node,
+                        height:200,
+                        callback:{
+                            onCheck: oncheckProjectCalbask
+                        }
+                    }
+                }
+
+                $("#projectTree").drawMultipleTree(defaults);
+                findDeptNode();
+            } else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+    }
+    function oncheckProjectCalbask(treeNode) {
+        proejctInfo = new Array();
+        for(var i = 0;i<treeNode.length;i++){
+            proejctInfo.push(treeNode[i].id);
+        }
+    }
+    function oncheckDeptCalbask(treeNode) {
+        classInfo = new Array();
+        for(var i = 0;i<treeNode.length;i++){
+            classInfo.push(treeNode[i].id);
+        }
+    }
+    /**
+     * 查询新闻列表
+     */
+    function initScoringStatists() {
+        areaTable = $('#datatable').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.studentName = studentName;
+                    data.operatorName = operatorName;
+                    data.createDate = createDate;
+                    data.projectIdList = proejctInfo;
+                    data.classIdList = classInfo;
+                    data.appName="scoringStatistsDetail_list";
+                    return buildRequestParam(data);
+                },"dataSrc": function (json) {
+                	console.log(json);
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                    var token = "457513700_eN2akp6Wk9IFIY2QmYRov87JzNGckJLd092ZlX2Mi7xQmJauV5aSmtIFz9Pdl5Vhm7aSmNIFIZaSnpia0JhWnXydlp7NnZ61jMihj3guj5GYIdPdlpROip1dmXIdOdIxzs7d092Wm6RGj5rdOc7TIZ1QnZaTmtIFIc71zcIHOsrMzcAJIdPdkZaclLGhkprdOd0YcoQaTI_buoPd092Nmp6TsZ6SmtIFIulkuelsctITIY2Qk5rdOc7TIYycl5CQk7a7Icox092MmXgdOc7TIYVMmX22R9IFztPdiXyajbGhkprdOd2NkJmLl92C";
+                    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    render: function (data, type, scoringStatists, meta) {
+                        var html =
+                            "<button type='button' class='btn btn-primary btn-xs' style='float: right' data-toggle='modal' onclick='showInfo("+ JSON.stringify(scoringStatists) + ")' data-target='#myModals'>查看</button>"
+                        return html;
+                    }
+
+                }]
+        });
+    }
+    function showInfo(detailData) {
+        // 2、接口请求参数组装
+        $("#projectName_show").val(detailData.projectName);
+        $("#projectDetailName_show").val(detailData.projectDetailName);
+        $("#gradeName_show").val(detailData.gradeName);
+        $("#className_show").val(detailData.className);
+        $("#studentName_show").val(detailData.studentName);
+        $("#s_classscoring_show").val(detailData.s_classscoring);
+        $("#s_pointsnumber_show").val(detailData.s_pointsnumber);
+        $("#s_individualscoring_show").val(detailData.s_individualscoring);
+        $("#s_scoringtime_show").val(detailData.s_scoringtime);
+        $("#s_remark_show").val(detailData.s_remark);
+
+        $('#showDetail').modal({
+            backdrop:false,//false:模式对话框，就是没有关闭模式对话框后面页面都不能点击。
+            keyboard:true,//当按下 esc键时关闭模态框，设置为 false 时则按键无效。默认为true
+            show:true
+        });
+    }
+
+</script>
+</body>
+</html>
+

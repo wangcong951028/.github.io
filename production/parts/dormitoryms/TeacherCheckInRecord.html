@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>教师宿舍变化记录</title>
+
+    <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/dormitoryms/TeacherCheckInRecord.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+    <!--单选框样式-->
+    <link href="../../css/parts/baseman/organizationStructure.css" rel="stylesheet">
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+
+    <style>
+        .error{
+            color:dodgerblue;
+        }
+        .form-group{
+            margin-bottom: 10px;
+        }
+        .dataTables_length{
+            display: none;
+        }
+        h5{
+            color: #2A3F54;
+        }
+    </style>
+
+</head>
+
+<body class="nav-md" style="background-color: white">
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+            		教师宿舍变化记录
+                </h2>
+
+                <div class="clearfix"></div>
+                <div class="input-group well" style="width: 100%">
+
+                    <div style="float: left;margin-left:10px">
+                        <span class="control-label"><h5>姓名:</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="teacherName" class="form-control" placeholder="" value="">
+                    </div>
+                    <div style="float: left;margin-left:10px">
+                        <span class="control-label"><h5>学工号:</h5></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="teacherXgh" class="form-control" placeholder="" value="">
+                    </div>
+                    <button type="button" id="myButton" class="btn btn-primary" style="margin-left:10px;float: left">
+                        <i class="glyphicon glyphicon-search"> 搜索</i>
+                    </button>
+										<!--<button id="export" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+	                    <i class="glyphicon glyphicon-download-alt">导出excel</i>
+										</button>
+										<button id="print" class="btn btn-primary" type="button" style="margin-left:10px;float: left" >
+												<i class="glyphicon glyphicon glyphicon-print">打印表格</i>
+										</button></div>-->
+            </div>
+
+            <div class="col-md col-sm-7 col-xs-12" style="">
+                <div id="gender" class="btn-group" data-toggle="buttons" >
+
+                </div>
+             </div>
+
+            <div class="x_content">
+            	<div id="table">
+	                <table id="datatable"
+	                       class="table table-striped table-bordered jambo_table bulk_action"
+	                       data-page-length="10"
+	                       data-order="[[0,&quot;asc&quot;]]"style="width: 100%;height: 100%">
+	                    <thead >
+	                    <tr class="headings">
+	                        <th data-data="id" data-visible="false" class="column-title"></th>
+	                        <th data-data="name" data-orderable="false" class="column-title">姓名</th>
+	                        <th data-data="xgh" data-orderable="false" class="column-title">学工号</th>
+	                        <th data-data="dormNum" data-orderable="false" class="column-title">宿舍编号</th>
+	                        <th data-data="bedNum" data-orderable="false" class="column-title">床位号</th>
+							<th data-data="type" data-orderable="false" class="column-title" >调整类型</th>
+							<th data-data="dateTime" data-orderable="false" class="column-title" >调整时间</th>
+	                        <!--<th data-data="regionalPhotos" data-orderable="false" class="column-title">相片</th>-->
+	                    </tr>
+	                    </thead>
+	                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区名称<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="name" name="name" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区编号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="sectionNumber" name="sectionNumber" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区地址<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="areaAddress" name="areaAddress" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">所属校区<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="subCampus" name="subCampus" class="form-control" tabindex="-1">
+                                	
+                                </select>
+                            </div>
+                        </div>
+
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="saveApart(1)">继续添加</button>
+                        <button class="btn btn-success" onclick="saveApart(2)">添加</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="updateModalLabel">修改</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="updateForm">
+                    	<input type="text" id="updateid" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区名称<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="updatename" name="updatename" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区编号<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="updatesectionNumber" name="updatesectionNumber" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">公寓区地址<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="updateareaAddress" name="updateareaAddress" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">所属校区<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="updatesubCampus" name="updatesubCampus" class="form-control" tabindex="-1">
+                                	
+                                </select>
+                            </div>
+                        </div>
+
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="updateApart()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--设置管理员-->
+<div class="modal fade" id="ADModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="">设置管理员</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="">
+											  <input type="text" id="apart_id" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">校区<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="ad_cm" name="" class="form-control" tabindex="-1" onchange="findtecbycamp(this.value)">
+																		<option value="-1">----- 请选择 -----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">教师<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="tec" name="" class="form-control" tabindex="-1">
+																		<option value="-1">----- 请选择 -----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="saveDorm()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--修改管理员-->
+<div class="modal fade" id="UADModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="">修改管理员</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="">
+											  <input type="text" id="uapart_id" hidden="hidden"/>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">校区<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="uad_cm" name="" class="form-control" tabindex="-1" onchange="findtecbycamp(this.value)">
+																		<option value="-1">----- 请选择 -----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">教师<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="utec" name="" class="form-control" tabindex="-1">
+																		<option value="-1">----- 请选择 -----</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" onclick="UDorm()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--鼠标移入、移除按钮-->
+<div id="show_div" style="display: none;">
+		<button class="btn btn-success btn-xs" href="javascript:;"><i class="fa fa-pencil" onclick="U_dorme()">修改</i></button>
+		<button class="btn btn-danger btn-xs" href="javascript:;"><i class="fa fa-trash-o" onclick="delete_dorm()">删除</i></button>
+</div>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="../../js/statistics/jquery.table2excel.min.js"></script>
+<script src="../../js/statistics/jQuery.print.min.js"></script>
+
+</body>
+</html>

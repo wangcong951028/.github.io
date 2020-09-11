@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>缴费记录</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <!--多选下拉框-->
+    <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+    <script src="../../../build/js/bootstrap-multiselect.js"></script>
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+
+
+</head>
+<body class="nav-md" style="background-color: white">
+<div class="container body">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>缴费记录</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="form-group col-lg-8" style="width:100%">
+                    <div class="input-group well" style="width: 100%">
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>年级:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="selectGrade" class="form-control" onchange="findAllClassByGrade()">
+
+                            </select>
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>班级:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="selectClass" class="form-control" >
+
+                            </select>
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>费用类型:</h5></span>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="chargeType" class="form-control" >
+
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-1">
+                            <button id="search" class="btn btn-success form-control" type="button" onclick="initReport()"> 搜 索</button>
+                        </div>
+                        
+                        <div class="col-md-1">
+                            <button id="search" class="btn btn-success form-control" type="button" onclick="exportExcel()"> Excel导出</button>
+                        </div>
+                        <a download="缴费报表.xlsx" id="hf_grade" ></a>
+                    </div>
+                    <!--<div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeDataExportModal" style="margin-left:10px;float: left">数据导出</button>
+                    </div>
+                    <div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button onclick="reportsViewButton()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeTableFindModal" style="margin-left:10px;float: left">缴费报表查询</button>
+                    </div>
+                    
+                    <div class="col-md-1 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button onclick="confirmAllPageColse()" type="button" class="btn btn-primary"  style="margin-left:10px;float: left">一键关闭账单</button>
+                    </div>-->
+                    <div style="overflow: auto;">
+                    <table id="tableShow"  style="width: 100%;margin-top: 30px; " border="1" cellspacing="0">
+                        <thead>
+                        <tr  style="margin-bottom: 20px;margin-top: 20px;border: 1;">
+                            <th style="text-align: center;border: 1;">所属年级</th>
+                            <th style="text-align: center;">班级</th>
+                            <th style="text-align: center;">费用类型</th>
+                            <th style="text-align: center;">应收金额</th>
+                            <th style="text-align: center;">已交费班级合计</th>
+                            <th style="text-align: center;">未交费班级合计</th>
+                            <th style="text-align: center;">已关闭班级合计</th>
+                            <th style="text-align: center;">其他方式班级合计</th>
+                        </thead>
+                        <tbody id="tableShowTbody">
+                        	
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Theme Scripts-->
+<script>
+	var list;
+    $(function () {
+    	initReport();
+		getChargeType();
+    });
+    
+    function initReport(){
+
+		var msg = {};
+		
+		if($("#selectGrade").val()){
+			if($("#selectClass").val()){
+				msg.deptId=$("#selectClass").val();
+			}else{
+				msg.deptId=$("#selectGrade").val();
+			}
+		}
+    	msg.typeId=$("#chargeType").val();
+        msg.appName = "chargeReport_list";
+        serverFromJSONData(msg, true).then(function (success) {
+        	var shouldPay=0;
+        	var hasPaid=0;
+        	var notPay=0;
+        	var hasColse=0;
+        	var useOtherWay=0;
+            if (success.msgState == 200) {
+            	var html=""
+            	for(var i=0;i<success.data.length;i++){
+            		html+="<tr style='text-align: center;'><td>"+success.data[i].grade+"</td><td>"+success.data[i].className+"</td><td>"+success.data[i].typeName+"</td><td>"+success.data[i].amountReceivable+"</td><td>"+success.data[i].actactuallyMoney+"</td><td>"+success.data[i].notPayMoney+"</td><td>"+success.data[i].closeNum+"</td><td>"+success.data[i].payUseOtherWay+"</td></tr>";
+            		shouldPay=accAdd(shouldPay,success.data[i].amountReceivable);
+//          		shouldPay=Number(shouldPay)+Number(success.data[i].amountReceivable);
+            		hasPaid=accAdd(hasPaid,success.data[i].actactuallyMoney);
+            		notPay=accAdd(notPay,success.data[i].notPayMoney);
+            		hasColse=accAdd(hasColse,success.data[i].closeNum);
+            		useOtherWay=accAdd(useOtherWay,success.data[i].payUseOtherWay);
+            	}
+            	html+="<tr style='text-align: center;'><td>总计</td><td></td><td></td><td>"+shouldPay+"</td><td>"+hasPaid+"</td><td>"+notPay+"</td><td>"+hasColse+"</td><td>"+useOtherWay+"</td></tr>";
+            	
+            	msgResult={};
+            	msgResult.totalName="总计";
+            	msgResult.shouldPay=shouldPay;
+            	msgResult.hasPaid=hasPaid;
+            	msgResult.notPay=notPay;
+            	msgResult.hasColse=hasColse;
+            	msgResult.useOtherWay=useOtherWay;
+            	list=success.data;
+            	list.push(msgResult);
+            	$("#tableShowTbody").html(html);
+            	var mi=$("#selectGrade").html();
+            	if($("#selectGrade").html().replace(/\s/g, "")==""){
+            		getGrade();
+            	}
+            	
+            }else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+    }
+    
+    function accAdd(arg1, arg2) {
+	    var r1, r2, m, c;
+	    try {
+	        r1 = arg1.toString().split(".")[1].length;
+	    }
+	    catch (e) {
+	        r1 = 0;
+	    }
+	    try {
+	        r2 = arg2.toString().split(".")[1].length;
+	    }
+	    catch (e) {
+	        r2 = 0;
+	    }
+	    c = Math.abs(r1 - r2);
+	    m = Math.pow(10, Math.max(r1, r2));
+	    if (c > 0) {
+	        var cm = Math.pow(10, c);
+	        if (r1 > r2) {
+	            arg1 = Number(arg1.toString().replace(".", ""));
+	            arg2 = Number(arg2.toString().replace(".", "")) * cm;
+	        } else {
+	            arg1 = Number(arg1.toString().replace(".", "")) * cm;
+	            arg2 = Number(arg2.toString().replace(".", ""));
+	        }
+	    } else {
+	        arg1 = Number(arg1.toString().replace(".", ""));
+	        arg2 = Number(arg2.toString().replace(".", ""));
+	    }
+	    return (arg1 + arg2) / m;
+	}
+    
+    function getGrade(){
+
+
+		var msg = {};
+	    msg.appName="origaniza_getAllGrade";
+	    serverFromJSONData(msg,true).then(function (success) {
+	        if(success.msgState === 200){
+	        	var html ="<option value=''>--请选择--</option>";
+	        	for(var i=0;i<success.data.length;i++){
+	        		html+="<option value='"+success.data[i].id+"'>"+success.data[i].deptName+"</option>";
+	        	}
+	        	$("#selectGrade").html(html);
+
+	        }
+	    }),function (error) {
+	        console.log("访问服务器发生错误，请稍后再试!",error);
+	    };
+
+    }
+    
+    function getClass(){
+    	var msg = {};
+	    msg.appName="origaniza_getAllGrade";
+	    serverFromJSONData(msg,true).then(function (success) {
+	        if(success.msgState === 200){
+	        	var html ="<option value=''>--请选择--</option>";
+	        	for(var i=0;i<success.data.length;i++){
+	        		html+="<option value='"+success.data[i].id+"'>"+success.data[i].deptName+"</option>";
+	        	}
+	        	$("#selectGrade").html(html);
+
+	        }
+	    }),function (error) {
+	        console.log("访问服务器发生错误，请稍后再试!",error);
+	    };
+    }
+    
+    
+    //根据年级查询所有的班级
+function findAllClassByGrade(){
+	var msg = {};
+    msg.appName="origaniza_getAllClass";
+    msg.opperOriganizaCode=$("#selectGrade").val();
+    serverFromJSONData(msg,true).then(function (success) {
+        if(success.msgState === 200){
+        	var html ="<option value=''>--请选择--</option>";
+        	for(var i=0;i<success.data.length;i++){
+        		html+="<option value='"+success.data[i].id+"'>"+success.data[i].deptName+"</option>";
+        	}
+        	$("#selectClass").html(html);
+        }
+    }),function (error) {
+        console.log("访问服务器发生错误，请稍后再试!",error);
+    };
+}
+
+
+	function getChargeType(){
+        var param = {};
+        param.appKey = "aGFuZHlDYW1wdXM=";
+        param.appSecret = "1234567890abcedefgh";
+        var time = new Date().getTime();
+        param.time = time;
+        var msg = {};
+
+        msg.appName = "chargeItemConf_getAllItem";
+
+        var paramJsonMsg = JSON.stringify(msg);
+        param.param = paramJsonMsg;
+        var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+        param.sign = hex_md5(temp);
+        var jsonStr = JSON.stringify(param);
+        $.ajax({
+            type: 'POST',
+            url: serverBaseUrl,
+            data: jsonStr,
+            dataType: "json",
+            success: function (success) {
+                var chargeTypeData = success.data;
+                var html = '';
+                $(chargeTypeData).each(function (i) {
+                    html += '<option value="'+chargeTypeData[i]['id']+'">'+chargeTypeData[i]['chargeItemName']+'</option>';
+                })
+                $("#chargeType").html('<option value="">不限</option>'+html);
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                xhr.setRequestHeader("token", static_token);
+            }
+        });
+    }
+
+	function exportExcel(){
+		var chargeJson = new Array();
+        for (var i = 0; i < list.length-1; i++) {
+            chargeJson[i] = {"所属年级": list[i].grade,
+                "班级": list[i].className,
+                "费用类型": list[i].typeName,
+                "应收金额" :list[i].amountReceivable,
+                "已交费班级合计(元)": list[i].actactuallyMoney,
+                "未交费班级合计": list[i].notPayMoney,
+                "已关闭班级合计": list[i].closeNum,
+                "其他方式班级合计": list[i].payUseOtherWay
+            };
+        }
+        
+        chargeJson[list.length-1]={"所属年级": "总计",
+                "班级": "",
+                "费用类型": "",
+                "应收金额" :list[list.length-1].shouldPay,
+                "已交费班级合计(元)": list[list.length-1].hasPaid,
+                "未交费班级合计": list[list.length-1].notPay,
+                "已关闭班级合计": list[list.length-1].hasColse,
+                "其他方式班级合计": list[list.length-1].useOtherWay
+
+            };
+        downloadExl(chargeJson,"hf_grade",true);
+
+	}
+</script>
+
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../../build/js/xlsx.full.min.js"></script>
+</body>
+</html>
+

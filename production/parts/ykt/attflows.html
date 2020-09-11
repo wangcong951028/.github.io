@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>宿舍打卡记录</title>
+   <link rel="stylesheet" href="../../../vendors/bootstrap/dist/css/bootstrap.min.css">
+       <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+   
+       <!-- Font Awesome -->
+       <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <!-- NProgress -->
+   
+       <!-- iCheck -->
+       <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+   
+       <!-- Custom Theme Style -->
+       <link href="../../../build/css/custom.min.css" rel="stylesheet">
+   
+       <!-- Font Awesome -->
+       <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+       <!-- NProgress -->
+       <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+       <!-- iCheck -->
+       <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+       <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+   
+       <!-- jQuery -->
+       <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+		
+		<!--zTree-->
+		<link rel="stylesheet" href="../../../build/js/zTree_v3-master/css/demo.css">
+		<link href="../../../build/css/ztree/zTreeStyle.css" rel="stylesheet">
+		
+		<!--alert弹出框css样式-->
+		<link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+		<!--alert弹出框样式-->
+		<script src="../../js/utils/jquery-confirm.js"></script>
+		
+		<style>
+			.ztree li a{
+				color:#333
+			}
+			a{
+					text-decoration:none;
+			}
+			ul li{
+					list-style-type:none;
+			}
+		</style>
+</head>
+<body class="nav-md" style="background-color:white;">
+<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12" style="width: 20%;display: block;">
+				<div class="x_panel" style="">
+						<ul class="ztree" id="treeDemo" style="max-height: 600px;margin-top: 10px;height: 100%;width: 100%; overflow-x: auto; border: 1px solid #FFFFFF; background-color: #FFFFFF;"></ul>
+				</div>
+		</div>
+    <div class="col-md-12 col-sm-12 col-xs-12" style="width: 80%">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>考勤统计</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            	<div class="input-group well" style="width: 100%">
+            		<div style="float: left;margin-left:10px">
+            			<span class="control-label"><h5>考勤类型:</h5></span>
+            		</div>
+            		<div class="col-md-2">
+            			<select id="rules_id" class="select2_single form-control" tabindex="-1" onchange="set_rules_items(this.value)">
+            			</select>
+            		</div>
+								<div style="float: left;margin-left:10px">
+									<span class="control-label"><h5>状态:</h5></span>
+								</div>
+								<div class="col-md-2">
+									<select id="status_id" class="select2_single form-control" tabindex="-1">
+											<option value="-1"> ----- 请选择 ----- </option>
+											<option value="1" selected="selected"> 正常打卡 </option>
+											<option value="2"> 迟到打卡 </option>
+											<option value="3"> 异常打卡 </option>
+											<option value="4"> 请假 </option>
+									</select>
+								</div>
+            		<div style="float: left;margin-left:10px">
+            			<span class="control-label"><h5>考勤日期:</h5></span>
+            		</div>
+            		<div class="col-md-2">
+            			<input type="text" id="dosclockTime" class="form-control" value="">
+            		</div>
+            		<button type="button" id="myButton" class="btn btn-primary" style="margin-left:10px;float: left">
+            			<i class="glyphicon glyphicon-search"> 搜索 </i>
+            		</button>
+            	</div>
+                <div class="x_content">
+									<div class="col-md-2" style="width: 100%;color: #FB3500;font-size:15px;font-weight: 600;">
+										<span id="dept_html">考勤部门：</span>
+										<span id="beginTime_html" style="margin-left:15px">开始时间：</span>
+										<span id="endTime_html" style="margin-left:15px">结束时间：</span>
+										<span id="lataTime_html" style="margin-left:15px">刷卡截止时间：</span>
+										<span id="perType_html" style="margin-left:15px">考勤人员类型：</span>
+									</div>
+                <table id="datatable" 
+									class="table table-striped table-bordered jambo_table bulk_action" 
+									data-page-length="10"
+									data-order="[[0,&quot;asc&quot;]]"style="width: 100%;height: 100%">
+
+                   <thead>
+                    <tr class="headings">
+												<th data-data="" data-visible="false" class="column-title"></th>
+												<th data-data="name" width="" data-orderable="false" class="column-title">姓名</th>
+                        <th data-data="xgh" width="" data-orderable="false" class="column-title">学号</th>
+                        <th data-data="deptName" width="" data-orderable="false" class="column-title">班级</th>
+                        <th data-data="subOrType" width="" data-orderable="false" class="column-title">身份类别</th>
+												<th data-data="status" width="" data-orderable="false" class="column-title">是否住校</th>
+												<!-- <th data-data="attName" width="" data-orderable="false" class="column-title">打考勤类型</th>
+											  <th data-data="beginTime" width="5%" data-orderable="false" class="column-title">开始打卡时间</th>
+											  <th data-data="endTime" width="5%" data-orderable="false" class="column-title">结束打卡时间</th>
+									  		<th data-data="lateTime" width="5%" data-orderable="false" class="column-title">迟到打卡时间</th> -->
+												<th data-data="ctime" width="" data-orderable="false" class="column-title">打卡时间</th>
+												<th data-data="termInfoAddress" width="" data-orderable="false" class="column-title">终端名称</th>
+												<th data-data="" width="" data-orderable="false" class="column-title">状态</th>
+                    </tr>
+                   </thead>
+                   <tbody id="tbody"></tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#dosclockTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+		Date.prototype.Format = function(fmt){ //author: meizz   
+		  var o = {   
+		    "M+" : this.getMonth()+1,                 //月份   
+		    "d+" : this.getDate(),                    //日   
+		    "h+" : this.getHours(),                   //小时   
+		    "m+" : this.getMinutes(),                 //分   
+		    "s+" : this.getSeconds(),                 //秒   
+		    "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+		    "S"  : this.getMilliseconds()             //毫秒   
+		  };   
+		  if(/(y+)/.test(fmt))   
+		    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+		  for(var k in o)   
+		    if(new RegExp("("+ k +")").test(fmt))   
+		  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+		  return fmt;   
+		}   
+		var time1 = new Date().Format('yyyy-MM-dd')
+		$('#dosclockTime').val(time1);
+	})
+</script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../../build/js/xlsx.full.min.js"></script>
+<script src="../../js/statistics/jquery.table2excel.min.js"></script>
+<script src="../../js/statistics/jQuery.print.min.js"></script>
+<script src="../../js/ykt/attflow.js"></script>
+
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.core.js"></script>
+<script src="../../../build/js/zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+</body>
+</html>
+

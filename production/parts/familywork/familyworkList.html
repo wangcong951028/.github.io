@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" style="background-color: white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>家庭作业</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!--<link href="../../../build/css/custom.min.css" rel="stylesheet">-->
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/familywork/familywork.js"></script>
+
+    <!--多选下拉框-->
+    <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+    <script src="../../../build/js/bootstrap-multiselect.js"></script>
+
+    <!--alert弹出框css样式-->
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+    <!--alert弹出框样式-->
+    <script src="../../js/utils/jquery-confirm.js"></script>
+
+    <!--图片翻页-->
+    <script src="../../js/photo/prefixfree.min.js"></script>
+    <link href="../../css/parts/photo/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+
+    <!--表单验证-->
+    <script src="../../../build/js/jquery-validate/jquery.validate.min.js"></script>
+    <script src="../../../build/js/jquery-validate/messages_zh.js"></script>
+		
+    <style>
+        .haha {
+            display: inline-block;
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 0 4px;
+        }
+        .error {
+            color: dodgerblue;
+        }
+    </style>
+</head>
+
+<body class="nav-md" style="background-color: white">
+
+
+<div class="row">
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    已布置作业
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="input-group well" style="width: 100%">
+
+                <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>教师名称:</h5></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="teacherName" class="form-control" placeholder="教师名称" value="">
+                </div>
+
+                <div style="float: left;margin-left:10px">
+                    <span class="control-label"><h5>班级名称:</h5></span>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" id="className" class="form-control" placeholder="班级名称" value="">
+                </div>
+
+                <button type="button" class="btn btn-primary" style="margin-left:10px;float: left" id="search">
+                    <i class="glyphicon glyphicon-search"> 搜索</i>
+                </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal" style="margin-left:10px;float: left" >添加
+                </button>
+            </div>
+
+            <div class="x_content">
+
+                <table id="datatable-checkbox"
+                       class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                    <thead>
+                    <tr class="headings">
+                        <th data-data="pk_ID" data-visible="false" class="column-title">Id</th>
+                        <!--<th data-orderable="false"><input type="checkbox" id="checkbox-all" class="flat"/></th>-->
+                        <th data-data="h_Title" data-orderable="false" class="column-title">标题</th>
+                        <th data-data="cousreName" data-orderable="false" class="column-title">科目</th>
+                        <th data-data="h_PublishTime" data-orderable="true" class="column-title">发布时间</th>
+                        <th data-data="h_FinishTime" data-orderable="true" class="column-title">完成时间</th>
+                        <th data-data="h_PublisherName" data-orderable="false" class="column-title">发布人</th>
+                        <th data-data="fk_ClassName" data-orderable="false" class="column-title">班级</th>
+                        <th data-data="" data-orderable="false" class="column-title">编辑</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 新增 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">布置作业</h3>
+            </div>
+
+            <div class="col-md-6 col-xs-12" style="width: 100%;height: 100%">
+                <div class="x_content">
+                    <br/>
+                    <form class="form-horizontal form-label-left" id="workForm">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业标题<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="title" class="form-control" name="title" placeholder="如：语文作业">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业内容<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+									<textarea class="form-control" id="content" name="content" rows="3"
+                                              style="resize: none" placeholder='如：背诵第24课课文,请尽量控制在20字以内!'></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">科目<span
+                                    class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="cousreName" class="select2_single form-control" tabindex="-1"
+                                        name="cousreName">
+                                    <option value="-1">------------------------ 请选择课程 ----------------------</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">布置时间<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="beginTime" name="beginTime" class="form-control"
+                                       placeholder="2017-08-01"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">完成时间<span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="endTime" name="endTime" class="form-control"
+                                       placeholder="2017-08-01"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">班级<span
+                                    class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="selectClass" name="selectClass" multiple="multiple">
+
+                                </select>
+                            </div>
+                        </div>
+												<div class="form-group">
+														<label class="control-label col-md-3 col-sm-3 col-xs-12">推送方式<span class="required">*</span></label>
+														<div style="margin-top: 9px;">
+																<label style="width: 10%;margin-left:15px">
+																		<input type="checkbox" id="checkbox1"  name="state" value="1" style="margin-right: 12px;">短信
+																</label>
+																<label style="width: 10%;margin-left:50px">
+																		<input type="checkbox" id="checkbox2"  name="state" value="2" style="margin-right: 12px;">微信
+																</label>
+														</div>
+												</div>
+                        <br/><br/>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <button class="btn btn-success" id="save2">提交</button>
+                                <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="myModalLabe2">修改作业</h3>
+            </div>
+
+            <div class="col-md-6 col-xs-12" style="width: 100%;height: 100%">
+                <div class="x_content">
+                    <br/>
+                    <form class="form-horizontal form-label-left" id="updateworkForm">
+                        <input type="text" id="updateID" value="" hidden>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业标题<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="updatetitle" class="form-control" name="updatetitle" placeholder="如：语文作业">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业内容<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+									<textarea class="form-control" id="updatecontent" name="updatecontent" rows="3"
+                                              style="resize: none" placeholder='如：背诵第24课课文'></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">科目<span
+                                    class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="updatecousreName" class="select2_single form-control" tabindex="-1"
+                                       readonly="readonly" name="updatecousreName">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">布置时间<span class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="updatebeginTime" name="updatebeginTime" class="form-control"
+                                       readonly="readonly" placeholder="2017-08-01"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">完成时间<span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input id="updateendTime" name="updateendTime" class="form-control" readonly="readonly"
+                                       placeholder="2017-08-01"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">班级<span
+                                    class="required">*</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select id="updateselectClass" name="updateselectClass"
+                                        class="select2_single form-control" readonly="readonly">
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/><br/>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <button class="btn btn-success" id="updatesave2">提交</button>
+                                <button class="btn btn-primary" data-dismiss="modal" onclick="cleanModal()">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 查看 -->
+<div class="modal fade" id="lookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="myModalLabe3">查看详情</h3>
+            </div>
+
+            <div class="col-md-6 col-xs-12" style="width: 100%;height: 100%">
+                <div class="x_content">
+                    <br/>
+                    <form class="form-horizontal form-label-left" id="lookworkForm">
+                        <input type="text" id="lookID" value="" hidden>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业标题<span class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="looktitle" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">作业内容<span class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <textarea class="form-control" id="lookcontent" re rows="5"
+                                          style="resize: none" readonly="true"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">图片<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12" id="">
+                                <div class="row" id="lookpictrure">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">科目<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="lookcousreName" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">布置时间<span class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="lookbeginTime" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">完成时间<span class="required">：</span>
+                            </label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="lookendTime" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">班级<span
+                                    class="required">：</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       id="lookselectClass" style="width: 100%;text-align: left">
+                                </label>
+                            </div>
+                        </div>
+                        <br/><br/>
+                        <div class="modal-footer">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="width: 70%;float: left">
+                                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 查看图片Modal -->
+<div class="modal fade" id="myModals1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <ul class="slides" id="slides"></ul>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#updatebeginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#updateendTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#beginTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#endTime').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    })
+
+    $().ready(function() {
+        $("#myModal").validate({
+            submitHandler:function(form){
+                saveFamilywork();
+            }
+        });
+    });
+
+    $().ready(function() {
+        $("#updateModal").validate({
+            submitHandler:function(form){
+                newFamilywork();
+            }
+        });
+    });
+
+
+    jQuery.validator.addMethod(
+        "timeSize",
+        function(value, element, param) {
+            var beginTime = $("#beginTime").val();
+            if(value>=beginTime){
+                return true;
+            }
+            return Number(value) >= Number(beginTime);
+        },
+        $.validator.format("结束时间不能小于开始时间！")
+    );
+
+    jQuery.validator.addMethod(
+        "courseSize",
+        function(value, element, param) {
+            if(value != -1){
+                return true;
+            }
+            return Number(value) > Number(-1);
+        },
+        $.validator.format("科目不能为空！")
+    );
+
+    jQuery.validator.addMethod(
+        "classSize",
+        function(value, element, param) {
+            if(value != ""){
+                return true;
+            }
+            return value != "";
+        },
+        $.validator.format("班级不能为空！")
+    );
+
+    $().ready(function () {
+        $("#workForm").validate({
+            rules: {
+                title: "required",
+                content: "required",
+                beginTime: {
+                    required: true,
+                    date: true
+                },
+                endTime: {
+                    required: true,
+                    date: true,
+                    timeSize:endTime
+                },
+                cousreName:{
+                    courseSize:cousreName
+                },
+                selectClass:{
+                    classSize:selectClass
+                }
+            },
+            messages: {
+                title: "作业标题不能为空！",
+                content: "作业内容不能为空！",
+                beginTime: "请输入正确时间格式！",
+                endTime: "请输入正确时间格式，结束时间不能小于开始时间！"
+            }
+        });
+    })
+    //-----------------------------------
+    jQuery.validator.addMethod(
+        "updatetimeSize",
+        function(value, element, param) {
+            var updatebeginTime = $("#updatebeginTime").val();
+            if(value>=updatebeginTime){
+                return true;
+            }
+            return Number(value) >= Number(updatebeginTime);
+        },
+        $.validator.format("结束时间不能小于开始时间！")
+    );
+
+    jQuery.validator.addMethod(
+        "updatecourseSize",
+        function(value, element, param) {
+            if(value != -1){
+                return true;
+            }
+            return Number(value) > Number(-1);
+        },
+        $.validator.format("科目不能为空！")
+    );
+
+    jQuery.validator.addMethod(
+        "updateclassSize",
+        function(value, element, param) {
+            if(value != ""){
+                return true;
+            }
+            return value != "";
+        },
+        $.validator.format("班级不能为空！")
+    );
+
+    $().ready(function () {
+        $("#updateworkForm").validate({
+            rules: {
+                updatetitle: "required",
+                updatecontent: "required",
+                updatebeginTime: {
+                    required: true,
+                    date: true
+                },
+                updateendTime: {
+                    required: true,
+                    date: true,
+                    updatetimeSize:updateendTime
+                },
+                updatecousreName:{
+                    updatecourseSize:updatecousreName
+                },
+                updateselectClass:{
+                    updateclassSize:updateselectClass
+                }
+            },
+            messages: {
+                updatetitle: "作业标题不能为空！",
+                updatecontent: "作业内容不能为空！",
+                updatebeginTime: "请输入正确时间格式！",
+                updateendTime: "请输入正确时间格式，结束时间不能小于开始时间！"
+            }
+        });
+    })
+
+</script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<!-- Custom Theme Scripts -->
+<!-- <script src="../build/js/custom.min.js"></script> -->
+
+
+</body>
+</html>

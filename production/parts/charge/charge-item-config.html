@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>收费项管理</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Pagenation -->
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+
+    <!-- bootstrap-daterangepicker -->
+    <link rel="stylesheet" href="../../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+
+    <link href="../../../build/js/zTree_v3-master/css/demo.css" rel="stylesheet">
+    <link href="../../../build/js/zTree_v3-master/css/metroStyle/metroStyle.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+
+    <!--多选下拉框-->
+    <link rel="stylesheet" href="../../../build/js/bootstrap-multiselect.css">
+    <script src="../../../build/js/bootstrap-multiselect.js"></script>
+
+
+    <script src="../../js/encrypt/md52.js"></script>
+    <script src="../../js/utils/utils.js"></script>
+    <script src="../../js/utils/jquery-confirm.js"></script>
+    <script src="../../js/utils/informationPromptBox.js"></script>
+    <script src="../../js/utils/verifyToken.js"></script>
+
+	<style>
+        .error{
+            color:dodgerblue;
+        }
+        .input-file{
+		    display: inline-block;
+		    position: relative;
+		    overflow: hidden;
+		    text-align: center;
+		    width: auto;
+		    background-color: #2c7;
+		    border: solid 1px #ddd;
+		    border-radius: 4px;
+		    padding: 5px 10px;
+		    font-size: 12px;
+		    font-weight: normal;
+		    line-height: 18px;
+		    color:#fff;
+		    text-decoration: none;
+		}
+		.input-file input[type="file"] {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    font-size: 14px;
+		    background-color: #fff;
+		    transform: translate(-300px, 0px) scale(4);
+		    height: 40px;
+		    opacity: 0;
+		    filter: alpha(opacity=0);
+		 }
+    </style>
+
+</head>
+<body class="nav-md" style="background-color: white">
+<div class="container body">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>收费项管理</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="form-group col-lg-8" style="width:100%">
+                    <div class="input-group well" style="width: 100%">
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>关键字:</h5></span>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" placeholder="收费项名称" id="searchKey" class="form-control">
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>开始时间:</h5></span>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" placeholder="开始时间" id="beginTimeSelect" class="form-control">
+                        </div>
+                        <div style="float: left;margin-left:10px">
+                            <span class="control-label"><h5>结束时间:</h5></span>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" placeholder="结束时间" id="endTimeSelect" class="form-control">
+                        </div>
+                        <div class="col-md-1">
+                            <button id="search" class="btn btn-success form-control" type="button"> 搜 索</button>
+                        </div>
+                        <a download="身份证信息有误数据.xlsx" id="hf_grade" ></a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12" style="display: inline-block;margin-bottom: 4px;">
+                        <button type="button" class="btn btn-primary" onclick="showAdd()"
+                                style="margin-left:10px;float: left">新增收费项
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="excleModelShow()"
+                                style="margin-left:10px;float: left">excle导入
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="excleModelShowExport()">excle模板导出
+                        </button>
+                    </div>
+                    <table id="chargeItemTable"
+                           class="table table-striped table-bordered jambo_table bulk_action"
+                           data-page-length="10"
+                           style="width: 100%">
+                        <thead>
+                        <tr class="headings">
+                            <th data-data="id" data-visible="false">Id</th>
+                            <th data-data="name" data-orderable="true">项目名</th>
+                            <!--<th data-data="amount" data-orderable="false">金额</th>-->
+                            <th data-data="typeName" data-orderable="false">费用类型</th>
+                            <!--<th data-data="startDate" data-orderable="false">开始时间</th>-->
+                            <th data-data="endDate" data-orderable="false">结束时间</th>
+                            <th data-data="createUser" data-orderable="false">创建人</th>
+                            <th data-data="createDate" data-orderable="false">创建时间</th>
+                            <!--<th data-data="status" data-orderable="false">是否已缴费</th>-->
+                            <!--<th data-data="" data-orderable="false">操作</th>-->
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">编辑</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br/>
+                    <form class="form-horizontal form-label-left" id="saveForm">
+                        <input type="hidden" id="hideId">
+                        <div class="form-group" id="payMent">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项名称<span class="required">:</span></label>
+                            <div class="col-md-3 col-sm-9 col-xs-12">
+                                <input type="text" id="chargeItemName" class="form-control" placeholder="" autocomplete="off">
+                            </div>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费金额<span class="required">:</span></label>
+                            <div class="col-md-3 col-sm-9 col-xs-12">
+                                <input type="text" id="amount" class="form-control" placeholder="" autocomplete="off">
+                            </div>
+                            <label style="font-weight: bold;color: red;cursor: hand;font-size: 2.4rem;" onclick="deleteRowToTimeList('2','')">-</label>
+                            <label style="font-weight: bold;color: #2f8325;cursor: hand;font-size: 2.4rem;padding-left:20px;" onclick="addRowToTimeList('')">＋</label>
+                        </div>
+                        <div id="addTime"></div>
+                        <!--<div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费金额<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="number" id="amount" class="form-control"
+                                       placeholder="" autocomplete="off">
+                            </div>
+                        </div>-->
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费项类型<span
+                                    class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <select class="form-control" id="chargeTypeSelect">
+
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">开始时间<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="startDate" class="form-control"
+                                       placeholder="">
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">结束时间<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <input type="text" id="endDate" class="form-control"
+                                       placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">是否启用<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12 radio">
+                                <label>
+                                    <input type="radio" checked name="status" value="1">是
+                                </label>
+                                <label>
+                                    <input type="radio" name="status" value="0">否
+                                </label>
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">收费范围选择<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" readonly id="showRangeInfo" class="form-control">
+                                    <input type="hidden" id="hideDept">
+                                    <span class="input-group-btn">
+                                        <button class="btn" type="button" id="rangeSelect">范围选择</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success addBtn" id="actionType" onclick="confirmSave()">继续添加</button>
+                        <button class="btn btn-success addBtn" onclick="confirmSave(true)">添加</button>
+                        <button class="btn btn-success editBtn" style="display: none" onclick="editData()">确认</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onclick="resetForm()">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rangeSelectModal" tabindex="-1" role="dialog" aria-labelledby="rangeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="rangeModalLabel">范围选择</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <ul id="treeDemo" class="ztree" style="width: 100%;height: 500px;overflow:auto;"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" id="confirm" onclick="selectRangeDate()">确定</button>
+                        <button class="btn btn-primary " data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--导入-->
+<div id="uploadModel" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">导入缴费</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm3">
+												<input type="text" id="uploadid" hidden>
+												<input type="text" id="uploadname" hidden>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">添加缴费文件<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                            	<a class="input-file input-fileup" href="javascript:;">
+								 + 选择文件
+								 <!--<input size="100" type="file" name="file" id="file">-->
+								 <input id="uploadGrade" onchange="importGrade(this)" size="100" name="files" type="file"/>
+								</a>
+								<div class="fileerrorTip1" id="download_type"></div>
+								<div class="showFileName1" id="download_name"></div>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <div id="jinduGIF"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="uploadButton1" onclick="javascript:importChargeItem()">确认</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clean_file()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模板导出-->
+<div id="exportModel" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">缴费模板导出</h3>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="saveForm3">
+												<input type="text" id="uploadid" hidden>
+												<input type="text" id="uploadname" hidden>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">缴费类型<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+								 <!--<input size="100" type="file" name="file" id="file">-->
+								 <select id="chargeType" style="width: 200px;height: 30px;border-radius: 5px;text-align: center;text-align-last: center;">
+								 </select>
+								 
+                            </div>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">导出人员范围选择<span class="required">:</span></label>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                                <div class="input-group">
+                                	<a href="" download="缴费模板.xlsx" id="hf"></a>
+                                    <input type="text" style="margin-top: 10px;border-radius:5px" readonly id="showRangeInfoPerson" class="form-control">
+                                    <input type="hidden" id="hideDeptPerson">
+                                    <span class="input-group-btn">
+                                        <button class="btn" type="button" style="margin-top: 10px;" id="rangeSelectPerson">范围选择</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <div id="jinduGIF"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="uploadButton1" onclick="javascript:exportChargeModel()">确认</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clean_file()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--导出模板范围选择-->
+<div class="modal fade" id="rangeSelectModalPerson" tabindex="-1" role="dialog" aria-labelledby="rangeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="rangeModalLabelPerson">范围选择</h4>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <ul id="treeDemoPerson" class="ztree" style="width: 100%;height: 500px;overflow:auto;"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                    <span>
+                        <button class="btn btn-success" id="confirmPerson" onclick="selectRangeDatePerson()">确定</button>
+                        <button class="btn btn-primary " data-dismiss="modal">关闭</button>
+                   </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Theme Scripts-->
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<script src="../../../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../../../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../../../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+<!--时间-->
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/moment/locale/zh-cn.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="../../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="../../../build/js/ztree/jquery-migrate-1.2.1.js"></script>
+<script src="../../../build/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+<script src="../../../build/js/ztree/jquery.ztree.excheck-3.5.js" type="text/javascript" ></script>
+<script src="../../../build/js/ztree/jquery.ztree.exedit-3.5.js" type="text/javascript" ></script>
+
+<script src="../../js/utils/ImportAndExport.js"></script>
+<script src="../../../build/js/xlsx.full.min.js"></script>
+<script>
+    var zTreeObj;
+    var areaTable;
+    var globalIndex = 1;// 全局序号
+    var jsonObj;
+    $(function () {
+        //添加额外的参数传给服务器
+        areaTable = $('#chargeItemTable').dataTable({
+            "ajax": {
+                "url": serverBaseUrl,
+                "data": function (data) {
+                    //添加额外的参数传给服务器
+                    data.search['value'] = $("#searchKey").val();
+                    data.beginTime=$("#beginTimeSelect").val();
+					data.endTime=$("#endTimeSelect").val();
+                    data.appName = "chargeItem_getItem";
+
+					if(data.beginTime!=""&&data.endTime!=""&&data.beginTime>data.endTime){
+						informationAlert_OnlyConfirmButton_NOT_REFRESH('开始时间请不要大于结束时间!');
+						return;
+					}
+                    var paramJsonMsg = JSON.stringify(data);
+                    //配置基本参数
+                    data.param = paramJsonMsg;
+                    data.appKey = "aGFuZHlDYW1wdXM=";
+                    data.appSecret = "1234567890abcedefgh";
+                    var time = new Date().getTime();
+                    data.time = time;
+                    var temp = 'appKey=aGFuZHlDYW1wdXM=&appSecret=1234567890abcedefgh&param=' + paramJsonMsg + '&time=' + time;
+                    data.sign = hex_md5(temp);
+                    return JSON.stringify(data);
+                },
+                "dataSrc": function (json) {
+                    //自定义格式
+                    json.iTotalRecords = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsTotal;
+                    json.error = json.data.error;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                },
+                "beforeSend": function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("token", static_token);
+                }
+            },
+            "columnDefs": [
+                /*{
+                    "targets": 8,
+                    render: function (data, type, row, meta) {
+                        if(data == 1){
+                            return "启用";
+                        }
+                        return "禁用";
+                    }
+                },*/
+                /*{
+                    "targets": -1,
+                    render: function (data, type, row, meta) {
+                        return "<a class='toggle-sidebar bbtn btn-info btn-xs' onclick='javascript:dataEdit(this)' href='#'><i class='fa fa-pencil'></i>查看</a>";
+//                      return "<a class='toggle-sidebar bbtn btn-info btn-xs' onclick='javascript:dataDelete(this)' href='#'><i class='fa fa-pencil'></i>删除</a>";
+                    }
+                }*/
+            ]
+        });
+        $("#search").click(function () {
+            areaTable.api().ajax.reload();
+        });
+
+        getChargeType();
+
+        $("#startDate").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#endDate").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+
+		$("#beginTimeSelect").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#endTimeSelect").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $("#rangeSelect").click(function () {
+            getTreeData();
+            $.fn.zTree.destroy("treeDemo");
+            $("#rangeSelectModal").modal('show');
+        })
+        
+        $("#rangeSelectPerson").click(function () {
+            getTreeDataPerson();
+            $.fn.zTree.destroy("treeDemoPerson");
+            $("#rangeSelectModalPerson").modal('show');
+        })
+
+        $("#rangeSelectEdit").click(function () {
+            getTreeData();
+            $.fn.zTree.destroy("treeDemoEdit");
+            $("#rangeSelectModal").modal('show');
+        })
+
+    });
+
+    function getChargeType(){
+        var msg = {};
+        msg.appName="chargeItemConf_getAllItem";
+        serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+                var data = success.data,optionHtml = "<option value=''>请选择收费项类型</option>";
+                $(data).each(function (i) {
+                    optionHtml += "<option value='"+data[i]['id']+"'>"+data[i]['chargeItemName']+"</option>"
+                })
+                $("#chargeTypeSelect").html(optionHtml);
+                $("#chargeType").html(optionHtml);
+            } else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+    }
+
+    function getTreeData(){
+        var hideDept = $("#hideDept").val();
+        var rangeData = hideDept.split(",");
+        var msg = {};
+        msg.deptTypeID = -1;
+        msg.appName="origaniza_listOriganizaTree";
+
+        serverFromJSONData(msg,true).then(function (success) {
+            var node = success.data;
+
+            $(node).each(function (i) {
+                var nodeId = node[i]['id'];
+                if(rangeData.indexOf(nodeId) != -1){
+                    node[i]['checked'] = true;
+                }
+            })
+
+
+            var setting = {view:{showLine: false,dblClickExpand: false},
+                data:{simpleData: {enable: true}},
+                check: {enable: true}};
+
+            zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, node);
+            zTreeObj.expandAll(true);
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("访问服务器发生错误，请稍后再试!");
+        };
+
+    }
+
+	function getTreeDataPerson(){
+        var hideDept = $("#hideDeptPerson").val();
+        var rangeData = hideDept.split(",");
+        var msg = {};
+        msg.deptTypeID = -1;
+        msg.appName="origaniza_listOriganizaTree";
+
+        serverFromJSONData(msg,true).then(function (success) {
+            var node = success.data;
+
+            $(node).each(function (i) {
+                var nodeId = node[i]['id'];
+                if(rangeData.indexOf(nodeId) != -1){
+                    node[i]['checked'] = true;
+                }
+            })
+
+
+            var setting = {view:{showLine: false,dblClickExpand: false},
+                data:{simpleData: {enable: true}},
+                check: {enable: true}};
+
+            zTreeObj = $.fn.zTree.init($("#treeDemoPerson"), setting, node);
+            zTreeObj.expandAll(true);
+        }),function (error) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("访问服务器发生错误，请稍后再试!");
+        };
+
+    }
+
+    function showAdd(){
+        if($("#actionType").css("display") == "none"){
+            $(".editBtn").hide();
+            $(".addBtn").show();
+        }
+        $("#confirm").css("display","inline");
+        $('#addModal').modal('show');
+    }
+
+    function dataEdit(obj) {
+        var data = $("#chargeItemTable").DataTable().row($(obj).parent().parent()).data();
+
+        var msg = {};
+        msg.id = data.id;
+
+        msg.appName = "chargeItem_selectChargeItemByID";
+        serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+                var data = success.data,tempAr = new Array();
+
+                $("#hideId").val(data.id);
+                $("#chargeItemName").val(data.name);
+                $("#amount").val(data.amount);
+                $("#chargeTypeSelect").val(data.type);
+                $("#startDate").val(data.startDate);
+                $("#endDate").val(data.endDate);
+                $(data['rangeDataList']).each(function (i) {
+                    tempAr.push(data['rangeDataList'][i]);
+                })
+                $("#hideDept").val(tempAr.toString());
+                $("#showRangeInfo").val("已选"+tempAr.length+"个有效范围");
+                $("input:radio[name='status']").val(data.status);
+
+                $(".editBtn").show();
+                $(".addBtn").hide();
+				$("#confirm").css("display","none");
+                $('#addModal').modal('show');
+            } else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+
+    }
+    
+    
+    //添加信息
+	function addRowToTimeList(adFlag){
+	    if (cntTimeDivNum('addTime')>7){
+	        informationAlert_OnlyConfirmButton_NOT_REFRESH("考勤时间最多增加至9条，请重新再试!");
+	        return;
+	    }else{
+	        globalIndex ++;
+	    }
+	    var timeListStr = "";
+	    timeListStr += buildTimeDiv('','','',adFlag);
+	    //$("#addTime").empty();
+	    $("#addTime").append(timeListStr);
+	    
+	}
+	//判断栏添加的个数
+	function cntTimeDivNum(parentDivId){
+	    var cnt = $("#"+parentDivId).children().size();
+	    return cnt;
+	}
+
+	
+	function buildTimeDiv(adFlag){
+     return '<div class="form-group" id="'+adFlag+'_timeNames_'+globalIndex+'">'
+                +'<label class="control-label col-md-3 col-sm-3 col-xs-12">收费项名称<span class="required">:</span></label>'
+                +'<div class="col-md-3 col-sm-9 col-xs-12">'
+                    +'<input type="text" id="'+adFlag+'chargeItemName'+globalIndex+'" class="form-control" placeholder="" autocomplete="off">'
+                +'</div>'
+                +'<label class="control-label col-md-3 col-sm-3 col-xs-12">收费金额<span class="required">:</span></label>'
+                +'<div class="col-md-3 col-sm-9 col-xs-12">'
+                    +'<input type="number" id="'+adFlag+'amount'+globalIndex+'" class="form-control" placeholder="" autocomplete="off">'
+                +'</div>'
+                +'<label style="font-weight: bold;color: red;cursor: hand;font-size: 2.4rem;" onclick="deleteRowToTimeList(\''+globalIndex+'\',\''+adFlag+'\')">-</label>'
+                +'<label style="font-weight: bold;color: #2f8325;cursor: hand;font-size: 2.4rem;padding-left:20px;" onclick="addRowToTimeList(\''+adFlag+'\')" >＋</label>'
+            +'</div>';
+	}
+	
+	function deleteRowToTimeList(index,adFlag){
+	    if(cntTimeDivNum('addTime')<0){
+	        informationAlert_OnlyConfirmButton_NOT_REFRESH("项目名称至少一个，请重新再试!");
+	        return;
+	    }
+	    /*** 删除指定id的div ***/
+	    $("#"+adFlag+"_timeNames_"+index).remove();
+	}
+
+	/*提示是否进行添加*/
+	function confirmSave(arg){
+
+		informationAlert_confirmAndCancelButton("saveData("+arg+")","是否确认发布缴费？！");
+	}
+
+    function saveData(arg) {
+        var msg = {};
+        var name = $("#chargeItemName").val(),
+            amount = $("#amount").val(),
+            chargeTypeSelect = $("#chargeTypeSelect").val(),
+            startDate = $("#startDate").val(),
+            endDate = $("#endDate").val(),
+            hideDept = $("#hideDept").val();
+
+
+		var date=new Date(endDate).getTime() - new Date().getTime();
+		var leave=date/(60*1000);
+
+
+		var count=1;
+		var chargPay={};
+		//创建集合
+	    var orderNosList = new Array(); 
+	    chargPay.name=name;
+	    chargPay.amout=amount;
+	    orderNosList.push(chargPay);
+	    chargPay={};
+//	    orderNosList.push(name);
+//	    orderNosList.push(amount);
+	    //获取所有的时间设置id
+	    $("#addTime").children().children("div").each(function(index,element){
+		    if($(element).children().attr("type")=="text" ||$(element).children().attr("type")=="number"){
+		    	if(count==1){
+		    		var id=$(element).children().attr("id");
+			    	//进行时间插件的设置
+			    	var schoolTimeSet=$('#'+id).val();
+			    	if(schoolTimeSet==""||schoolTimeSet==null){
+			    		informationAlert_OnlyConfirmButton_NOT_REFRESH("请填写项目名或金额！");
+			    		return;
+			    	}
+			    	chargPay.name=schoolTimeSet;
+			    	count++;
+//			    	orderNosList.push(schoolTimeSet);
+		    	}else{
+		    		var id=$(element).children().attr("id");
+			    	//进行时间插件的设置
+			    	var schoolTimeSet=$('#'+id).val();
+			    	if(schoolTimeSet==""||schoolTimeSet==null){
+			    		informationAlert_OnlyConfirmButton_NOT_REFRESH("请填写项目名或金额！");
+			    		return;
+			    	}
+			    	chargPay.amout=schoolTimeSet;
+			    	orderNosList.push(chargPay);
+			    	count=1;
+			    	chargPay={};
+		    	}
+		    	
+		    	
+		    }
+	    })
+		msg.orderNosList=orderNosList
+        if (name == "" || name == null || name.length > 20) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("名称不能为空，且不能超过20个字符！");
+        } else if (amount == "" || amount == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("收费金额不能为空!");
+        } else if (chargeTypeSelect == "" || chargeTypeSelect == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("费用类型不能为空!");
+        } /*else if (startDate == "" || startDate == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("开始收费日期不能为空!");
+        }*/ else if (endDate == "" || endDate == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("结束收费日期不能为空!");
+        } else if (hideDept == "" || hideDept == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("请选择费用项目有效范围!");
+        } else if(leave < 3){
+        	informationAlert_OnlyConfirmButton_NOT_REFRESH("结束时间请大于当前时间3分钟!");
+        }
+        else {
+            msg.name = name;
+            msg.startDate = startDate;
+            msg.endDate = endDate;
+            msg.type = chargeTypeSelect;
+            msg.amount = amount;
+            msg.rangeData = hideDept;
+            msg.status = $("input:radio[name='status']:checked").val();
+            msg.appName = "chargeItem_addChargeItem";
+            serverFromJSONData(msg, true).then(function (success) {
+                if (success.msgState == 200) {
+                    if (arg) {
+                        $('#addModal').modal('hide');
+                    }
+                    resetForm();
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("添加成功！");
+                } else {
+                    
+                    if(success.data!=null){
+                    	var result=success.data;
+                    	//导出错误人员数据
+	                    var chargeJson = new Array();
+	                    for (var i = 0; i < result.length; i++) {
+	                        chargeJson[i] = {"学生姓名": result[i].studentName,
+	                            "所属班级": result[i].deptName,
+	                            "学生身份证": result[i].idCard
+	                        };
+	                    }
+	                    downloadExl(chargeJson,"hf_grade",true);
+//	                    downloadExl_onlyJson(chargeJson);
+	                    informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg+"，请核对身份证信息！");
+                    }else{
+                    	informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+                    }
+                    
+                }
+            }), function (error) {
+                console.log("访问服务器发生错误，请稍后再试!", error);
+            };
+        }
+    }
+
+    function resetForm() {
+        $("#chargeItemName").val("");
+        $("#amount").val("");
+        $("#chargeTypeSelect").val("");
+        $("#startDate").val("");
+        $("#endDate").val("");
+        $("#hideDept").val("");
+        $("#showRangeInfo").val("");
+        $("input:radio[name='status']").val("0");
+    }
+
+    function editData() {
+        var msg = {};
+        var id = $("#hideId").val(),
+            name = $("#chargeItemName").val(),
+            amount = $("#amount").val(),
+            chargeTypeSelect = $("#chargeTypeSelect").val(),
+            startDate = $("#startDate").val(),
+            endDate = $("#endDate").val(),
+            hideDept = $("#hideDept").val();
+
+        if (name == "" || name == null || name.length > 20) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("名称不能为空，且不能超过20个字符！");
+        } else if (amount == "" || amount == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("收费金额不能为空!");
+        } else if (chargeTypeSelect == "" || chargeTypeSelect == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("费用类型不能为空!");
+        } else if (startDate == "" || startDate == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("开始收费日期不能为空!");
+        } else if (endDate == "" || endDate == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("结束收费日期不能为空!");
+        } else if (hideDept == "" || hideDept == null) {
+            informationAlert_OnlyConfirmButton_NOT_REFRESH("请选择费用项目有效范围!");
+        }else {
+            msg.id = id;
+            msg.name = name;
+            msg.startDate = startDate;
+            msg.endDate = endDate;
+            msg.type = chargeTypeSelect;
+            msg.amount = amount;
+            msg.rangeData = hideDept;
+            msg.status = $("input:radio[name='status']:checked").val();
+            msg.appName = "chargeItem_addChargeItem";
+            serverFromJSONData(msg, true).then(function (success) {
+                if (success.msgState == 200) {
+                    $('#addModal').modal('hide');
+                    resetForm();
+                    areaTable.api().ajax.reload();
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH("编辑成功！");
+                } else {
+                    informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+                }
+            }), function (error) {
+                console.log("访问服务器发生错误，请稍后再试!", error);
+            };
+        }
+    }
+
+    function resetEditForm() {
+        $("#editForm")[0].reset;
+    }
+
+    function selectRangeDate(){
+        var nodes = zTreeObj.getCheckedNodes(true),selectNodes = new Array();
+        $(nodes).each(function (i) {
+        	if(!nodes[i]['isParent']){
+        		
+        		selectNodes.push(nodes[i]['id']);
+        	}
+        })
+        $("#showRangeInfo").val("已选"+selectNodes.length+"个有效范围");
+        $("#hideDept").val(selectNodes.toString());
+        $('#rangeSelectModal').modal('hide');
+    }
+    
+    function selectRangeDatePerson(){
+        var nodes = zTreeObj.getCheckedNodes(true),selectNodes = new Array();
+        $(nodes).each(function (i) {
+        	if(!nodes[i]['isParent']){
+        		
+        		selectNodes.push(nodes[i]['id']);
+        	}
+        })
+        $("#showRangeInfoPerson").val("已选"+selectNodes.length+"个有效范围");
+        $("#hideDeptPerson").val(selectNodes.toString());
+        $('#rangeSelectModalPerson').modal('hide');
+    }
+
+	function dataDelete(obj){
+		var data = $("#chargeItemTable").DataTable().row($(obj).parent().parent()).data();
+
+        var msg = {};
+        msg.id = data.id;
+
+        msg.appName = "chargeItem_deleteById";
+        serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+                var data = success.data,tempAr = new Array();
+
+                $("#hideId").val(data.id);
+                $("#chargeItemName").val(data.name);
+                $("#amount").val(data.amount);
+                $("#chargeTypeSelect").val(data.type);
+                $("#startDate").val(data.startDate);
+                $("#endDate").val(data.endDate);
+                $(data['rangeDataList']).each(function (i) {
+                    tempAr.push(data['rangeDataList'][i]);
+                })
+                $("#hideDept").val(tempAr.toString());
+                $("#showRangeInfo").val("已选"+tempAr.length+"个有效范围");
+                $("input:radio[name='status']").val(data.status);
+
+                $(".editBtn").show();
+                $(".addBtn").hide();
+
+                $('#addModal').modal('show');
+            } else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+	}
+	
+	function excleModelShow(){
+		$('#uploadModel').modal('show');
+	}
+	
+	function excleModelShowExport(){
+		$('#exportModel').modal('show');
+	}
+	
+	/*导出模板*/
+	function exportChargeModel(){
+		var msg = {};
+		if(!$("#chargeType").val()){
+			informationAlert_OnlyConfirmButton_NOT_REFRESH("请选择缴费类型！");
+			return;
+		}
+		msg.rangeData=$("#hideDeptPerson").val();
+		if(!msg.rangeData){
+			informationAlert_OnlyConfirmButton_NOT_REFRESH("请选择需要导出的人员范围！");
+			return;
+		}
+        msg.appName = "chargeItem_getStudents";
+        serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+            	var chargeJson = new Array();
+            	var result=success.data;
+            	var jsonExport={};
+            	for(var i=0;i<result.length;i++){
+            		jsonExport={
+						"身份证号": result[i].idCard,
+			            "姓名": result[i].name,
+			            "类型" : $("#chargeType option:selected").text(),
+			            "缴费截止时间": "2019-05-06 20:18:20",
+			            "缴费项目一(元)":"0.01",
+			            "缴费项目二(元)":"0.01",
+			            "备注": "请删除备注栏，缴费项目最多可以添加到九个"
+					};
+					chargeJson.push(jsonExport);
+            	}
+				downloadExl_onlyJson(chargeJson);
+            } else {
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+		
+	}
+	
+	//进行导入操作
+	function importChargeItem(){
+		msg={};
+		$("#jinduGIF").html('<img src="../../../production/images/jindu.gif"><br/><span>正在上传中请稍后...</span>');
+		if(jsonObj){
+			for(var i=0;i<jsonObj.length;i++){
+				var mi=jsonObj[i];
+				var num=JSON.stringify(mi).split(",").length-1;
+				var reg = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/;
+				var regExp = new RegExp(reg);
+				if(!regExp.test(mi.缴费截止时间)){
+				　　informationAlert_OnlyConfirmButton_NOT_REFRESH("时间格式不正确,正确格式为: 2019-01-01 12:00:00 ");
+				　　return;
+			　　}
+
+				if(num>13){
+					informationAlert_OnlyConfirmButton_NOT_REFRESH("缴费项不能大于九个！");
+					$("#jinduGIF").html('');
+					return;
+				}
+				if(num<4){
+					informationAlert_OnlyConfirmButton_NOT_REFRESH("请确认缴费项是否填写");
+					$("#jinduGIF").html('');
+					return;
+				}
+				
+				if(mi.备注){
+					informationAlert_OnlyConfirmButton_NOT_REFRESH("请删除备注列！");
+					$("#jinduGIF").html('');
+					return;
+				}
+			}
+			
+		}else{
+			informationAlert_OnlyConfirmButton_NOT_REFRESH("请确认excel表中是否含有数据");
+			return;
+		}
+		msg.file=JSON.stringify(jsonObj);
+		
+		msg.appName="chargeItem_bulkImport";
+		serverFromJSONData(msg, true).then(function (success) {
+            if (success.msgState == 200) {
+            	informationAlert_OnlyConfirmButton_NOT_REFRESH("导入缴费名单成功！");
+            	
+            	$("#jinduGIF").html('');
+            	
+            	
+            } else {
+            	var jsonDome1 = [];
+                    var jsonDome2 = [];
+                    var str1='[';
+                    var str="";
+                    var jsonDome = success.data;
+                    for (var i = 0; i < jsonDome.length; i++) {
+//                  	jsonDome[i].file.备注=jsonDome[i].remark;
+
+                        str1+='{"身份证号":"'+jsonDome[i].身份证号+'","姓名":"'+jsonDome[i].姓名+'","类型":"'+jsonDome[i].类型+'","缴费截止时间":"'+jsonDome[i].缴费截止时间+'"';
+                        for(var key in jsonDome[i]){
+                        	
+                        	if(key=="身份证号" || key=="姓名" || key=="类型" || key=="缴费截止时间"){
+                        		continue;
+                        	}
+                        	str1+=',"'+key+'":"'+jsonDome[i][key]+'"';
+                        	console.log(jsonDome[i][key]);
+                        }
+                        if(i+1==jsonDome.length){
+                        	str1+='}';
+                        }else{
+                        	
+                        	str1+='},';
+                        }
+                    }
+                    str1+=']';
+                    var jsonExport=JSON.parse(str1);
+                   	var dd= eval("(" + str1 + ")");
+                   	console.log(dd);
+                   	console.log(jsonExport);
+                   	
+                    downloadExl(dd,"hf_grade",true);
+            	$("#jinduGIF").html('');
+                informationAlert_OnlyConfirmButton_NOT_REFRESH(success.msg);
+            }
+        }), function (error) {
+            console.log("访问服务器发生错误，请稍后再试!", error);
+        };
+	}
+	
+</script>
+</body>
+</html>
+

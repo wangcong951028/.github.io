@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+    <link href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/utils/jquery-confirm.css" rel="stylesheet">
+    <link href="../../css/parts/baseman/schoolManager.css" rel="stylesheet">
+    <link href="../../css/newPage/pager.css" rel="stylesheet">
+</head>
+
+<body style="background-color: white">
+
+<!-- 1、主干 -->
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>微信模板管理</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div style="margin-bottom: 50px;">
+                    <div style="position:absolute;width: 35%;">
+                        <label class="schoolName-label-style">类型：</label>
+                        <div class="col-md-6" style="display: inline-block">
+                            <select id="type_id" class="form-control" tabindex="-1">
+                            	<option value="-1">----- 类型 -----</option>
+                            	<option value="1">门禁考勤</option>
+                            	<option value="2">宿舍考勤</option>
+                            	<option value="3">家庭作业</option>
+                            	<option value="4">考试成绩</option>
+                            </select>
+                        </div>
+                        <button id="myButton" type="button" class="btn btn-success" style="float: left;margin-right: 10px;">搜索</button>
+						<button id="" type="button" class="btn btn-success" data-toggle="modal" data-target="#weixin_model" style="float: left;margin-right: 10px;">新增</button>
+						<button type="button" class="btn btn-success" onclick="jump_page()" style="float: left;margin-right: 10px;">返回</button>
+                    </div>
+                </div>
+                <table id="datatable" class="table table-striped table-bordered jambo_table bulk_action" data-page-length="10" data-order="[[0,&quot;desc&quot;]]" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th data-data="pk_id" data-visible="false">Id</th>
+                        <th data-data="template_id" width="40%" data-orderable="false">模板id</th>
+                        <th data-data="type" width="30%" data-orderable="false">类型</th>
+                        <th data-orderable="false" width="30%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="weixin_model" tabindex="-1" role="dialog" aria-labelledby="buildSchool" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="addModalLabel">添加微信模板</h2>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="addForm">
+                        <div class="form-group" >
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">模板id</label>
+                            <div class="col-md-7 col-sm-9 col-xs-12">
+                                <input type="text" id="template_id" class="form-control" placeholder="请填微信模板id"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">类型</label>
+                            <div class="col-md-7 col-sm-9 col-xs-12">
+                                    <select id="typeid" class="form-control" tabindex="-1">
+										<option value="-1">----- 类型 -----</option>
+										<option value="1">门禁考勤</option>
+										<option value="2">宿舍考勤</option>
+										<option value="3">家庭作业</option>
+										<option value="4">考试成绩</option>
+									</select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer" style="padding-bottom:0px;">
+                        <div class="col-md-7 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                            <button type='button' onclick="add_weixinmodel()" class='btn btn-success'>保存</button>
+							<button class="btn btn-primary" data-dismiss="modal" onclick="clearn()">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update_weixin_model" tabindex="-1" role="dialog" aria-labelledby="buildSchool" style="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="addModalLabel">添加微信模板</h2>
+            </div>
+            <div class="col-md-6 col-xs-12" style="width: 100%">
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left" id="">
+                        <div class="form-group" >
+							<input type="text" id="update_id" hidden="hidden" />
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">模板id</label>
+                            <div class="col-md-7 col-sm-9 col-xs-12">
+                                <input type="text" id="update_template_id" class="form-control" placeholder="请填微信模板id"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">类型</label>
+                            <div class="col-md-7 col-sm-9 col-xs-12">
+                                    <select id="update_typeid" class="form-control" tabindex="-1">
+										<option value="-1">----- 类型 -----</option>
+										<option value="1">门禁考勤</option>
+										<option value="2">宿舍考勤</option>
+										<option value="3">家庭作业</option>
+										<option value="4">考试成绩</option>
+									</select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer" style="padding-bottom:0px;">
+                        <div class="col-md-7 col-sm-6 col-xs-12 col-md-offset-3" style="float: right">
+                            <button type='button' onclick="new_weixin()" class='btn btn-success'>保存</button>
+							<button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<script src="../../../build/js/sidebar.js"></script>
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="../../../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="../../../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="../../../vendors/google-code-prettify/src/prettify.js"></script>
+<script src="../../../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<script src="../../../vendors/switchery/dist/switchery.min.js"></script>
+<script src="../../../vendors/select2/dist/js/select2.full.min.js"></script>
+<script src="../../../vendors/parsleyjs/dist/parsley.min.js"></script>
+<script src="../../../vendors/autosize/dist/autosize.min.js"></script>
+<script src="../../../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<script src="../../../vendors/starrr/dist/starrr.js"></script>
+<script src="../../../build/js/ztree/jquery-migrate-1.2.1.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+<script src="../../js/newPage/pager.js"></script>
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/baseman/weixinModel.js"></script>
+
+</body>
+</html>

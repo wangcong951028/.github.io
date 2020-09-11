@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>校园文化展示列表</title>
+
+    <!-- Bootstrap -->
+    <link href="../../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../../build/css/custom.min.css" rel="stylesheet">
+
+    <link href="../../../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/utils/jquery-confirm.css">
+</head>
+<body style="background-color: white">
+
+<div class="right_col" role="main" style="min-height: 3546px;">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>校园文化展示列表
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            	<div style="position: absolute;padding-left: 10px;">
+                	<button type='button' class='btn btn-success setPrivilege' data-toggle='modal' onclick="" data-target='#myModalsAdd'>添加</button>	
+                </div >
+                <br />
+                
+            <div class="x_content" style="padding-top: 5px;">
+                <table id="datatable"  class="table table-striped table-bordered jambo_table bulk_action"
+                       data-page-length="10"
+                       data-order="[[0,&quot;desc&quot;]]"
+                       style="width: 100%;position: relative;">
+                    <thead>
+                    <tr>
+                        <th data-data="cultureId" data-visible="false">Id</th>
+                        <th data-data="name" data-orderable="false">本期主题</th>
+                        <th data-data="createTime" data-orderable="false">创建时间</th>
+                        <th data-data="createName" data-orderable="false">创建人</th>
+                        <th data-orderable="false">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--查看的model框-->
+<div class="modal fade" id="myModalsf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="createName1"></h5>
+                <h5 class="modal-title" id="createClass1"></h5>
+                <h5 class="modal-title" id="createTime1"></h5>
+                <h5 class="modal-title" id="intervalTime1"></h5>
+                <h5 class="modal-title" id="txt1"></h5>
+                <h5 class="modal-title" id="className1"></h5>
+                <h5 class="modal-title" id="name1"></h5>
+            <div>    
+            <div style="border: 1px solid #E5E5E5;height: 100px;width: 30%;float: left;margin-left: 20px;margin-top: 20px;">
+            	<div style="margin-left: 20px;margin-top: 20px;float: left;">logo图片显示：</div>
+            	<div id="logoUrl1" style="margin-left: 20px;margin-top: 20px;float: left;"></div><div id="logourlfind" style="margin-left: 20px;margin-top: 40px;float: left;"></div>
+            </div>
+            <div style="border: 1px solid #E5E5E5;height: 100px;width: 30%;float: left;margin-left: 20px;margin-top: 20px;">
+            	<div style="margin-left: 20px;margin-top: 20px;float: left;">背景图片显示：</div>
+            	<div id="bottomUrl1" style="margin-left: 20px;margin-top: 20px;float: left;"></div><div id="bottomUrl1find" style="margin-left: 20px;margin-top: 40px;float: left;"></div>
+            </div>
+            <div id="findVideoSchool" style="border: 1px solid #E5E5E5;height: 100px;width: 30%;float: left;margin-left: 20px;margin-top: 20px;">
+            	<div style="margin-left: 20px;margin-top: 20px;float: left;">视频查看：</div>
+            	<div id="vedio1" style="margin-left: 20px;margin-top: 20px;float: left;"></div><div id="vedio1find" style="margin-left: 20px;margin-top: 40px;float: left;"></div>
+            </div>
+            </div>
+            </div>
+            <div class="modal-body" align="center">
+                <h4 class="modal-title" id="myModalLabel"></h4>
+                <div class="x_content">
+                    <br>
+                    <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left"
+                          novalidate="">
+
+                        <div class="form-group" id="cultureInfo">
+
+                        </div>
+
+
+                        <div class="ln_solid"></div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="关闭"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--添加文化展示-->
+<div class="modal fade" id="myModalsAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body" align="center">
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+                <div class="x_content">
+                    <br>
+                    <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left"
+                          novalidate="">
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>文化展示添加<small></small></h2>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">文化展示主题 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-6 col-sm-6 col-xs-12">
+					                        <input type="text" maxlength="40" id="titleAdd" required="required" class="form-control col-md-7 col-xs-12">
+					                    </div>
+					                </div>
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTxt">学校文化展示内容 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-6 col-sm-6 col-xs-12">
+					                        <input type="text" id="myTxtAdd" maxlength="100" required="required" class="form-control col-md-7 col-xs-12">
+					                    </div>
+					                </div>
+					                
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="intervalTime">间隔时间选择 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-3 col-sm-6 col-xs-12">
+					                        <select id="intervalTimeAdd" class="form-control col-md-7 col-xs-12">
+					                        	<option value="-1">--请选择--</option>
+					                        	<option value="3">3</option>
+					                        	<option value="5">5</option>
+					                        	<option value="8">8</option>
+					                        	<option value="10">10</option>
+					                        	<option value="15">15</option>
+					                        </select>
+					                    </div>
+					                </div>
+					                
+					                
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">图片的添加 <span class="required">*</span>
+					                    </label>
+					                    <div >
+					                        &emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#myModalsLogo" style="margin-top: 12px;">添加logo图片</a>
+					                    	&emsp;&emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#myModalssBottom" >添加背景图片</a>
+					                    	&emsp;&emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#exportUser_div" >添加视频</a>
+					                    </div>
+					                    
+					                </div>
+
+                                    <div class="x_content">
+                                        <div id="alertsAdd"></div>
+                                        <div class="ln_solid"></div>
+                                        <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-oneAdd">
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a data-edit="fontSize 5">
+                                                            <p style="font-size:17px">Huge</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 3">
+                                                            <p style="font-size:14px">Normal</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 1">
+                                                            <p style="font-size:11px">Small</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                                                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                                                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                                                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                                                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                                                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+                                                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                                                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                                                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                                                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                                                <div class="dropdown-menu input-append">
+                                                    <input class="span2" placeholder="URL" type="text" data-edit="createLink">
+                                                    <button class="btn" type="button">Add</button>
+                                                </div>
+                                                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" title="Insert picture (or just drag &amp; drop)" id="pictureBtnAdd"><i class="fa fa-picture-o"></i></a>
+                                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage">
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                                                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                                            </div>
+                                        </div>
+
+                                        <div id="editor-oneAdd" class="editor-wrapper placeholderText" contenteditable="true"></div>
+
+                                        <textarea name="info" id="infoAdd" style="display:none;"></textarea>
+
+                                        <br>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3" >
+                                            <button type="button"  data-dismiss="modal" class="btn btn-primary" style="float: right">取消</button>
+                                            <button type="button" class="btn btn-success" style="float: right" onclick="informationAlert_confirmAndCancelButton('publicCulture()','是否确认添加展示？')">确认添加</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ln_solid"></div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改文化展示 -->
+<div class="modal fade" id="myModals2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body" align="center">
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+                <div class="x_content">
+                    <br>
+                    <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left"
+                          novalidate="">
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-horizontal form-label-left">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>文化展示修改<small></small></h2>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">文化展示主题 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-6 col-sm-6 col-xs-12">
+					                    	<input type="hidden" id="cultureId">
+					                        <input type="text" maxlength="100" id="title" required="required" class="form-control col-md-7 col-xs-12">
+					                    </div>
+					                </div>
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTxt">校园文化展示内容 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-6 col-sm-6 col-xs-12">
+					                        <input type="text" id="myTxt" maxlength="100" required="required" class="form-control col-md-7 col-xs-12">
+					                    </div>
+					                </div>
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="intervalTime">间隔时间选择 <span class="required">*</span>
+					                    </label>
+					                    <div class="col-md-3 col-sm-6 col-xs-12">
+					                        <select id="intervalTime" class="form-control col-md-7 col-xs-12">
+					                        	<option value="-1">--请选择--</option>
+					                        	<option value="3">3</option>
+					                        	<option value="5">5</option>
+					                        	<option value="8">8</option>
+					                        	<option value="10">10</option>
+					                        	<option value="15">15</option>
+					                        </select>
+					                    </div>
+					                </div>
+					                
+					                
+					                <div class="form-group">
+					                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">图片的修改 <span class="required">*</span>
+					                    </label>
+					                    <div >
+					                        &emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#myModals" style="margin-top: 12px;">修改logo图片</a>
+					                    	&emsp;&emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#myModalss" >修改背景图片</a>
+					                    	&emsp;&emsp;<a href="#" class="fa fa-plus" data-toggle="modal" data-target="#exportUser_div" >替换视频</a>
+					                    </div>
+					                    
+					                </div>
+
+                                    <div class="x_content">
+                                        <div id="alerts"></div>
+                                        <div class="ln_solid"></div>
+                                        <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a data-edit="fontSize 5">
+                                                            <p style="font-size:17px">Huge</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 3">
+                                                            <p style="font-size:14px">Normal</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 1">
+                                                            <p style="font-size:11px">Small</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                                                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                                                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                                                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                                                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                                                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+                                                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                                                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                                                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                                                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                                                <div class="dropdown-menu input-append">
+                                                    <input class="span2" placeholder="URL" type="text" data-edit="createLink">
+                                                    <button class="btn" type="button">Add</button>
+                                                </div>
+                                                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" title="Insert picture (or just drag &amp; drop)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
+                                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage">
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                                                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                                            </div>
+                                        </div>
+
+                                        <div id="editor-one" class="editor-wrapper placeholderText" contenteditable="true"></div>
+
+                                        <textarea name="info" id="info" style="display:none;"></textarea>
+
+                                        <br>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3" >
+                                            <button type="button"  data-dismiss="modal" class="btn btn-primary" style="float: right">取消</button>
+                                            <button type="button" class="btn btn-success" style="float: right" onclick="informationAlert_confirmAndCancelButton('updateClick()','是否确认修改展示？')">确认修改！</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ln_solid"></div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<!--logo图片修改的model-->
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+        <div class="modal-dialog" role="document" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增图片</h4>
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">选择图片 <span
+                                        class="required">：</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="report-file">
+                                        <span>请选择图片</span>
+                                        <input type="file"  id="imgTest" class="file-prew" type="file"  accept="image/*">
+                                    </div>
+                                    <img id="imgAddShow" style="width: 400px" src=""/>
+                                    <div id="imgAddHtml" ><img id="imgAdd" style="width: 400px" src=""/></div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal'  data-target='#myModals'>确定</button>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--背景图片的修改-->
+    <div class="modal fade" id="myModalss" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1060;">
+        <div class="modal-dialog" role="document" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增图片</h4>
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">选择图片 <span
+                                        class="required">：</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="report-file">
+                                        <span>请选择图片</span>
+                                        <input type="file"  id="imgTests" class="file-prew" type="file"  accept="image/*">
+                                    </div>
+                                    <img id="imgAddShows" style="width: 400px" src=""/>
+                                    <div id="imgAddHtmls" ><img id="imgAdds" style="width: 400px" src=""/></div>
+
+                            </div>
+                                </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal'  data-target='#myModalss'>确定</button>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--logo图片添加的model-->
+    <div class="modal fade" id="myModalsLogo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+        <div class="modal-dialog" role="document" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增图片</h4>
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">选择图片 <span
+                                        class="required">：</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="report-file">
+                                        <span>请选择图片</span>
+                                        <input type="file"  id="imgTestLogo" class="file-prew" type="file"  accept="image/*">
+                                    </div>
+                                    <img id="imgAddShowLogo" style="width: 400px" src=""/>
+                                    <div id="imgAddHtmlLogo" ><img id="imgAddLogo" style="width: 400px" src=""/></div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal'  data-target='#myModalsLogo'>确定</button>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--背景图片的上传-->
+    <div class="modal fade" id="myModalssBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1060;">
+        <div class="modal-dialog" role="document" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">新增图片</h4>
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">选择图片 <span
+                                        class="required">：</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="report-file">
+                                        <span>请选择图片</span>
+                                        <input type="file"  id="imgTestsBottom" class="file-prew" type="file"  accept="image/*">
+                                    </div>
+                                    <img id="imgAddShowsBottom" style="width: 400px" src=""/>
+                                    <div id="imgAddHtmlsBottom" ><img id="imgAddsBottom" style="width: 400px" src=""/></div>
+
+                            </div>
+                                </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                        <button type='button' id="close" class='btn btn-primary' style='float: right' data-toggle='modal'  data-target='#myModalssBottom'>确定</button>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 	<!-- 查看图片Modal -->
+    <div class="modal fade" id="myModalsPic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1060;">
+        <div class="modal-dialog" role="document">
+            <ul class="slides" id="slides"></ul>
+            <img src="" id="showsCultureImg">
+        </div>
+    </div>
+
+	<!-- 查看视频Modal -->
+    <div class="modal fade" id="myModalsPicvedio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1700;">
+        <div class="modal-dialog" role="document">
+            <ul class="slides" id="playVedios"></ul>
+        </div>
+        <div class="modal-footer" style="padding-bottom:0px;">
+            <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+                <button type='button' id="exportUserClose" class='btn btn-primary' style='float: right;margin-right: 30px;' data-toggle='modal' data-target='#myModalsPicvedio'>关闭</button>
+            </div>
+        </div>
+    </div>
+
+<!--上传视频的model -->
+	<div class="modal fade" id="exportUser_div" tabindex="-1" role="dialog" aria-labelledby="exportUser">
+	    <div class="modal-dialog" role="document" style="width: 500px;">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+	                </button>
+	                <h2 class="modal-title">视频上传</h2>
+	
+	                <div class="x_content">
+	                    <div id="report-file" class="report-file">
+	                        <span>点击选择要上传的视频文件</span>
+	                        <input id="files" tabindex="3" size="5" name="files" class="file-prew" type="file" accept="video/mp4"/>
+	                    </div>
+	                    <div style="height: 28px;line-height: 28px;font-size: 10px;text-align: right;">
+                        	<span id="displayFileName" style="float: left;overflow: hidden;width:18%;"></span>
+                        </div>
+	                </div>
+	            </div>
+	            <div id="wrapper" style="border: none;">
+	                <div id="nprogressbar" style="border: none">
+	                    <div id="fill"></div>
+	                </div>
+	            </div>
+	            <div class="modal-footer" style="padding-bottom:0px;">
+	                <div class="col-md-9 col-sm-6 col-xs-12 col-md-offset-3">
+	                    <button type='button' id="exportUserClose" class='btn btn-primary' style='float: right' data-toggle='modal' data-target='#exportUser_div'>关闭</button>
+	                    <button type='button' onclick="uploadUser()" class='btn btn-success' style='float: right'>上传</button>
+	                </div>
+	            </div>
+	        </div>
+	
+	    </div>
+	</div>
+
+<!-- jQuery -->
+<script src="../../../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../../../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../../../vendors/iCheck/icheck.min.js"></script>
+<!-- Datatables -->
+
+<!-- Pagenation -->
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/jquery.dataTables.js"></script>
+<script src="../../../vendors/Pagenation/DataTables-1.10.10/media/js/dataTables.bootstrap.js"></script>
+<script src="../../../vendors/Pagenation/DataTables.js"></script>
+<script src="../../../vendors/Pagenation/moment-with-locales.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="../../../vendors/moment/min/moment.min.js"></script>
+<script src="../../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-wysiwyg -->
+<script src="../../../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="../../../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="../../../vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="../../../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="../../../vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="../../../vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="../../../vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="../../../vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="../../../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="../../../vendors/starrr/dist/starrr.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="../../../build/js/custom.js"></script>
+
+<script src="../../js/encrypt/md52.js"></script>
+<script src="../../js/utils/verifyToken.js"></script>
+<script src="../../js/utils/utils.js"></script>
+<script src="../../js/culturePublish/schoolCulturePublishList.js"></script>
+<script src="../../js/culturePublish/schoolCulturePublishAdd.js"></script>
+<script src="../../js/utils/jquery-confirm.js"></script>
+<script src="../../js/utils/informationPromptBox.js"></script>
+
+</body>
+</html>

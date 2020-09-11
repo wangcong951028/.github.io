@@ -1,0 +1,137 @@
+@media (max-width: 750px) {
+ 
+}
+
+.schoolName-label-style {
+    padding-top: 10px;
+    font-weight: bold;
+    float: left;
+}
+
+.button {
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+
+/**** tab标签样式 ****/
+ul{
+    list-style: none;
+    margin:0px;
+    padding:0px;
+}
+a{
+    text-decoration: none;
+    color: #ff6666;
+    font-family: Arial;
+}
+
+.schoolLogo{
+    width: 30px;
+    height: 30px;
+    border-radius: 60px;
+    margin-top: -5px;
+    position: absolute;
+}
+
+/**** 单选按钮样式 ****/
+label {font-size:14px;cursor:pointer;}
+label i {
+    font-size:12px;
+    font-style:normal;
+    display:inline-block;
+    width:13px;
+    height:13px;
+    text-align:center;
+    line-height:13px;
+    color:#fff;
+    vertical-align:middle;
+    margin:-2px 2px 1px 0px;
+    border:#2489c5 1px solid;
+}
+input[type="checkbox"],input[type="radio"] {display:none;}
+input[type="radio"] + i {border-radius:7px;}
+input[type="checkbox"]:checked + i,input[type="radio"]:checked + i {background:#2489c5;}
+input[type="checkbox"]:disabled + i,input[type="radio"]:disabled + i {border-color:#2489c5;}
+input[type="checkbox"]:checked:disabled + i,input[type="radio"]:checked:disabled + i {background:#2489c5;}
+
+/*** 学校城市样式 ***/
+#city_5,#carrier,#u_city_5,#ucarrier{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+#city_5 select,#carrier select,#ucarrier select,#u_city_5 select{
+    background-color: #fff;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font: 12px/1.5 Tahoma,Arial,sans-serif;
+    height: 30px;
+}
+#city_5 span,#carrier span,#ucarrier span,#u_city_5 span{
+    margin: 0 5px;
+}
+
+/*** 弹出学校模块服务div ***/
+.sidebar_left_div{
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:-370px;
+    width:370px;
+    background:#ffffff;
+    transition:.2s;
+    z-index: 1000;
+}
+
+/***右边侧边栏模块样式 ***/
+.module-table{
+    margin-left: 20px;
+    margin-top: 5px;
+    width: 94%;
+    margin-bottom: 5px;
+}
+.table-tr-border{
+    border-bottom:1px solid #DDDDDD;
+    border-top:1px solid #DDDDDD;
+}
+
+.table-tr-border-1{
+    border-bottom:1px solid #DDDDDD;
+    border-top:1px solid #DDDDDD;
+    font-weight: bold;
+}
+
+.table-td-h{
+    height:40px;
+    padding-left:10px;
+}
+
+.table-td-td-h{
+    height:40px;
+    padding-left:25px;
+}
+
+.table-td-btn{
+    text-align:right;
+}
+
+.rm{
+    margin-right: 5px;
+}
+.ah{
+    cursor: hand;
+    cursor: pointer;
+}
+
+
+
+
+

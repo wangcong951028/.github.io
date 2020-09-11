@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="css/main.css" rel="stylesheet" />
+
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../vendors/Pagenation/DataTables-1.10.10/media/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../build/js/zebra/css/flat/zebra_dialog.css" rel="stylesheet">
+    <link href="../build/js/zebra/css/style.css" type="text/css">
+    <link href="../build/js/zebra/libraries/highlight/public/css/ir_black.css" type="text/css">
+    <link rel="stylesheet" href="css/utils/jquery-confirm.css">
+</head>
+<body>
+    <div class="row">
+        <div class="teacher_info">
+            <div class="title">登录信息</div>
+            <div class="content">
+                <div class="avatar"></div>
+                <div style="clear:both;height: 2%;"></div>
+                <span id="baseRoleName" class="remark"></span>
+                <span id="loginXgh" class="jobnumber"></span>
+                <span id="loginTime" class="time"></span>
+            </div>
+        </div>
+        <div style="background:#d2e0df;width:1%;height:250px;float:left"></div>
+        <div class="student_count">
+            <div class="title">人数统计</div>
+            <div class="content">
+                <div class="item green">
+                    <div class="box">
+                        <div class="count" id="teacherNumber"></div>
+                    </div>
+                    <div class="remark">★教职工人数★</div>
+                </div>
+                <div class="item blue">
+                    <div class="box">
+                        <div class="count" id="studentNumber"></div>
+                    </div>
+
+                    <div class="remark">★学生人数★</div>
+                </div>
+                <div class="item blue" style="display: none;">
+                    <div class="box">
+                        <div class="count" id="parentNumber"></div>
+                    </div>
+
+                    <div class="remark">★家长人数★</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="entry">
+            <div class="title">快捷入口</div>
+            <div class="content" >
+                <div class="box yikatong" onclick="modelQuick(0,'一卡通')">一卡通</div>
+                <div class="box renyuanxinxi" onclick="modelQuick(29,'人员信息')">人员信息</div>
+                <div class="box shengpi" onclick="modelQuick(0,'我的审批')">我的审批</div>
+                <div class="box wenjuan" onclick="modelQuick(57,'问卷调查')">问卷调查</div>
+                <div class="box deyu" onclick="modelQuick(0,'德育')">德育</div>
+                <div class="box chegnji" onclick="modelQuick(51,'成绩中心')">成绩中心</div>
+                <div class="box tongxunlu" onclick="modelQuick(0,'通讯录')">通讯录</div>
+                <div class="box baoxiu" onclick="modelQuick(55,'报修管理')">报修管理</div>
+                <div class="box xinwen" onclick="modelQuick(34,'新闻管理')">新闻管理</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="news">
+            <div class="title">
+                校园新闻
+                <a class="more">查看更多>></a>
+            </div>
+            <ul class="newsList">
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+            </ul>
+        </div>
+        <div style="background:#d2e0df;width:1%;height:250px;float:left"></div>
+        <div class="notice">
+            <div class="title">消息提醒</div>
+            <ul>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="news">
+            <div class="title">
+                通知公告
+                <a class="more">查看更多>></a>
+            </div>
+            <ul class="newsList">
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>关于2017年学工系统正式上线启用的通知，请各部门及时根据自己的工号进行登录</a>
+                </li>
+            </ul>
+        </div>
+        <div style="background:#d2e0df;width:1%;height:250px;float:left"></div>
+        <div class="notice">
+            <div class="title">消息提醒</div>
+            <!-- 消息提醒暂时不做 -->
+            <ul>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+                <li>
+                    <span>2017-09-08</span>
+                    <a>你有一条通知消息</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../build/js/zebra/js/zebra_dialog.js" type="text/javascript"></script>
+    <script src="../build/js/zebra/commonZebraDialog.js"></script>
+    <script src="js/utils/utils.js"></script>
+    <script src="js/encrypt/md52.js"></script>
+    <script src="js/index/index-right.js"></script>
+</body>
+</html>
